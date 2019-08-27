@@ -1,9 +1,8 @@
 import Line from './Line';
 
-export default function Dialog() {
+export default () => {
   return (
     <div>
-      Dialog
       <Line/>
     </div>
   );

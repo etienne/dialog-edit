@@ -1,8 +1,10 @@
-export default function Line() {
+import EditableField from './EditableField';
+
+export default () => {
   return (
     <div>
-      character
-      text
+      <EditableField initialValue="Character"/>
+      <EditableField initialValue="Line"/>
     </div>
   );
 }
