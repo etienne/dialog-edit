@@ -1,9 +1,9 @@
-import Line from './Line';
+import Node from './Node';
 
 export default () => {
   return (
     <div>
-      <Line/>
+      <Node character="Roger" text="C’est ça qui est ça"/>
     </div>
   );
 }
