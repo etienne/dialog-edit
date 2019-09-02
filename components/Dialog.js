@@ -1,9 +1,9 @@
 import Node from './Node';
 
-export default () => {
+export default function Dialog({ nodes, addNode }) {
   return (
     <>
-      <Node/>
+      { nodes.map(node => <Node key={node.id} id={node.id} addNode={addNode} />) }
     </>
   );
 }

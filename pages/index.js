@@ -1,9 +1,17 @@
 import Dialog from '../components/Dialog';
+import { useState } from 'react';
 
-export default () => {
+export default function App() {
+  const [nodes, setNodes] = useState([{ id: 1 }]);
+  
+  function addNode(parent) {
+    setNodes([...nodes, { parent, id: 2 }]);
+    console.log('addNoded!');
+  }
+  
   return (
     <div>
-      <Dialog/>
+      <Dialog nodes={nodes} addNode={addNode}/>
       <style jsx>{`
         div {
           max-width: 50em;
