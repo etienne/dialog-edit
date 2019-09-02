@@ -1,10 +1,11 @@
-import Field from './Field';
+import CharacterField from './CharacterField';
+import TextField from './TextField';
 
 export default ({ character, text }) => {
   return (
     <form>
-      <Field initialValue={character}/>
-      <Field initialValue={text} multiline/>
+      <CharacterField value={character}/>
+      <TextField value={text}/>
     </form>
   );
 }
