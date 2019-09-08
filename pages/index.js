@@ -2,12 +2,13 @@ import Dialog from '../components/Dialog';
 import { useState } from 'react';
 
 export default function Index() {
-  const [nodes, setNodes] = useState([{ id: 1 }]);
+  const [nodes, setNodes] = useState({ 1: { id: 1 } });
   const [lastId, setLastId] = useState(1);
   
   function addNode(parent) {
     const id = getNextId();
-    setNodes([...nodes, { parent, id }]);
+    const newNode = { [id]: { id, parent } };
+    setNodes({...nodes, ...newNode});
     setLastId(id);
   }
   

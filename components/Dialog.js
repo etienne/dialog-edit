@@ -1,9 +1,11 @@
 import Node from './Node';
 
 export default function Dialog({ nodes, addNode }) {
+  const nodeIds = Object.keys(nodes);
+
   return (
     <>
-      { nodes.map(node => <Node key={node.id} id={node.id} addNode={addNode} />) }
+      { nodeIds.map(id => <Node key={id} id={id} addNode={addNode} />) }
     </>
   );
 }
