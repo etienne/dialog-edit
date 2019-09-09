@@ -4,7 +4,7 @@ import Dialog from '../components/Dialog';
 
 export default function App() {
   const { state, dispatch } = useContext(Store);
-  console.log('satte', state);
+  console.log('State:', state);
   
   // function addNode(parent) {
   //   const id = getNextId();

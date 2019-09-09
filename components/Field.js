@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import TextareaAutosize from 'react-autosize-textarea';
 
-export default function Field({ initialValue, multiline, placeholder }) {
+export default function Field({ initialValue, multiline, placeholder, updateAction }) {
   const [value, setValue] = useState(initialValue || '');
+  const onChange = () => setValue(event.target.value);
+  const onBlur = () => updateAction(value);
   
   return (
     <div>
       { multiline 
-        ? <TextareaAutosize value={value} onChange={() => setValue(event.target.value)} placeholder={placeholder} />
-        : <input value={value} onChange={() => setValue(event.target.value)} placeholder={placeholder} />
+        ? <TextareaAutosize value={value} onChange={onChange} onBlur={onBlur} placeholder={placeholder} />
+        : <input value={value} onChange={onChange} onBlur={onBlur} placeholder={placeholder} />
       }
       <style jsx>{`
         input, :global(textarea) {
