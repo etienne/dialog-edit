@@ -1,3 +1,5 @@
+import IconButton from './IconButton';
+
 export default function ShowDetailsButton({ action }) {
-  return <button onClick={action}>…</button>;
+  return <IconButton action={action} icon="more" alt="Show Node Details"/>;
 }

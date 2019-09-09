@@ -20,8 +20,10 @@ export default function Node({ id }) {
       <CharacterField value={node.character} updateAction={characterUpdateAction}/>
       <TextField value={node.text} updateAction={textUpdateAction}/>
       { showDetails && <NodeDetails node={state.nodes[id]}/> }
-      <AddNodeButton parent={id}/>
-      <ShowDetailsButton action={showDetailsAction}/>
+      <div className="actions">
+        <AddNodeButton parent={id}/>
+        <ShowDetailsButton action={showDetailsAction}/>
+      </div>
       <style jsx>{`
         h1 {
           font-size: 2em;
@@ -29,6 +31,15 @@ export default function Node({ id }) {
 
         div:first-child h1 {
           margin-top: 0.5em;
+        }
+
+        div.actions {
+          opacity: 0.5;
+          visibility: hidden;
+        }
+
+        div:hover div.actions {
+          visibility: visible;
         }
       `}</style>
     </div>
