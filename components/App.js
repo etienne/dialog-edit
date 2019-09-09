@@ -5,22 +5,11 @@ import Dialog from '../components/Dialog';
 
 export default function App() {
   const { state } = useContext(Store);
-  
-  // function addNode(parent) {
-  //   const id = getNextId();
-  //   const newNode = { [id]: { id, parent } };
-  //   setNodes({...nodes, ...newNode});
-  //   setLastId(id);
-  // }
-  //
-  // function getNextId() {
-  //   return lastId + 1;
-  // }
 
   return (
     <div>
       <Branches/>
-      <Dialog nodes={state.nodes}/>
+      <Dialog rootId={state.selectedBranch}/>
       <style jsx>{`
         div {
           display: flex;
