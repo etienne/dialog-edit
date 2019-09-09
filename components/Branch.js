@@ -12,7 +12,7 @@ export default function Branch({ label, selected, action }) {
           font-family: 'Cousine';
           font-size: 15px;
           line-height: 22px;
-          padding: 0.3em;
+          padding: 0.3em 0.6em;
           cursor: pointer;
         }
 

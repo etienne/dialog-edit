@@ -13,7 +13,17 @@ function reducer(state, action) {
     case 'ADD_NODE': {
       const id = state.lastId + 1;
       const newNode = { [id]: { id, ...action.payload } };
-      return { ...state, lastId: id, nodes: { ...state.nodes, ...newNode }};
+      let redirectedNode = {};
+      if (action.payload.parent) {
+        const childrenIds = Object.keys(state.nodes).filter(node => state.nodes[node].parent == action.payload.parent);
+        if (childrenIds.length > 1) {
+          console.warn('Possible incorrect redirection with parent', action.payload.parent, 'for new node', id);
+        } else if (childrenIds.length) {
+          const redirectedNodeId = childrenIds[0];
+          redirectedNode = { [redirectedNodeId]: { ...state.nodes[redirectedNodeId], parent: id } };
+        }
+      }
+      return { ...state, lastId: id, nodes: { ...state.nodes, ...newNode, ...redirectedNode }};
     }
     case 'UPDATE_NODE_CHARACTER': {
       const { id, character } = action.payload;
