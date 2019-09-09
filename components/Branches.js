@@ -1,17 +1,23 @@
 import { useContext } from 'react';
 import { Store } from '../state/store';
 import Branch from './Branch';
+import AddNodeButton from './AddNodeButton';
 
 export default function Branches() {
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const branchIds = Object.keys(state.nodes).filter(node => !!state.nodes[node].label);
 
   return (
     <section>
-      { branchIds.map(id => <Branch key={`branch-${id}`} label={state.nodes[id].label}/>) }
+      { branchIds.map((id) => {
+        const action = () => dispatch({ type: 'SET_SELECTED_BRANCH', payload: id });
+        return <Branch key={`branch-${id}`} label={state.nodes[id].label} selected={state.selectedBranch == id} action={action}/>;
+      }) }
+      <AddNodeButton label="untitled branch"/>
       <style jsx>{`
         section {
           flex: 1 25%;
+          padding-right: 2em;
         }
       `}</style>
     </section>

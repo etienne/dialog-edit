@@ -5,13 +5,14 @@ export const Store = React.createContext();
 const initialState = {
   nodes: { 1: { id: 1, label: 'untitled branch' } },
   lastId: 1,
+  selectedBranch: 1,
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case 'ADD_NODE': {
       const id = state.lastId + 1;
-      const newNode = { [id]: { id, parent: action.payload } };
+      const newNode = { [id]: { id, ...action.payload } };
       return { ...state, lastId: id, nodes: { ...state.nodes, ...newNode }};
     }
     case 'UPDATE_NODE_CHARACTER': {
@@ -28,6 +29,9 @@ function reducer(state, action) {
       const { id } = action.payload;
       const updatedNode = { [id]: { ...state.nodes[id], ...action.payload } };
       return { ...state, nodes: { ...state.nodes, ...updatedNode }};
+    }
+    case 'SET_SELECTED_BRANCH': {
+      return { ...state, selectedBranch: action.payload };
     }
     default:
       console.error('Invalid action type:', action);
