@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { Store } from '../state/store';
+import Branch from './Branch';
 
 export default function Branches() {
   const { state } = useContext(Store);
@@ -7,7 +8,7 @@ export default function Branches() {
 
   return (
     <section>
-      { branchIds.map(id => <div key={`branch-${id}`}>{state.nodes[id].label}</div>) }
+      { branchIds.map(id => <Branch key={`branch-${id}`} label={state.nodes[id].label}/>) }
       <style jsx>{`
         section {
           flex: 1 25%;
