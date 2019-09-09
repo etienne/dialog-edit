@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import { Store } from '../state/store';
+import Branches from '../components/Branches';
 import Dialog from '../components/Dialog';
 
 export default function App() {
-  const { state, dispatch } = useContext(Store);
-  console.log('State:', state);
+  const { state } = useContext(Store);
   
   // function addNode(parent) {
   //   const id = getNextId();
@@ -19,11 +19,12 @@ export default function App() {
 
   return (
     <div>
+      <Branches/>
       <Dialog nodes={state.nodes}/>
       <style jsx>{`
         div {
-          max-width: 50em;
-          margin: 0 auto;
+          display: flex;
+          width: 100%;
         }
       `}</style>
       <style global jsx>{`

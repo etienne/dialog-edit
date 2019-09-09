@@ -3,7 +3,7 @@ import React, { useReducer } from 'react';
 export const Store = React.createContext();
 
 const initialState = {
-  nodes: { 1: { id: 1 } },
+  nodes: { 1: { id: 1, label: 'untitled branch' } },
   lastId: 1,
 };
 
