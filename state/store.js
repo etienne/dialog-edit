@@ -24,6 +24,11 @@ function reducer(state, action) {
       const updatedNode = { [id]: { ...state.nodes[id], text } };
       return { ...state, nodes: { ...state.nodes, ...updatedNode }};
     }
+    case 'UPDATE_NODE_DETAILS': {
+      const { id } = action.payload;
+      const updatedNode = { [id]: { ...state.nodes[id], ...action.payload } };
+      return { ...state, nodes: { ...state.nodes, ...updatedNode }};
+    }
     default:
       console.error('Invalid action type:', action);
       return state;

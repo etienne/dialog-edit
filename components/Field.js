@@ -3,7 +3,7 @@ import TextareaAutosize from 'react-autosize-textarea';
 
 export default function Field({ initialValue, multiline, placeholder, updateAction }) {
   const [value, setValue] = useState(initialValue || '');
-  const onChange = () => setValue(event.target.value);
+  const onChange = event => setValue(event.target.value);
   const onBlur = () => updateAction(value);
   
   return (
