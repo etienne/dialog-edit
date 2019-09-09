@@ -12,6 +12,7 @@ export default function Branch({ label, selected, action }) {
           font-size: 15px;
           line-height: 22px;
           padding: 0.3em;
+          cursor: pointer;
         }
 
         button.selected {
