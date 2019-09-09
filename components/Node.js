@@ -15,7 +15,7 @@ export default function Node({ id }) {
   const showDetailsAction = () => setShowDetails(!showDetails);
 
   return (
-    <div>
+    <div className="Node">
       { node.label && <h1>{node.label}</h1> }
       <CharacterField value={node.character} updateAction={characterUpdateAction}/>
       <TextField value={node.text} updateAction={textUpdateAction}/>
@@ -36,6 +36,12 @@ export default function Node({ id }) {
         div.actions {
           opacity: 0.5;
           visibility: hidden;
+        }
+
+        div.Node:last-child div.actions {
+          margin-top: 1em;
+          opacity: 1;
+          visibility: visible;
         }
 
         div:hover div.actions {
