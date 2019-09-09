@@ -1,26 +1,25 @@
-import Dialog from '../components/Dialog';
+import { useContext } from 'react';
 import { Store } from '../state/store';
-import { useContext, useState } from 'react';
+import Dialog from '../components/Dialog';
 
 export default function App() {
-  const [nodes, setNodes] = useState({ 1: { id: 1 } });
-  const [lastId, setLastId] = useState(1);
   const { state, dispatch } = useContext(Store);
+  console.log('satte', state);
   
-  function addNode(parent) {
-    const id = getNextId();
-    const newNode = { [id]: { id, parent } };
-    setNodes({...nodes, ...newNode});
-    setLastId(id);
-  }
-  
-  function getNextId() {
-    return lastId + 1;
-  }
+  // function addNode(parent) {
+  //   const id = getNextId();
+  //   const newNode = { [id]: { id, parent } };
+  //   setNodes({...nodes, ...newNode});
+  //   setLastId(id);
+  // }
+  //
+  // function getNextId() {
+  //   return lastId + 1;
+  // }
 
   return (
     <div>
-      <Dialog nodes={nodes} addNode={addNode}/>
+      <Dialog nodes={state.nodes}/>
       <style jsx>{`
         div {
           max-width: 50em;

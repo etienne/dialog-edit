@@ -3,16 +3,19 @@ import React, { useReducer } from 'react';
 export const Store = React.createContext();
 
 const initialState = {
-  nodes: {},
-  lastId: null,
+  nodes: { 1: { id: 1 } },
+  lastId: 1,
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'yo':
-      break;
+    case 'ADD_NODE':
+      const id = state.lastId + 1;
+      const newNode = { [id]: { id, parent: action.payload } };
+      return { ...state, lastId: id, nodes: { ...state.nodes, ...newNode }};
     default:
-    
+      console.error('Invalid action type:', action);
+      return state;
   }
 }
 
