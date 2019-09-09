@@ -28,10 +28,10 @@ export default function App() {
         }
       `}</style>
       <style global jsx>{`
-        @import url('https://fonts.googleapis.com/css?family=Fira+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Cousine&display=swap');
       
         body {
-          font-family: 'Fira Mono';
+          font-family: 'Cousine';
           font-size: 15px;
           line-height: 22px;
           margin: 2em;

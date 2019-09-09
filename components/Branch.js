@@ -8,7 +8,7 @@ export default function Branch({ label, selected, action }) {
           text-align: left;
           display: block;
           border: none;
-          font-family: 'Fira Mono';
+          font-family: 'Cousine';
           font-size: 15px;
           line-height: 22px;
           padding: 0.3em;

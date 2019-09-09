@@ -16,7 +16,7 @@ export default function Field({ initialValue, multiline, placeholder, updateActi
         input, :global(textarea) {
           width: 100%;
           display: block;
-          font-family: 'Fira Mono';
+          font-family: 'Cousine';
           font-size: 15px;
           line-height: 22px;
           border: 1px solid white;

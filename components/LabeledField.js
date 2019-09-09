@@ -26,7 +26,7 @@ export default function LabeledField({ field, initialValue, updateAction }) {
 
         input {
           flex: 1 70%;
-          font-family: 'Fira Mono';
+          font-family: 'Cousine';
           font-size: 15px;
           line-height: 22px;
           border: 1px solid ddd;
