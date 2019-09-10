@@ -2,16 +2,16 @@ import { useState } from 'react';
 import TextareaAutosize from 'react-autosize-textarea';
 import stringToColor from '../helpers/stringToColor';
 
-export default function Field({ initialValue, multiline, placeholder, updateAction }) {
+export default function Field({ initialValue, field, placeholder, updateAction }) {
   const [value, setValue] = useState(initialValue || '');
   const onChange = event => setValue(event.target.value);
-  const onBlur = () => updateAction(value);
+  const onBlur = () => updateAction({ [field]: value });
   
   return (
     <div>
-      { multiline 
+      { field == 'text'
         ? <TextareaAutosize value={value} onChange={onChange} onBlur={onBlur} placeholder={placeholder} />
-        : <input value={value} onChange={onChange} onBlur={onBlur} placeholder={placeholder} />
+        : <input className={field} value={value} onChange={onChange} onBlur={onBlur} placeholder={placeholder} />
       }
       <style jsx>{`
         input, :global(textarea) {
@@ -32,13 +32,18 @@ export default function Field({ initialValue, multiline, placeholder, updateActi
           border: 1px solid #ccc;
         }
 
-        input {
+        input.character {
           text-transform: uppercase;
           font-size: 13px;
         }
         
-        input:not(:focus) {
+        input.character:not(:focus) {
           color: ${stringToColor(value)};
+        }
+        
+        input.label {
+          font-size: 2em;
+          margin: 0.8em 0;
         }
       `}</style>
     </div>

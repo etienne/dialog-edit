@@ -25,17 +25,7 @@ function reducer(state, action) {
       }
       return { ...state, lastId: id, nodes: { ...state.nodes, ...newNode, ...redirectedNode }};
     }
-    case 'UPDATE_NODE_CHARACTER': {
-      const { id, character } = action.payload;
-      const updatedNode = { [id]: { ...state.nodes[id], character } };
-      return { ...state, nodes: { ...state.nodes, ...updatedNode }};
-    }
-    case 'UPDATE_NODE_TEXT': {
-      const { id, text } = action.payload;
-      const updatedNode = { [id]: { ...state.nodes[id], text } };
-      return { ...state, nodes: { ...state.nodes, ...updatedNode }};
-    }
-    case 'UPDATE_NODE_DETAILS': {
+    case 'UPDATE_NODE': {
       const { id } = action.payload;
       const updatedNode = { [id]: { ...state.nodes[id], ...action.payload } };
       return { ...state, nodes: { ...state.nodes, ...updatedNode }};
