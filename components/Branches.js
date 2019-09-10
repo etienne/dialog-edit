@@ -1,11 +1,12 @@
 import { useContext } from 'react';
 import { Store } from '../state/store';
 import Branch from './Branch';
-import AddNodeButton from './AddNodeButton';
+import IconButton from './IconButton';
 
 export default function Branches() {
   const { state, dispatch } = useContext(Store);
   const branchIds = Object.keys(state.nodes).filter(node => !!state.nodes[node].label);
+  const addNodeAction = () => dispatch({ type: 'ADD_NODE', payload: { label: 'untitled branch' } });
 
   return (
     <section>
@@ -14,7 +15,7 @@ export default function Branches() {
         return <Branch key={`branch-${id}`} label={state.nodes[id].label} selected={state.selectedBranch == id} action={action}/>;
       }) }
       <div className="actions">
-        <AddNodeButton label="untitled branch"/>
+        <IconButton action={addNodeAction} icon="plus" alt="Add Branch"/>
       </div>
       <style jsx>{`
         section {

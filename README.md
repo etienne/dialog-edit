@@ -13,6 +13,7 @@ A rudimentary tool to create and edit branching dialogs.
 - Permettre de naviguer avec les flèches haut/bas? pis Enter?
 - Faire que le focus switch automatiquement au nouveau node quand il est créé
 - Tweaker les couleurs pour éviter les couleurs très pâles
+- Quand on crée une nouvelle branche, on devrait switcher à la nouvelle branche
 
 ### Quand même toffe
 - Permettre d'ajouter des choix de réponses
