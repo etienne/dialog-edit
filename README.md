@@ -12,7 +12,6 @@ A rudimentary tool to create and edit branching dialogs.
 ### Quand même facile
 - Permettre de naviguer avec les flèches haut/bas?
 - Faire que le focus switch automatiquement au nouveau node quand il est créé
-- Ajouter un <datalist> pour fournir un autocomplete au champ Character
 - Tweaker les couleurs pour éviter les couleurs très pâles
 
 ### Quand même toffe

@@ -6,12 +6,14 @@ export default function Field({ initialValue, field, placeholder, updateAction }
   const [value, setValue] = useState(initialValue || '');
   const onChange = event => setValue(event.target.value);
   const onBlur = () => updateAction({ [field]: value });
+  const list = field == 'character' ? 'characters' : undefined;
+  const props = { value, onChange, onBlur, placeholder, list, className: field };
   
   return (
     <>
       { field == 'text'
-        ? <TextareaAutosize value={value} onChange={onChange} onBlur={onBlur} placeholder={placeholder} />
-        : <input className={field} value={value} onChange={onChange} onBlur={onBlur} placeholder={placeholder} />
+        ? <TextareaAutosize {...props} />
+        : <input {...props} />
       }
       <style jsx>{`
         input, :global(textarea) {

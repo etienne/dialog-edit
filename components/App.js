@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import { Store } from '../state/store';
-import Branches from '../components/Branches';
-import Dialog from '../components/Dialog';
+import Branches from './Branches';
+import Dialog from './Dialog';
+import CharacterList from './CharacterList';
 
 export default function App() {
   const { state } = useContext(Store);
@@ -10,6 +11,7 @@ export default function App() {
     <div>
       <Branches/>
       <Dialog rootId={state.selectedBranch}/>
+      <CharacterList/>
       <style jsx>{`
         div {
           display: flex;
