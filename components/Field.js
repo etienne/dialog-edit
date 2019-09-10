@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import TextareaAutosize from 'react-autosize-textarea';
+import stringToColor from '../helpers/stringToColor';
 
 export default function Field({ initialValue, multiline, placeholder, updateAction }) {
   const [value, setValue] = useState(initialValue || '');
@@ -34,6 +35,10 @@ export default function Field({ initialValue, multiline, placeholder, updateActi
         input {
           text-transform: uppercase;
           font-size: 13px;
+        }
+        
+        input:not(:focus) {
+          color: ${stringToColor(value)};
         }
       `}</style>
     </div>
