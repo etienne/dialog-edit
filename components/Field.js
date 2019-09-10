@@ -8,7 +8,7 @@ export default function Field({ initialValue, field, placeholder, updateAction }
   const onBlur = () => updateAction({ [field]: value });
   
   return (
-    <div>
+    <>
       { field == 'text'
         ? <TextareaAutosize value={value} onChange={onChange} onBlur={onBlur} placeholder={placeholder} />
         : <input className={field} value={value} onChange={onChange} onBlur={onBlur} placeholder={placeholder} />
@@ -46,6 +46,6 @@ export default function Field({ initialValue, field, placeholder, updateAction }
           margin: 0.8em 0;
         }
       `}</style>
-    </div>
+    </>
   );
 }

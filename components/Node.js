@@ -23,8 +23,8 @@ export default function Node({ id }) {
         <ShowDetailsButton action={showDetailsAction}/>
       </div>
       <style jsx>{`
-        div:first-child h1 {
-          margin-top: 0.5em;
+        div.Node:first-child  {
+          margin-top: -0.5em;
         }
 
         div.actions {
