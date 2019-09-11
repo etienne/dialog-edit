@@ -14,7 +14,7 @@ function reducer(state, action) {
       const id = state.lastId + 1;
       const newNode = { [id]: { id, ...action.payload } };
       let redirectedNode = {};
-      if (action.payload.parent) {
+      if (action.payload.parent && action.payload.redirect !== false) {
         const childrenIds = Object.keys(state.nodes).filter(node => state.nodes[node].parent == action.payload.parent);
         if (childrenIds.length > 1) {
           console.warn('Possible incorrect redirection with parent', action.payload.parent, 'for new node', id);

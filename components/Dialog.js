@@ -4,25 +4,29 @@ import Node from './Node';
 
 export default function Dialog({ rootId }) {
   const { state } = useContext(Store);
-  let node = rootId;
-  const nodes = [];
-  let childrenNodes;
+  const nodeIds = [];
+  const choiceNodes = [];
+  let nodeId = rootId;
+  let childrenNodeIds;
 
-  function getChildrenNodes(id) {
-    return Object.keys(state.nodes).filter(node => state.nodes[node].parent == id);
+  function getChildrenNodeIds(id) {
+    return Object.keys(state.nodes).filter(nodeId => state.nodes[nodeId].parent == id);
   }
 
   do {
-    nodes.push(node);
-    childrenNodes = getChildrenNodes(node);
-    if (childrenNodes.length > 1) {
-      console.log('More than one children for node ', node);
+    nodeIds.push(nodeId);
+    childrenNodeIds = getChildrenNodeIds(nodeId);
+    if (childrenNodeIds.length > 1) {
+      choiceNodes.push(nodeId);
     }
-  } while (childrenNodes.length && (node = childrenNodes[0]));
-
+  } while (childrenNodeIds.length && (nodeId = childrenNodeIds[0]));
+  
   return (
     <section>
-      { nodes.map(id => <Node key={id} id={id} />) }
+      { nodeIds.map((id) => {
+        const hasAdjacentChoices = choiceNodes.indexOf(state.nodes[id].parent) !== -1;
+        return <Node key={id} id={id} hasAdjacentChoices={hasAdjacentChoices}/>
+      }) }
       <style jsx>{`
         section {
           flex: 1 75%;
