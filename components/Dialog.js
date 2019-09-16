@@ -13,17 +13,19 @@ export default function Dialog({ rootId }) {
     return Object.keys(state.nodes).filter(nodeId => state.nodes[nodeId].parent == id);
   }
 
-  do {
-    nodeIds.push(nodeId);
-    childrenNodeIds = getChildrenNodeIds(nodeId);
-    if (childrenNodeIds.length > 1) {
-      choiceNodes.push(nodeId);
-    }
-  } while (childrenNodeIds.length && (nodeId = state.selectedChoices[nodeId] || childrenNodeIds[0]));
+  if (nodeId) {
+    do {
+      nodeIds.push(nodeId);
+      childrenNodeIds = getChildrenNodeIds(nodeId);
+      if (childrenNodeIds.length > 1) {
+        choiceNodes.push(nodeId);
+      }
+    } while (childrenNodeIds.length && (nodeId = state.selectedChoices[nodeId] || childrenNodeIds[0]));
+  }
   
   return (
     <section>
-      { nodeIds.map((id) => {
+      { nodeIds.length > 0 && nodeIds.map((id) => {
         const parentId = state.nodes[id].parent;
         let siblings = [];
         if (choiceNodes.indexOf(parentId) !== -1) {

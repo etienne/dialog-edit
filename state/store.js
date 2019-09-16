@@ -3,14 +3,18 @@ import React, { useReducer } from 'react';
 export const Store = React.createContext();
 
 const initialState = {
-  nodes: { 1: { id: 1, label: 'untitled branch' } },
-  lastId: 1,
-  selectedBranch: 1,
+  nodes: {},
+  lastId: 0,
+  selectedBranch: null,
   selectedChoices: {},
 };
 
 function reducer(state, action) {
   switch (action.type) {
+    case 'INITIAL_LOAD': {
+      console.log('INITIAL_LOAD', { ...state, ...action.payload });
+      return { ...state, ...action.payload };
+    }
     case 'ADD_NODE': {
       const id = state.lastId + 1;
       const newNode = { [id]: { id, ...action.payload } };

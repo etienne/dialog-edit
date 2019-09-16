@@ -1,11 +1,33 @@
-import { useContext } from 'react';
+import getConfig from 'next/config';
+import { useContext, useEffect } from 'react';
 import { Store } from '../state/store';
 import Branches from './Branches';
 import Dialog from './Dialog';
 import CharacterList from './CharacterList';
 
+const { publicRuntimeConfig } = getConfig();
+
 export default function App() {
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
+
+  useEffect(() => {
+    if (process.browser) {
+      fetch(publicRuntimeConfig.serverEndpoint).then(res => res.json()).then(json => {
+        dispatch({ type: 'INITIAL_LOAD', payload: json });
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log('effectin’');
+    if (process.browser) {
+      fetch(publicRuntimeConfig.serverEndpoint, {
+        method: 'POST',
+        body: JSON.stringify(state),
+        headers: { 'Content-Type': 'application/json' },
+      }).catch(error => console.error('Error:', error));
+    }
+  }, [state]);
 
   return (
     <div>
