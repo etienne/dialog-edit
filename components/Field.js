@@ -33,6 +33,10 @@ export default function Field({ initialValue, field, placeholder, updateAction }
           padding: 0;
         }
 
+        :global(textarea) {
+          resize: none;
+        }
+
         input::placeholder, :global(textarea)::placeholder {
           color: #ccc;
         }

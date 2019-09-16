@@ -24,12 +24,17 @@ export default function Dialog({ rootId }) {
   return (
     <section>
       { nodeIds.map((id) => {
-        const hasAdjacentChoices = choiceNodes.indexOf(state.nodes[id].parent) !== -1;
-        return <Node key={id} id={id} hasAdjacentChoices={hasAdjacentChoices}/>
+        const parentId = state.nodes[id].parent;
+        let siblings = [];
+        if (choiceNodes.indexOf(parentId) !== -1) {
+          siblings = getChildrenNodeIds(parentId);
+        }
+        return <Node key={id} id={id} siblings={siblings}/>
       }) }
       <style jsx>{`
         section {
           flex: 1 75%;
+          padding-left: 3em;
         }
       `}</style>
     </section>
