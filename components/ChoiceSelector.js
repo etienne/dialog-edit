@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Store } from '../state/store';
 import ChoiceSwitch from './ChoiceSwitch';
+import stringToColor from '../helpers/stringToColor';
 
 export default function ChoiceSelector({ nodeIds }) {
   const { state, dispatch } = useContext(Store);
@@ -11,10 +12,11 @@ export default function ChoiceSelector({ nodeIds }) {
         { nodeIds.map(id => {
           const node = state.nodes[id];
           const payload = { [node.parent]: id };
+          const color = node.character ? { style: { color: stringToColor(node.character) }} : {};
 
           return (
             <button key={id} onClick={() => dispatch({ type: 'SET_SELECTED_CHOICE', payload })}>
-              <div className="character">{node.character || <span>Character</span>}</div>
+              <div className="character" {...color}>{node.character || <span>Character</span>}</div>
               <div className="text">{node.text || <span>Text</span>}</div>
             </button>
           )
