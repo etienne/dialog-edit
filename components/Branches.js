@@ -21,6 +21,7 @@ export default function Branches() {
         section {
           flex: 1 25%;
           padding-right: 2em;
+          max-width: 20em;
         }
 
         div.actions {

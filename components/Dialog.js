@@ -35,6 +35,7 @@ export default function Dialog({ rootId }) {
         section {
           flex: 1 75%;
           padding-left: 3em;
+          max-width: 42em;
         }
       `}</style>
     </section>
