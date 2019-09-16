@@ -1,22 +1,30 @@
 import { useContext } from 'react';
 import { Store } from '../state/store';
+import ChoiceSwitch from './ChoiceSwitch';
 
 export default function ChoiceSelector({ nodeIds }) {
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   return (
     <div>
-      { nodeIds.map(id => {
-        const node = state.nodes[id];
-        console.log('node=', node);        
+      <ChoiceSwitch count={nodeIds.length}/>
+      <div>
+        { nodeIds.map(id => {
+          const node = state.nodes[id];
+          const payload = { [node.parent]: id };
 
-        return (
-          <button key={id}>
-            <div className="character">{node.character || <span>Character</span>}</div>
-            <div className="text">{node.text || <span>Text</span>}</div>
-          </button>
-        )
-      })}
+          return (
+            <button key={id} onClick={() => dispatch({ type: 'SET_SELECTED_CHOICE', payload })}>
+              <div className="character">{node.character || <span>Character</span>}</div>
+              <div className="text">{node.text || <span>Text</span>}</div>
+            </button>
+          )
+        })}
+      </div>
       <style jsx>{`
+        div {
+          position: relative;
+        }
+
         button {
           display: block;
           width: 100%;

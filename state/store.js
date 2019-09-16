@@ -34,6 +34,9 @@ function reducer(state, action) {
     case 'SET_SELECTED_BRANCH': {
       return { ...state, selectedBranch: action.payload };
     }
+    case 'SET_SELECTED_CHOICE': {
+      return { ...state, selectedChoices: { ...state.selectedChoices, ...action.payload }};
+    }
     default:
       console.error('Invalid action type:', action);
       return state;

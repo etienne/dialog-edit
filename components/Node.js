@@ -15,14 +15,14 @@ export default function Node({ id, siblings }) {
   const showDetailsAction = () => setShowDetails(!showDetails);
   const addSiblingAction = () => dispatch({ type: 'ADD_NODE', payload: { parent: node.parent, redirect: false }});
 
-  if (siblings.length && !state.selectedChoices[id]) {
+  if (siblings.length && !state.selectedChoices[node.parent]) {
     return <ChoiceSelector nodeIds={siblings}/>;
   }
 
   return (
     <div className={`Node ${siblings.length ? 'siblings' : ''}`}>
       { node.label && <Field field="label" initialValue={node.label} updateAction={updateAction}/> }
-      { siblings.length > 0 && <ChoiceSwitch count={siblings.length}/> }
+      { siblings.length > 0 && <ChoiceSwitch count={siblings.length} parent={node.parent}/> }
       <Field field="character" initialValue={node.character} placeholder="Character" updateAction={updateAction}/>
       <Field field="text" initialValue={node.text} placeholder="Text" updateAction={updateAction}/>
       { showDetails && <NodeDetails node={node} updateAction={updateAction}/> }

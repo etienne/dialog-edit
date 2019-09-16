@@ -19,7 +19,7 @@ export default function Dialog({ rootId }) {
     if (childrenNodeIds.length > 1) {
       choiceNodes.push(nodeId);
     }
-  } while (childrenNodeIds.length && (nodeId = childrenNodeIds[0]));
+  } while (childrenNodeIds.length && (nodeId = state.selectedChoices[nodeId] || childrenNodeIds[0]));
   
   return (
     <section>
