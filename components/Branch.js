@@ -13,6 +13,10 @@ export default function Branch({ label, selected, action }) {
           cursor: pointer;
         }
 
+        button:hover {
+          background-color: #f6f6f6;
+        }
+
         button.selected {
           background-color: #eee;
         }
