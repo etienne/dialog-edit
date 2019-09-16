@@ -6,6 +6,7 @@ const initialState = {
   nodes: { 1: { id: 1, label: 'untitled branch' } },
   lastId: 1,
   selectedBranch: 1,
+  selectedChoices: {},
 };
 
 function reducer(state, action) {

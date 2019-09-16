@@ -4,6 +4,7 @@ import Field from './Field';
 import IconButton from './IconButton';
 import NodeDetails from './NodeDetails';
 import ChoiceSwitch from './ChoiceSwitch';
+import ChoiceSelector from './ChoiceSelector';
 
 export default function Node({ id, siblings }) {
   const { state, dispatch } = useContext(Store);
@@ -13,6 +14,10 @@ export default function Node({ id, siblings }) {
   const addNodeAction = () => dispatch({ type: 'ADD_NODE', payload: { parent: id } });
   const showDetailsAction = () => setShowDetails(!showDetails);
   const addSiblingAction = () => dispatch({ type: 'ADD_NODE', payload: { parent: node.parent, redirect: false }});
+
+  if (siblings.length && !state.selectedChoices[id]) {
+    return <ChoiceSelector nodeIds={siblings}/>;
+  }
 
   return (
     <div className={`Node ${siblings.length ? 'siblings' : ''}`}>
@@ -30,7 +35,7 @@ export default function Node({ id, siblings }) {
         div.Node {
           position: relative;
         }
-        
+
         div.Node:first-child  {
           margin-top: -0.5em;
         }
