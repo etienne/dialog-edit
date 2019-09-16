@@ -9,9 +9,6 @@ export default function Branch({ label, selected, action }) {
           display: block;
           border: none;
           border-radius: 5px;
-          font-family: 'Cousine';
-          font-size: 15px;
-          line-height: 22px;
           padding: 0.3em 0.6em;
           cursor: pointer;
         }

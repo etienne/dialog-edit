@@ -6,7 +6,7 @@ import stringToColor from '../helpers/stringToColor';
 export default function ChoiceSelector({ nodeIds }) {
   const { state, dispatch } = useContext(Store);
   return (
-    <div>
+    <section>
       <ChoiceSwitch count={nodeIds.length}/>
       <div>
         { nodeIds.map(id => {
@@ -23,8 +23,9 @@ export default function ChoiceSelector({ nodeIds }) {
         })}
       </div>
       <style jsx>{`
-        div {
+        section {
           position: relative;
+          margin-bottom: 1em;
         }
 
         button {
@@ -62,6 +63,6 @@ export default function ChoiceSelector({ nodeIds }) {
           color: #ccc;
         }
       `}</style>
-    </div>
+    </section>
   );
 }

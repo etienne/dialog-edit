@@ -15,7 +15,6 @@ export default function ChoiceSwitch({ count, parent }) {
           border: 1px solid #ccc;
           color: #666;
           border-radius: 5px;
-          font-family: 'Cousine';
           font-size: 12px;
           line-height: 18px;
           box-shadow: -2px -2px 0 0 white, -3px -3px 0 0 #ccc;

@@ -1,10 +1,6 @@
-import { useContext } from 'react';
-import { Store } from '../state/store';
 import LabeledField from './LabeledField';
 
 export default function NodeDetails({ node, updateAction }) {
-  const { state, dispatch } = useContext(Store);
-
   return (
     <div>
       <LabeledField field="id" initialValue={node.id} updateAction={updateAction}/>

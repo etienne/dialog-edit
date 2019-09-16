@@ -21,10 +21,22 @@ export default function App() {
       <style global jsx>{`
         @import url('https://fonts.googleapis.com/css?family=Cousine&display=swap');
       
-        body {
+        body, button, input {
           font-family: 'Cousine';
           font-size: 15px;
           line-height: 22px;
+        }
+
+        button:focus {
+          outline: none;
+          box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+        }
+
+        input:focus, textarea:focus {
+          outline-color: #aaa;
+        }
+
+        body {
           margin: 2em;
           padding: 0;
         }

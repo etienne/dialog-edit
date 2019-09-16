@@ -6,7 +6,6 @@ export default function Field({ initialValue, field, placeholder, updateAction }
   const [value, setValue] = useState(initialValue || '');
   const onChange = event => setValue(event.target.value);
   const onBlur = () => updateAction({ [field]: value });
-  const onSubmit = () => console.log('subbmit');
   const list = field == 'character' ? 'characters' : undefined;
   const onKeyPress = (event) => {
     if (event.key == 'Enter') {
