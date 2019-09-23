@@ -19,7 +19,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    console.log('effectin’');
     if (process.browser) {
       fetch(publicRuntimeConfig.serverEndpoint, {
         method: 'POST',

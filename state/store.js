@@ -12,7 +12,6 @@ const initialState = {
 function reducer(state, action) {
   switch (action.type) {
     case 'INITIAL_LOAD': {
-      console.log('INITIAL_LOAD', { ...state, ...action.payload });
       return { ...state, ...action.payload };
     }
     case 'ADD_NODE': {

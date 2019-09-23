@@ -5,6 +5,7 @@ export default function Index() {
   return (
     <StoreProvider>
       <App/>
+      <div id="modal"/>
     </StoreProvider>
   );
 };

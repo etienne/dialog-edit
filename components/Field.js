@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TextareaAutosize from 'react-autosize-textarea';
 import stringToColor from '../helpers/stringToColor';
 
@@ -12,6 +12,7 @@ export default function Field({ initialValue, field, placeholder, updateAction }
       onBlur();
     }
   }
+  useEffect(() => setValue(initialValue), [initialValue]);
 
   const props = { value, onChange, onBlur, onKeyPress, placeholder, list, className: field };
   
