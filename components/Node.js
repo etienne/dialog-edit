@@ -18,7 +18,7 @@ export default function Node({ id, siblings }) {
   const addSiblingAction = () => dispatch({ type: 'ADD_NODE', payload: { parent: node.parent, redirect: false }});
   const linkToAction = () => setShowLinkModal(!showLinkModal);
   const updateLinkAction = linkToNodeId => {
-    const payload = { ...state.nodes[id], parent: [ ...state.nodes[id].parent, linkToNodeId ] };
+    const payload = { ...state.nodes[linkToNodeId], parent: [ ...state.nodes[linkToNodeId].parent, id ] };
     return dispatch({ type: 'UPDATE_NODE', payload })
   };
 
