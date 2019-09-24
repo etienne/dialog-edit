@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import { Store } from '../state/store';
 
-export default function ChoiceSwitch({ count, parent }) {
+export default function ChoiceSwitch({ count, parentId }) {
   const { dispatch } = useContext(Store);
 
   return (
-    <button className={parent ? 'active' : 'inactive'} onClick={() => dispatch({ type: 'SET_SELECTED_CHOICE', payload: { [parent]: null } })}>
+    <button className={parentId ? 'active' : 'inactive'} onClick={() => dispatch({ type: 'SET_ACTIVE_CHOICE', payload: parentId })}>
       {count}
       <img src={`/static/chevronDown.svg`} alt=""/>
       <style jsx>{`

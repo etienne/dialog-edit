@@ -22,14 +22,14 @@ export default function Node({ id, siblings }) {
     return dispatch({ type: 'UPDATE_NODE', payload })
   };
 
-  if (siblings.length && !state.selectedChoices[node.parent]) {
+  if (siblings.length && state.activeChoice === node.parent) {
     return <ChoiceSelector nodeIds={siblings}/>;
   }
 
   return (
     <div className={`Node ${siblings.length ? 'siblings' : ''}`}>
       { node.label && <Field field="label" initialValue={node.label} updateAction={updateAction}/> }
-      { siblings.length > 0 && <ChoiceSwitch count={siblings.length} parent={node.parent}/> }
+      { siblings.length > 0 && <ChoiceSwitch count={siblings.length} parentId={node.parent}/> }
       <Field field="character" initialValue={node.character} placeholder="Character" updateAction={updateAction}/>
       <Field field="text" initialValue={node.text} placeholder="Text" updateAction={updateAction}/>
       { showDetails && <DetailsModal node={node} dismissAction={() => setShowDetails(false)} submitAction={updateAction}/> }

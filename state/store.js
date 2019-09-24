@@ -7,6 +7,7 @@ const initialState = {
   lastId: 0,
   selectedBranch: null,
   selectedChoices: {},
+  activeChoice: null,
 };
 
 function reducer(state, action) {
@@ -18,21 +19,31 @@ function reducer(state, action) {
       const id = state.lastId + 1;
       const newNode = { [id]: { id, ...action.payload } };
       let redirectedNode = {};
-      if (action.payload.parent && action.payload.redirect !== false) {
+      let selectedChoices = {};
+      if (action.payload.parent) {
         const childrenIds = Object.keys(state.nodes).filter(node => state.nodes[node].parent == action.payload.parent);
-        if (childrenIds.length > 1) {
-          console.warn('Possible incorrect redirection with parent', action.payload.parent, 'for new node', id);
-        } else if (childrenIds.length) {
-          const redirectedNodeId = childrenIds[0];
-          redirectedNode = { [redirectedNodeId]: { ...state.nodes[redirectedNodeId], parent: id } };
+        if (childrenIds.length >= 1) {
+          console.log('oasydoaidauoi');
+          selectedChoices = { selectedChoices: { ...state.selectedChoices, [action.payload.parent]: id } };
+        }
+        if (!!action.payload.redirect) {
+          if (childrenIds.length > 1) {
+            console.warn('Possible incorrect redirection with parent', action.payload.parent, 'for new node', id);
+          } else if (childrenIds.length) {
+            const redirectedNodeId = childrenIds[0];
+            redirectedNode = { [redirectedNodeId]: { ...state.nodes[redirectedNodeId], parent: id } };
+          }
         }
       }
-      return { ...state, lastId: id, nodes: { ...state.nodes, ...newNode, ...redirectedNode }};
+      return { ...state, lastId: id, nodes: { ...state.nodes, ...newNode, ...redirectedNode }, ...selectedChoices};
     }
     case 'UPDATE_NODE': {
       const { id } = action.payload;
       const updatedNode = { [id]: { ...state.nodes[id], ...action.payload } };
       return { ...state, nodes: { ...state.nodes, ...updatedNode }};
+    }
+    case 'SET_ACTIVE_CHOICE': {
+      return { ...state, activeChoice: action.payload };
     }
     case 'SET_SELECTED_BRANCH': {
       return { ...state, selectedBranch: action.payload };

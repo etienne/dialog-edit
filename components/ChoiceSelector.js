@@ -12,10 +12,15 @@ export default function ChoiceSelector({ nodeIds }) {
         { nodeIds.map(id => {
           const node = state.nodes[id];
           const payload = { [node.parent]: id };
-          const color = node.character ? { style: { color: stringToColor(node.character) }} : {};
+          const color = { style: { color: stringToColor(node.character) }};
+          const action = () => {
+            dispatch({ type: 'SET_ACTIVE_CHOICE', payload: null });
+            dispatch({ type: 'SET_SELECTED_CHOICE', payload });
+          };
+          const className = state.selectedChoices[node.parent] === id ? 'selected' : 'unselected';
 
           return (
-            <button key={id} onClick={() => dispatch({ type: 'SET_SELECTED_CHOICE', payload })}>
+            <button key={id} onClick={action} className={className}>
               <div className="character" {...color}>{node.character || <span>Character</span>}</div>
               <div className="text">{node.text || <span>Text</span>}</div>
             </button>
@@ -39,6 +44,10 @@ export default function ChoiceSelector({ nodeIds }) {
           line-height: 22px;
           padding: 1em;
           cursor: pointer;
+        }
+        
+        button.selected {
+          background-color: #eee;
         }
 
         button:first-child {
