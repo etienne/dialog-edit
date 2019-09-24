@@ -31,7 +31,7 @@ export default function Modal({ children, dismissAction, submitAction }) {
         }
 
         div.modal {
-          box-shadow: 0 10px 35px 0 rgba(0, 0, 0, 0.08);
+          box-shadow: 0 10px 35px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.1  );
           border-radius: 5px;
           background-color: white;
           width: 440px;
@@ -42,6 +42,7 @@ export default function Modal({ children, dismissAction, submitAction }) {
           display: flex;
           flex-direction: row;
           justify-content: flex-end;
+          padding-top: 2em;
         }
       `}</style>
     </section>), modalElement
