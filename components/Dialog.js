@@ -10,7 +10,10 @@ export default function Dialog({ rootId }) {
   let childrenNodeIds;
 
   function getChildrenNodeIds(id) {
-    return Object.keys(state.nodes).filter(nodeId => state.nodes[nodeId].parent == id);
+    return Object.keys(state.nodes).filter(nodeId => {
+      const parent = state.nodes[nodeId].parent;
+      return typeof parent === 'object' ? parent.indexOf(id) !== -1 : parent == id;
+    });
   }
 
   if (nodeId) {
