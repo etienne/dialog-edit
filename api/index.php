@@ -3,8 +3,8 @@
 header('Access-Control-Allow-Origin: *');
 
 $store = 'store.json';
-$rounded_minutes = floor(date('i') / 5) * 5;
-$backup_date = date('YmdH') . $rounded_minutes;
+$rounded_minutes = str_pad(floor(date('i') / 5) * 5, 2, '0');
+$backup_date = date('Y_m_d_H') . $rounded_minutes;
 $backup_store = "store-{$backup_date}.json";
 
 function error($message) {
