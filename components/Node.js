@@ -17,6 +17,7 @@ export default function Node({ id, siblings }) {
   const showDetailsAction = () => setShowDetails(!showDetails);
   const addSiblingAction = () => dispatch({ type: 'ADD_NODE', payload: { parent: node.parent, redirect: false }});
   const linkToAction = () => setShowLinkModal(!showLinkModal);
+  const deleteAction = () => dispatch({ type: 'DELETE_NODE', payload: id });
   const updateLinkAction = linkToNodeId => {
     const payload = { ...state.nodes[linkToNodeId], parent: [ ...state.nodes[linkToNodeId].parent, id ] };
     return dispatch({ type: 'UPDATE_NODE', payload })
@@ -38,6 +39,7 @@ export default function Node({ id, siblings }) {
         <Button action={addNodeAction} type="icon" icon="plus" title="Add Node"/>
         <Button action={linkToAction} type="icon" icon="link" title="Link To Node"/>
         { node.parent && <Button action={addSiblingAction} type="icon" icon="choice" title="Add Alternate Choice"/> }
+        <Button action={deleteAction} type="icon" icon="delete" title="Delete Node"/>
         <Button action={showDetailsAction} type="icon" icon="more" title="Show Node Details"/>
       </div>
       <style jsx>{`

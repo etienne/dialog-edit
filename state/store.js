@@ -41,6 +41,24 @@ function reducer(state, action) {
       const updatedNode = { [id]: { ...state.nodes[id], ...action.payload } };
       return { ...state, nodes: { ...state.nodes, ...updatedNode }};
     }
+    case 'DELETE_NODE': {
+      const updatedNodes = { ...state.nodes };
+      const childrenIds = Object.keys(state.nodes).filter(node => state.nodes[node].parent == action.payload);
+      const parent = state.nodes[action.payload].parent;
+      childrenIds.forEach(id => {
+        if (typeof parent === 'object') {
+          console.error('Could not delete node because it has multiple parents');
+        } else {
+          updatedNodes[id] = { ...state.nodes[id], parent };
+        }
+      })
+      const updatedSelectedChoices = {};
+      const choicesToReset = Object.keys(state.selectedChoices).filter(id => state.selectedChoices[id] == action.payload);
+      choicesToReset.forEach(id => updatedSelectedChoices[id] = null);
+
+      delete updatedNodes[action.payload];
+      return { ...state, nodes: updatedNodes, selectedChoices: { ...state.selectedChoices, ...updatedSelectedChoices } };
+    }
     case 'SET_ACTIVE_CHOICE': {
       return { ...state, activeChoice: action.payload };
     }

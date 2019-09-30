@@ -23,5 +23,4 @@ php -S localhost:5000 -t api/
 - Feature: Permettre de browser les versions??
   -> api pour obtenir la liste des versions
   -> api pour loader une version précise (mais ça va overwrite whatever qui est actuellement là, p-ê un problème)
-- Feature: faudrait pouvoir effacer un node j'imagine
 - Nice to have: Tweaker les couleurs pour éviter les couleurs très pâles
