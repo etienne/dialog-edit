@@ -36,9 +36,9 @@ export default function Node({ id, siblings }) {
       { showLinkModal && <LinkModal dismissAction={() => setShowLinkModal(false)} submitAction={updateLinkAction}/> }
       <div className="actions">
         <Button action={addNodeAction} type="icon" icon="plus" title="Add Node"/>
-        <Button action={showDetailsAction} type="icon" icon="more" title="Show Node Details"/>
+        <Button action={linkToAction} type="icon" icon="link" title="Link To Node"/>
         { node.parent && <Button action={addSiblingAction} type="icon" icon="choice" title="Add Alternate Choice"/> }
-        <Button action={linkToAction} type="icon" icon="chevronDown" title="Link To Node"/>
+        <Button action={showDetailsAction} type="icon" icon="more" title="Show Node Details"/>
       </div>
       <style jsx>{`
         div.Node {
