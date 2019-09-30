@@ -23,4 +23,3 @@ php -S localhost:5000 -t api/
 - Permettre de browser les versions??
   -> api pour obtenir la liste des versions
   -> api pour loader une version précise (mais ça va overwrite whatever qui est actuellement là, p-ê un problème)
-- Remplacer "parent" par "then"?? -> pas clair qu'il y ait des avantages
