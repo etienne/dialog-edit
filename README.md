@@ -16,11 +16,12 @@ php -S localhost:5000 -t api/
 
 ## Todo
 
-- Permettre de naviguer avec les flèches haut/bas? pis Enter?
-- Faire que le focus switch automatiquement au nouveau node quand il est créé
-- Tweaker les couleurs pour éviter les couleurs très pâles
-- Jump vers le prochain label au lieu de l'inclure inline?
-- Permettre de browser les versions??
+- Bug: 15:05 devient 1550 dans le filename du backup
+- Feature: Permettre de naviguer avec les flèches haut/bas? pis Enter?
+- Feature: Faire que le focus switch automatiquement au nouveau node quand il est créé
+- Feature: Jump vers le prochain label au lieu de l'inclure inline?
+- Feature: Permettre de browser les versions??
   -> api pour obtenir la liste des versions
   -> api pour loader une version précise (mais ça va overwrite whatever qui est actuellement là, p-ê un problème)
-- Bug: 15:05 devient 15:50 dans le filename du backup
+- Feature: faudrait pouvoir effacer un node j'imagine
+- Nice to have: Tweaker les couleurs pour éviter les couleurs très pâles

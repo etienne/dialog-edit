@@ -23,10 +23,9 @@ function reducer(state, action) {
       if (action.payload.parent) {
         const childrenIds = Object.keys(state.nodes).filter(node => state.nodes[node].parent == action.payload.parent);
         if (childrenIds.length >= 1) {
-          console.log('oasydoaidauoi');
           selectedChoices = { selectedChoices: { ...state.selectedChoices, [action.payload.parent]: id } };
         }
-        if (!!action.payload.redirect) {
+        if (action.payload.redirect !== false) {
           if (childrenIds.length > 1) {
             console.warn('Possible incorrect redirection with parent', action.payload.parent, 'for new node', id);
           } else if (childrenIds.length) {
