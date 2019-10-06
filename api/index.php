@@ -2,10 +2,11 @@
 
 header('Access-Control-Allow-Origin: *');
 
-$store = 'store.json';
+$data_dir = '../data/';
+$store = "{$data_dir}store.json";
 $rounded_minutes = str_pad(floor(date('i') / 5) * 5, 2, '0');
 $backup_date = date('Y_m_d_H') . $rounded_minutes;
-$backup_store = "store-{$backup_date}.json";
+$backup_store = "{$data_dir}store-{$backup_date}.json";
 
 function error($message) {
   echo json_encode(['status' => 'error', 'message' => $message]);
