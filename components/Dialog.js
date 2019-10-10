@@ -38,9 +38,8 @@ export default function Dialog({ rootId }) {
       }) }
       <style jsx>{`
         section {
-          flex: 1 75%;
           padding-left: 3em;
-          max-width: 42em;
+          grid-area: content;
         }
       `}</style>
     </section>

@@ -19,8 +19,8 @@ export default function Branches() {
       </div>
       <style jsx>{`
         section {
-          flex: 1 25%;
-          padding-right: 2em;
+          position: fixed;
+          width: 29%;
           max-width: 20em;
         }
 

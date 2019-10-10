@@ -29,4 +29,3 @@ php -S localhost:5000 -t api/
     - api pour obtenir la liste des versions
     - api pour loader une version précise (mais ça va overwrite whatever qui est actuellement là, p-ê un problème)
 - Tweaker les couleurs pour éviter les couleurs très pâles
-- Afficher les branches en position: fixed
