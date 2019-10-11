@@ -4,8 +4,11 @@ header('Access-Control-Allow-Origin: *');
 
 $data_dir = '../data/';
 $store = "{$data_dir}store.json";
-$rounded_minutes = str_pad(floor(date('i') / 5) * 5, 2, '0');
-$backup_date = date('Y_m_d_H') . $rounded_minutes;
+$current_minutes = date('i');
+$round_down_to = 5;
+$rounded_minutes = floor($current_minutes / $round_down_to) * $round_down_to;
+$padded_minutes = str_pad($rounded_minutes, 2, '0', STR_PAD_LEFT);
+$backup_date = date('Y_m_d_H') . $padded_minutes;
 $backup_store = "{$data_dir}store-{$backup_date}.json";
 
 function error($message) {
