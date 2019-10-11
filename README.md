@@ -16,12 +16,6 @@ php -S localhost:5000 -t api/
 
 ## Todo
 
-### Bugs
-
-- 15:05 devient 1550 dans le filename du backup
-
-### Features
-
 - Permettre de naviguer avec les flèches haut/bas? pis Enter?
 - Faire que le focus switch automatiquement au nouveau node quand il est créé
 - Jump vers le prochain label au lieu de l'inclure inline?
