@@ -16,6 +16,7 @@ php -S localhost:5000 -t api/
 
 ## Todo
 
+- **Bug:** des fois on peut pas créer un choix d'options
 - Permettre de naviguer avec les flèches haut/bas? pis Enter?
 - Faire que le focus switch automatiquement au nouveau node quand il est créé
 - Jump vers le prochain label au lieu de l'inclure inline?
@@ -23,3 +24,4 @@ php -S localhost:5000 -t api/
     - api pour obtenir la liste des versions
     - api pour loader une version précise (mais ça va overwrite whatever qui est actuellement là, p-ê un problème)
 - Tweaker les couleurs pour éviter les couleurs très pâles
+- Flow conditionnel?? Stats??
