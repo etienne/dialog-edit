@@ -10,7 +10,7 @@ const initialState = {
   activeChoice: null,
 };
 
-function reducer(state, action) {
+export function reducer(state, action) {
   switch (action.type) {
     case 'INITIAL_LOAD': {
       return { ...state, ...action.payload };
