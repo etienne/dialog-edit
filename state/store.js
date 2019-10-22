@@ -4,7 +4,6 @@ export const Store = React.createContext();
 
 const initialState = {
   nodes: {},
-  lastId: 0,
   selectedBranch: null,
   selectedChoices: {},
   activeChoice: null,
@@ -16,7 +15,7 @@ export function reducer(state, action) {
       return { ...state, ...action.payload };
     }
     case 'ADD_NODE': {
-      const id = state.lastId + 1;
+      const id = Object.keys(state.nodes).reduce((maxId, id) => Math.max(id, maxId), -1) + 1;
       const newNode = { [id]: { id, ...action.payload } };
       let redirectedNode = {};
       let selectedChoices = {};
@@ -34,7 +33,7 @@ export function reducer(state, action) {
           }
         }
       }
-      return { ...state, lastId: id, nodes: { ...state.nodes, ...newNode, ...redirectedNode }, ...selectedChoices};
+      return { ...state, nodes: { ...state.nodes, ...newNode, ...redirectedNode }, ...selectedChoices};
     }
     case 'UPDATE_NODE': {
       const { id } = action.payload;

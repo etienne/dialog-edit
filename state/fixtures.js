@@ -1,5 +1,4 @@
 const state = {
-  lastId: 3,
   nodes: {
     1: {
       id: 1,
