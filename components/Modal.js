@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 import Button from './Button';
 
-export default function Modal({ children, dismissAction, submitAction }) {
+export default function Modal({ children, dismissAction, submitAction, saveLabel, saveValidation }) {
   const modalElement = document.getElementById('modal');
   const saveAction = () => {
     submitAction();
@@ -11,10 +11,12 @@ export default function Modal({ children, dismissAction, submitAction }) {
   return ReactDOM.createPortal((
     <section>
       <div className="modal">
-        {children}
+        <div className="content">
+          {children}
+        </div>
         <div className="actions">
           <Button title="Cancel" action={dismissAction}/>
-          <Button title="Save" type="primary" action={saveAction}/>
+          <Button title={saveLabel} type="primary" disabled={!saveValidation()} action={saveAction}/>
         </div>
       </div>
       <style jsx>{`
@@ -37,6 +39,11 @@ export default function Modal({ children, dismissAction, submitAction }) {
           width: 440px;
           padding: 2em;
         }
+
+        div.content {
+          max-height: calc(90vh - 6em);
+          overflow: auto;
+        }
         
         div.actions {
           display: flex;
@@ -47,4 +54,8 @@ export default function Modal({ children, dismissAction, submitAction }) {
       `}</style>
     </section>), modalElement
   );
+}
+
+Modal.defaultProps = {
+  saveLabel: 'Save',
 }

@@ -1,6 +1,6 @@
-export default function Button({ title, action, type, icon }) {
+export default function Button({ title, action, type, icon, disabled }) {
   return (
-    <button onClick={action} className={type}>
+    <button onClick={action} className={type} disabled={disabled}>
       { type === 'icon' ? <img src={`/static/${icon}.svg`} alt={title} /> : title }
       <style jsx>{`
         button {
@@ -29,9 +29,22 @@ export default function Button({ title, action, type, icon }) {
         button.primary {
           box-shadow: 0 0 0 2px white, 0 0 0 3px #ccc;
         }
+
+        button:disabled {
+          border-color: #eee;
+          cursor: auto;
+        }
+
+        button:disabled:hover {
+          background-color: white;
+        }
+
+        button.primary:disabled {
+          box-shadow: 0 0 0 2px white, 0 0 0 3px #eee;
+        }
         
         button.icon {
-          padding: 0;
+          padding: 0.2em;
           margin-right: 0.6em;
         }
       `}</style>

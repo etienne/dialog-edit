@@ -67,6 +67,9 @@ export function reducer(state, action) {
     case 'SET_SELECTED_CHOICE': {
       return { ...state, selectedChoices: { ...state.selectedChoices, ...action.payload }};
     }
+    case 'REVERT_TO_VERSION': {
+      return action.payload;
+    }
     default:
       console.error('Invalid action type:', action);
       return state;

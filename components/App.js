@@ -12,7 +12,7 @@ export default function App() {
 
   useEffect(() => {
     if (process.browser) {
-      fetch(publicRuntimeConfig.serverEndpoint).then(res => res.json()).then(json => {
+      fetch(publicRuntimeConfig.serverEndpoint + '/store').then(res => res.json()).then(json => {
         dispatch({ type: 'INITIAL_LOAD', payload: json });
       });
     }
@@ -20,7 +20,7 @@ export default function App() {
 
   useEffect(() => {
     if (process.browser) {
-      fetch(publicRuntimeConfig.serverEndpoint, {
+      fetch(publicRuntimeConfig.serverEndpoint + '/store', {
         method: 'POST',
         body: JSON.stringify(state),
         headers: { 'Content-Type': 'application/json' },

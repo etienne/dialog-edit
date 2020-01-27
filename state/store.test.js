@@ -1,5 +1,5 @@
 import { reducer } from './store';
-import state from './fixtures';
+import { state, previousState } from './fixtures';
 
 describe('ADD_NODE', () => {
   it('should create a new node', () => {
@@ -16,5 +16,11 @@ describe('ADD_NODE', () => {
         4: { id: 4, ...newNode },
       },
     });
+  });
+});
+
+describe('REVERT_TO_VERSION', () => {
+  it('should revert the whole state to a previous version', () => {
+    expect(reducer(state, { type: 'REVERT_TO_VERSION', payload: previousState })).toEqual(previousState);
   });
 });

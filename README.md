@@ -13,6 +13,11 @@ npm install
 npm run dev
 php -S localhost:5000 -t api/
 ```
+## Tests
+
+```
+npm run test:watch
+```
 
 ## Todo
 
