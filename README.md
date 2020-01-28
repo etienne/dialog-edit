@@ -19,6 +19,12 @@ php -S localhost:5000 -t api/
 npm run test:watch
 ```
 
+## Deploy
+
+```
+mina deploy
+```
+
 ## Todo
 
 - **Bug:** des fois on peut pas créer un choix d'options
