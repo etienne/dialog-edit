@@ -16,11 +16,11 @@ function error($message) {
   die;
 }
 
-if (!array_key_exists('PATH_INFO', $_SERVER)) {
+if (!array_key_exists('REQUEST_URI', $_SERVER)) {
   error('Invalid endpoint');
 }
 
-$request = explode('/', $_SERVER['PATH_INFO']);
+$request = explode('/', $_SERVER['REQUEST_URI']);
 
 if ($request[1] !== 'api') {
   error('Invalid endpoint');
