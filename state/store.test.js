@@ -68,6 +68,18 @@ describe('ADD_NODE', () => {
   });
 });
 
+describe('DELETE_BRANCH', () => {
+  it('should delete the specified branch', () => {
+    const updatedBranches = { ...state.branches };
+    delete updatedBranches[1];
+    expect(reducer(state, { type: 'DELETE_BRANCH', payload: 1 })).toEqual({
+      ...state,
+      branches: updatedBranches,
+      selectedBranch: null,
+    });
+  });
+});
+
 // describe('SET_SELECTED_BRANCH', () => {
 //   it('should change the selected branch', () => {
 //     const selectedBranch = 2;

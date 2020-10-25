@@ -21,7 +21,6 @@ const getNewId = (ids) => {
 export function reducer(state, action) {
   switch (action.type) {
     case 'INITIAL_LOAD': {
-      console.log('INITIAL_LOAD, new state=', { ...state, ...action.payload });
       return { ...state, ...action.payload };
     }
 
@@ -61,6 +60,12 @@ export function reducer(state, action) {
         }
       }
       return { ...state, nodes: { ...state.nodes, ...newNode, ...redirectedNode }, ...selectedChoices};
+    }
+
+    case 'DELETE_BRANCH': {
+      const updatedBranches = { ...state.branches };
+      delete updatedBranches[action.payload];
+      return { ...state, branches: updatedBranches, selectedBranch: null };
     }
 
     case 'UPDATE_BRANCH': {

@@ -28,8 +28,6 @@ export default function App() {
     }
   }, [state]);
 
-  console.log('!!!!!!!!!!!STATE=', state);
-
   return (
     <div>
       <BranchList/>
@@ -46,6 +44,10 @@ export default function App() {
       `}</style>
       <style global jsx>{`
         @import url('https://fonts.googleapis.com/css?family=Cousine&display=swap');
+
+        h2 {
+          line-height: 1.4;
+        }
       
         body, button, input {
           font-family: 'Cousine';
