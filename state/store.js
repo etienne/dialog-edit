@@ -45,21 +45,36 @@ export function reducer(state, action) {
       const newNode = { [id]: { id, ...action.payload } };
       let redirectedNode = {};
       let selectedChoices = {};
-      if (action.payload.parent) {
-        const childrenIds = Object.keys(state.nodes).filter(node => state.nodes[node].parent == action.payload.parent);
-        if (childrenIds.length >= 1) {
-          selectedChoices = { selectedChoices: { ...state.selectedChoices, [action.payload.parent]: id } };
-        }
-        if (action.payload.redirect !== false) {
-          if (childrenIds.length > 1) {
-            console.warn('Possible incorrect redirection with parent', action.payload.parent, 'for new node', id);
-          } else if (childrenIds.length) {
-            const redirectedNodeId = childrenIds[0];
-            redirectedNode = { [redirectedNodeId]: { ...state.nodes[redirectedNodeId], parent: id } };
-          }
-        }
+
+      if (action.payload.branch) {
+        delete newNode[id].branch;
+        state.branches[action.payload.branch].firstNode = id;
       }
-      return { ...state, nodes: { ...state.nodes, ...newNode, ...redirectedNode }, ...selectedChoices};
+
+      // if (action.payload.parent) {
+      //   const childrenIds = Object.keys(state.nodes).filter(node => state.nodes[node].parent == action.payload.parent);
+      //   if (childrenIds.length >= 1) {
+      //     selectedChoices = { selectedChoices: { ...state.selectedChoices, [action.payload.parent]: id } };
+      //   }
+      //   if (action.payload.redirect !== false) {
+      //     if (childrenIds.length > 1) {
+      //       console.warn('Possible incorrect redirection with parent', action.payload.parent, 'for new node', id);
+      //     } else if (childrenIds.length) {
+      //       const redirectedNodeId = childrenIds[0];
+      //       redirectedNode = { [redirectedNodeId]: { ...state.nodes[redirectedNodeId], parent: id } };
+      //     }
+      //   }
+      // }
+
+      return {
+        ...state,
+        nodes: {
+          ...state.nodes,
+          ...newNode,
+          ...redirectedNode
+        },
+        ...selectedChoices
+      };
     }
 
     case 'DELETE_BRANCH': {

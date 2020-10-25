@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { Store } from '../state/store';
+import Button from './Button';
 import Field from './Field';
 import Node from './Node';
 
@@ -34,18 +35,26 @@ export default function Dialog({ branchId }) {
   }
 
   const updateBranch = data => dispatch({ type: 'UPDATE_BRANCH', payload: { ...branch, ...data} });
-  
+  const addNodeAction = () => { dispatch({ type: 'ADD_NODE', payload: { branch: branchId } })};
+
   return (
     <section>
       <Field field="label" initialValue={branch.label} updateAction={updateBranch}/>
-      { nodeIds.length > 0 && nodeIds.map((id) => {
-        const parentId = nodes[id].parent;
-        let siblings = [];
-        if (choiceNodes.indexOf(parentId) !== -1) {
-          siblings = getChildrenNodeIds(parentId);
-        }
-        return <Node key={id} id={id} siblings={siblings}/>
-      }) }
+      { nodeIds.length > 0
+        ? nodeIds.map((id) => {
+          const parentId = nodes[id].parent;
+          let siblings = [];
+          if (choiceNodes.indexOf(parentId) !== -1) {
+            siblings = getChildrenNodeIds(parentId);
+          }
+          return <Node key={id} id={id} siblings={siblings}/>;
+        })
+        : (
+          <div className="actions">
+            <Button action={addNodeAction} type="icon" icon="plus" title="Add Node"/>
+          </div>
+        )
+      }
       <style jsx>{`
         section {
           padding-left: 3em;

@@ -55,11 +55,34 @@ describe('ADD_NODE', () => {
     const newNode = {
       character: 'Roger',
       text: 'Yo',
-      parent: 3
     };
     
     expect(reducer(state, { type: 'ADD_NODE', payload: newNode })).toEqual({
       ...state,
+      nodes: {
+        ...state.nodes,
+        4: { id: 4, ...newNode },
+      },
+    });
+  });
+
+  it('should attach the node to a branch when specified', () => {
+    const newNode = {
+      character: 'Roger',
+      text: 'Yo',
+    };
+
+    const payload = {
+      ...newNode,
+      branch: 1,
+    };
+    
+    expect(reducer(state, { type: 'ADD_NODE', payload })).toEqual({
+      ...state,
+      branches: {
+        ...state.branches,
+        1: { ...state.branches[1], firstNode: 4 },
+      },
       nodes: {
         ...state.nodes,
         4: { id: 4, ...newNode },
