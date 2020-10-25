@@ -1,7 +1,7 @@
 import getConfig from 'next/config';
 import { useContext, useEffect } from 'react';
 import { Store } from '../state/store';
-import Branches from './Branches';
+import BranchList from './BranchList';
 import Dialog from './Dialog';
 import CharacterList from './CharacterList';
 
@@ -28,10 +28,12 @@ export default function App() {
     }
   }, [state]);
 
+  console.log('!!!!!!!!!!!STATE=', state);
+
   return (
     <div>
-      <Branches/>
-      <Dialog rootId={state.selectedBranch}/>
+      <BranchList/>
+      <Dialog branchId={state.selectedBranch}/>
       <CharacterList/>
       <style jsx>{`
         div {

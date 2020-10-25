@@ -11,14 +11,15 @@ export default function Branch({ label, selected, action }) {
           border-radius: 5px;
           padding: 0.3em 0.6em;
           cursor: pointer;
+          background-color: transparent;
         }
 
         button:hover {
-          background-color: #f6f6f6;
+          background-color: rgba(0,0,0,0.06);
         }
 
         button.selected {
-          background-color: #eee;
+          background-color: rgba(0,0,0,0.1);
         }
       `}</style>
     </button>

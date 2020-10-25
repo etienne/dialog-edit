@@ -4,18 +4,45 @@ export const Store = React.createContext();
 
 const initialState = {
   nodes: {},
+  branches: {},
   selectedBranch: null,
   selectedChoices: {},
   activeChoice: null,
 };
 
+const getNewId = (ids) => {
+  if (ids && Array.isArray(ids) && ids.length) {
+    return ids.reduce((maxId, id) => Math.max(id, maxId), -1) + 1;
+  }
+
+  return 1;
+}
+
 export function reducer(state, action) {
   switch (action.type) {
     case 'INITIAL_LOAD': {
+      console.log('INITIAL_LOAD, new state=', { ...state, ...action.payload });
       return { ...state, ...action.payload };
     }
+
+    case 'ADD_BRANCH': {
+      const branchId = getNewId(Object.keys(state.branches));
+      const newBranch = { [branchId]: { id: branchId, ...action.payload } };
+      let nodes = state.nodes;
+      let nodeId, blankNode;
+
+      if (!action.payload.firstNode) {
+        nodeId = getNewId(Object.keys(state.nodes));
+        blankNode = { [nodeId]: { id: nodeId } };
+        newBranch[branchId].firstNode = nodeId;
+        nodes = { ...state.nodes, ...blankNode };
+      }
+
+      return { ...state, branches: { ...state.branches, ...newBranch }, nodes };
+    }
+
     case 'ADD_NODE': {
-      const id = Object.keys(state.nodes).reduce((maxId, id) => Math.max(id, maxId), -1) + 1;
+      const id = getNewId(Object.keys(state.nodes));
       const newNode = { [id]: { id, ...action.payload } };
       let redirectedNode = {};
       let selectedChoices = {};
@@ -35,11 +62,19 @@ export function reducer(state, action) {
       }
       return { ...state, nodes: { ...state.nodes, ...newNode, ...redirectedNode }, ...selectedChoices};
     }
+
+    case 'UPDATE_BRANCH': {
+      const { id } = action.payload;
+      const updatedBranch = { [id]: { ...state.branches[id], ...action.payload } };
+      return { ...state, branches: { ...state.branches, ...updatedBranch }};
+    }
+
     case 'UPDATE_NODE': {
       const { id } = action.payload;
       const updatedNode = { [id]: { ...state.nodes[id], ...action.payload } };
       return { ...state, nodes: { ...state.nodes, ...updatedNode }};
     }
+
     case 'DELETE_NODE': {
       const updatedNodes = { ...state.nodes };
       const childrenIds = Object.keys(state.nodes).filter(node => state.nodes[node].parent == action.payload);

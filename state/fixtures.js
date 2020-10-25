@@ -1,4 +1,19 @@
+const emptyState = {
+  nodes: {},
+  branches: {},
+  selectedBranch: null,
+  selectedChoices: {},
+  activeChoice: null,
+};
+
 const state = {
+  branches: {
+    1: {
+      id: 1,
+      label: 'Branche existante',
+      firstNode: 1,
+    },
+  },
   nodes: {
     1: {
       id: 1,
@@ -32,4 +47,4 @@ const previousState = {
   },
 };
 
-export { state, previousState };
+export { emptyState, state, previousState };

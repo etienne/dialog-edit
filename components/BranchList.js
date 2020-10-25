@@ -4,11 +4,11 @@ import Branch from './Branch';
 import Button from './Button';
 import VersionsModal from './VersionsModal';
 
-export default function Branches() {
-  const { state, dispatch } = useContext(Store);
+export default function BranchList() {
+  const { state: { branches, selectedBranch }, dispatch } = useContext(Store);
   const [showVersions, setShowVersions] = useState(false);
-  const branchIds = Object.keys(state.nodes).filter(node => !!state.nodes[node].label);
-  const addNodeAction = () => dispatch({ type: 'ADD_NODE', payload: { label: 'untitled branch' } });
+  const branchIds = Object.keys(branches);
+  const addNodeAction = () => dispatch({ type: 'ADD_BRANCH', payload: { label: 'untitled branch' } });
   const showVersionsAction = () => setShowVersions(true);
   const hideVersionsAction = () => setShowVersions(false);
   const revertAction = (version) => dispatch({ type: 'REVERT_TO_VERSION', payload: version });
@@ -17,7 +17,7 @@ export default function Branches() {
     <section>
       { branchIds.map((id) => {
         const action = () => dispatch({ type: 'SET_SELECTED_BRANCH', payload: id });
-        return <Branch key={`branch-${id}`} label={state.nodes[id].label} selected={state.selectedBranch == id} action={action}/>;
+        return <Branch key={`branch-${id}`} label={branches[id].label} selected={selectedBranch == id} action={action}/>;
       }) }
       <div className="actions">
         <Button action={addNodeAction} type="icon" icon="plus" title="Add Branch"/>
