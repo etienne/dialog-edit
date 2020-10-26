@@ -3,7 +3,7 @@ import TextareaAutosize from 'react-autosize-textarea';
 import stringToColor from '../helpers/stringToColor';
 
 export default function Field({ initialValue, field, placeholder, updateAction }) {
-  const [value, setValue] = useState(initialValue || '');
+  const [value, setValue] = useState(initialValue);
   const onChange = event => setValue(event.target.value);
   const onBlur = () => updateAction({ [field]: value });
   const list = field == 'character' ? 'characters' : undefined;
@@ -14,7 +14,7 @@ export default function Field({ initialValue, field, placeholder, updateAction }
   }
   useEffect(() => setValue(initialValue), [initialValue]);
 
-  const props = { value, onChange, onBlur, onKeyPress, placeholder, list, className: field };
+  const props = { value: value || '', onChange, onBlur, onKeyPress, placeholder, list, className: field };
   
   return (
     <>
