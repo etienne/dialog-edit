@@ -7,7 +7,7 @@ export default function ChoiceSwitch({ count, parentId }) {
   return (
     <button className={parentId ? 'active' : 'inactive'} onClick={() => dispatch({ type: 'SET_ACTIVE_CHOICE', payload: parentId })}>
       {count}
-      <img src={`/static/chevronDown.svg`} alt=""/>
+      <img src={`/chevronDown.svg`} alt=""/>
       <style jsx>{`
         button {
           position: absolute;
