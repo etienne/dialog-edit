@@ -17,17 +17,10 @@ export default function Dialog({ branchId }) {
   let nodeId = branch.firstNode;
   let childrenNodeIds;
 
-  function getChildrenNodeIds(id) {
-    return Object.keys(nodes).filter(nodeId => {
-      const parent = nodes[nodeId].parent;
-      return typeof parent === 'object' ? parent.indexOf(id) !== -1 : parent == id;
-    });
-  }
-
   if (nodeId) {
     do {
       nodeIds.push(nodeId);
-      childrenNodeIds = getChildrenNodeIds(nodeId);
+      childrenNodeIds = state.nodes[nodeId].children || [];
       if (childrenNodeIds.length > 1) {
         choiceNodes.push(nodeId);
       }
@@ -41,13 +34,13 @@ export default function Dialog({ branchId }) {
     <section>
       <Field field="label" initialValue={branch.label} updateAction={updateBranch}/>
       { nodeIds.length > 0
-        ? nodeIds.map((id) => {
-          const parentId = nodes[id].parent;
+        ? nodeIds.map((id, index) => {
+          const parentId = nodeIds[index - 1];
           let siblings = [];
           if (choiceNodes.indexOf(parentId) !== -1) {
-            siblings = getChildrenNodeIds(parentId);
+            siblings = state.nodes[parentId].children;
           }
-          return <Node key={id} id={id} siblings={siblings}/>;
+          return <Node key={id} id={id} siblings={siblings} parentId={parentId}/>;
         })
         : (
           <div className="actions">

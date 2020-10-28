@@ -66,6 +66,51 @@ describe('ADD_NODE', () => {
     });
   });
 
+  it('should properly reorder when insertAfter is specified', () => {
+    const newNode = {
+      character: 'To be inserted',
+      text: 'Yo',
+    };
+
+    const payload = {
+      ...newNode,
+      insertAfter: 2,
+    };
+    
+    expect(reducer(state, { type: 'ADD_NODE', payload })).toEqual({
+      ...state,
+      nodes: {
+        ...state.nodes,
+        2: { ...state.nodes[2], children: [4] },
+        4: { id: 4, ...newNode, children: [3] },
+      },
+    });
+  });
+
+  it('should add multiple children when branchFrom is specified', () => {
+    const newNode = {
+      character: 'To be branched out',
+      text: 'Yo',
+    };
+
+    const payload = {
+      ...newNode,
+      branchFrom: 2,
+    };
+    
+    expect(reducer(state, { type: 'ADD_NODE', payload })).toEqual({
+      ...state,
+      nodes: {
+        ...state.nodes,
+        2: { ...state.nodes[2], children: [3, 4] },
+        4: { id: 4, ...newNode },
+      },
+      selectedChoices: {
+        2: 4,
+      },
+    });
+  });
+
   it('should attach the node to a branch when specified', () => {
     const newNode = {
       character: 'Roger',

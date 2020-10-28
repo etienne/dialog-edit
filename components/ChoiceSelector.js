@@ -3,7 +3,7 @@ import { Store } from '../state/store';
 import ChoiceSwitch from './ChoiceSwitch';
 import stringToColor from '../helpers/stringToColor';
 
-export default function ChoiceSelector({ nodeIds }) {
+export default function ChoiceSelector({ nodeIds, parentId }) {
   const { state, dispatch } = useContext(Store);
   return (
     <section>
@@ -11,13 +11,13 @@ export default function ChoiceSelector({ nodeIds }) {
       <div>
         { nodeIds.map(id => {
           const node = state.nodes[id];
-          const payload = { [node.parent]: id };
+          const payload = { [parentId]: id };
           const color = { style: { color: stringToColor(node.character) }};
           const action = () => {
             dispatch({ type: 'SET_ACTIVE_CHOICE', payload: null });
             dispatch({ type: 'SET_SELECTED_CHOICE', payload });
           };
-          const className = state.selectedChoices[node.parent] === id ? 'selected' : 'unselected';
+          const className = state.selectedChoices[parentId] === Number(id) ? 'selected' : 'unselected';
 
           return (
             <button key={id} onClick={action} className={className}>
@@ -35,6 +35,7 @@ export default function ChoiceSelector({ nodeIds }) {
 
         button {
           display: block;
+          background-color: white;
           width: 100%;
           text-align: left;
           border: 1px solid #ccc;

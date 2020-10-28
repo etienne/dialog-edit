@@ -45,35 +45,42 @@ export function reducer(state, action) {
       const newNode = { [id]: { id, ...action.payload } };
       let redirectedNode = {};
       let selectedChoices = {};
+      let parentNode = {};
 
       if (action.payload.branch) {
         delete newNode[id].branch;
         state.branches[action.payload.branch].firstNode = id;
       }
 
-      // if (action.payload.parent) {
-      //   const childrenIds = Object.keys(state.nodes).filter(node => state.nodes[node].parent == action.payload.parent);
-      //   if (childrenIds.length >= 1) {
-      //     selectedChoices = { selectedChoices: { ...state.selectedChoices, [action.payload.parent]: id } };
-      //   }
-      //   if (action.payload.redirect !== false) {
-      //     if (childrenIds.length > 1) {
-      //       console.warn('Possible incorrect redirection with parent', action.payload.parent, 'for new node', id);
-      //     } else if (childrenIds.length) {
-      //       const redirectedNodeId = childrenIds[0];
-      //       redirectedNode = { [redirectedNodeId]: { ...state.nodes[redirectedNodeId], parent: id } };
-      //     }
-      //   }
-      // }
+      if (action.payload.insertAfter) {
+        delete newNode[id].insertAfter;
+
+        const parentData = { ...state.nodes[action.payload.insertAfter] };
+        const parentChildren = parentData.children;
+        newNode[id].children = parentChildren;
+        parentData.children = [id];
+        parentNode = { [action.payload.insertAfter]: parentData };
+      } else if (action.payload.branchFrom) {
+        delete newNode[id].branchFrom;
+
+        const parentData = { ...state.nodes[action.payload.branchFrom] };
+        parentData.children = Array.isArray(parentData.children) ? [...parentData.children, id].sort() : [id];
+        parentNode = { [action.payload.branchFrom]: parentData };
+        selectedChoices[action.payload.branchFrom] = id;
+      }
 
       return {
         ...state,
         nodes: {
           ...state.nodes,
           ...newNode,
-          ...redirectedNode
+          ...redirectedNode,
+          ...parentNode,
         },
-        ...selectedChoices
+        selectedChoices: {
+          ...state.selectedChoices,
+          ...selectedChoices,
+        }
       };
     }
 
