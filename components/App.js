@@ -2,6 +2,7 @@ import getConfig from 'next/config';
 import { useContext, useEffect } from 'react';
 import { Store } from '../state/store';
 import BranchList from './BranchList';
+import DeletedNodes from './DeletedNodes';
 import Dialog from './Dialog';
 import CharacterList from './CharacterList';
 
@@ -31,7 +32,11 @@ export default function App() {
   return (
     <div>
       <BranchList/>
-      <Dialog branchId={state.selectedBranch}/>
+      { state.selectedBranch === 'trash' 
+        ? <DeletedNodes/>
+        : <Dialog branchId={state.selectedBranch}/>
+      }
+      
       <CharacterList/>
       <style jsx>{`
         div {

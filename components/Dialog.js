@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Store } from '../state/store';
 import Button from './Button';
+import Content from './Content';
 import Field from './Field';
 import Node from './Node';
 
@@ -20,7 +21,7 @@ export default function Dialog({ branchId }) {
   if (nodeId) {
     do {
       nodeIds.push(nodeId);
-      childrenNodeIds = state.nodes[nodeId].children || [];
+      childrenNodeIds = nodes[nodeId].children || [];
       if (childrenNodeIds.length > 1) {
         choiceNodes.push(nodeId);
       }
@@ -31,14 +32,14 @@ export default function Dialog({ branchId }) {
   const addNodeAction = () => { dispatch({ type: 'ADD_NODE', payload: { branch: branchId } })};
 
   return (
-    <section>
+    <Content>
       <Field field="label" initialValue={branch.label} updateAction={updateBranch}/>
       { nodeIds.length > 0
         ? nodeIds.map((id, index) => {
           const parentId = nodeIds[index - 1];
           let siblings = [];
           if (choiceNodes.indexOf(parentId) !== -1) {
-            siblings = state.nodes[parentId].children;
+            siblings = nodes[parentId].children;
           }
           return <Node key={id} id={id} siblings={siblings} parentId={parentId}/>;
         })
@@ -48,12 +49,6 @@ export default function Dialog({ branchId }) {
           </div>
         )
       }
-      <style jsx>{`
-        section {
-          padding-left: 3em;
-          grid-area: content;
-        }
-      `}</style>
-    </section>
+    </Content>
   );
 }

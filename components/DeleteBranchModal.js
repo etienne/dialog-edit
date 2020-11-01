@@ -9,7 +9,7 @@ export default function DeleteBranchModal({ dismissAction, submitAction }) {
   return (
     <Modal dismissAction={dismissAction} submitAction={submitAction} saveLabel="Delete">
       <h2>Do you want to delete branch “{branchName}”?</h2>
-      <p>Portions of dialog may become inaccessible.</p>
+      <p>The dialog will be moved to the trash.</p>
     </Modal>
   );  
 }

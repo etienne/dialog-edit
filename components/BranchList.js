@@ -17,6 +17,7 @@ export default function BranchList() {
   const hideDeleteConfirmationAction = () => setShowDeleteConfirmation(false);
   const deleteBranchAction = () => dispatch({ type: 'DELETE_BRANCH', payload: selectedBranch });
   const revertAction = (version) => dispatch({ type: 'REVERT_TO_VERSION', payload: version });
+  const selectTrashAction = () => dispatch({ type: 'SET_SELECTED_BRANCH', payload: 'trash' });
 
   return (
     <section>
@@ -24,10 +25,12 @@ export default function BranchList() {
         const action = () => dispatch({ type: 'SET_SELECTED_BRANCH', payload: id });
         return <Branch key={`branch-${id}`} label={branches[id].label} selected={selectedBranch == id} action={action}/>;
       }) }
+      <hr/>
+      <Branch key="trash" label="Trash" selected={selectedBranch == 'trash'} action={selectTrashAction}/>
       <div className="actions">
         <Button action={addBranchAction} type="icon" icon="plus" title="Add Branch"/>
         <Button action={showVersionsAction} type="icon" icon="clock" title="Browse versions"/>
-        { selectedBranch && <Button action={showDeleteConfirmationAction} type="icon" icon="delete" title="Delete Branch"/> }
+        { selectedBranch && selectedBranch !== 'trash' && <Button action={showDeleteConfirmationAction} type="icon" icon="delete" title="Delete Branch"/> }
       </div>
       { showVersions && <VersionsModal submitAction={revertAction} dismissAction={hideVersionsAction}/> }
       { showDeleteConfirmation && <DeleteBranchModal submitAction={deleteBranchAction} dismissAction={hideDeleteConfirmationAction}/> }
@@ -40,6 +43,13 @@ export default function BranchList() {
 
         div.actions {
           margin-top: 0.8em;
+        }
+
+        hr {
+          border: 0;
+          height: 0;
+          border-top: 1px solid rgba(0, 0, 0, 0.1);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.3);
         }
       `}</style>
     </section>

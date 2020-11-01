@@ -7,16 +7,22 @@ import ChoiceSelector from './ChoiceSelector';
 import DetailsModal from './DetailsModal';
 import LinkModal from './LinkModal';
 
-export default function Node({ id, siblings, parentId }) {
+export default function Node({ id, siblings, parentId, permanentDelete }) {
   const { state, dispatch } = useContext(Store);
   const [showDetails, setShowDetails] = useState(false);
   const [showLinkModal, setShowLinkModal] = useState(false);
   const node = state.nodes[id];
-  const updateAction = data => dispatch({ type: 'UPDATE_NODE', payload: { ...state.nodes[id], ...data} });
+  const updateAction = (data) => {
+    const children = data.children && data.children.split(',');
+    dispatch({ type: 'UPDATE_NODE', payload: { ...state.nodes[id], ...data, children }});
+  };
   const addNodeAction = () => dispatch({ type: 'ADD_NODE', payload: { insertAfter: id } });
   const showDetailsAction = () => setShowDetails(!showDetails);
   const addSiblingAction = () => dispatch({ type: 'ADD_NODE', payload: { branchFrom: parentId }});
-  const deleteAction = () => dispatch({ type: 'DELETE_NODE', payload: id });
+  const permanentDeleteAction = () => dispatch({ type: 'DELETE_NODE', payload: id });
+  const softDeleteAction = () => dispatch({ type: 'SOFT_DELETE_NODE', payload: { id, detachFrom: parentId }});
+  const deleteAction = permanentDelete ? permanentDeleteAction : softDeleteAction;
+  const deleteTitle = permanentDelete ? 'Delete node permanently' : 'Move node to trash';
 
   if (siblings.length && state.activeChoice === parentId) {
     return <ChoiceSelector nodeIds={siblings} parentId={parentId}/>;
@@ -31,10 +37,10 @@ export default function Node({ id, siblings, parentId }) {
       { showDetails && <DetailsModal node={node} dismissAction={() => setShowDetails(false)} submitAction={updateAction}/> }
       { showLinkModal && <LinkModal dismissAction={() => setShowLinkModal(false)} submitAction={updateLinkAction}/> }
       <div className="actions">
-        <Button action={addNodeAction} type="icon" icon="plus" title="Add Node"/>
-        { parentId && <Button action={addSiblingAction} type="icon" icon="choice" title="Add Alternate Choice"/> }
-        <Button action={deleteAction} type="icon" icon="delete" title="Delete Node"/>
-        <Button action={showDetailsAction} type="icon" icon="more" title="Show Node Details"/>
+        <Button action={addNodeAction} type="icon" icon="plus" title="Add node"/>
+        { parentId && <Button action={addSiblingAction} type="icon" icon="choice" title="Add alternate choice"/> }
+        <Button action={deleteAction} type="icon" icon="delete" title={deleteTitle}/>
+        <Button action={showDetailsAction} type="icon" icon="more" title="Show node details"/>
       </div>
       <style jsx>{`
         div.Node {
@@ -62,4 +68,8 @@ export default function Node({ id, siblings, parentId }) {
       `}</style>
     </div>
   );
+}
+
+Node.defaultProps = {
+  siblings: [],
 }

@@ -66,6 +66,27 @@ describe('ADD_NODE', () => {
     });
   });
 
+  it('should sanitize input', () => {
+    const newNode = {
+      character: ['this is', 'an array'],
+      text: 125,
+      children: ['2', 'roger'],
+    };
+
+    expect(reducer(state, { type: 'ADD_NODE', payload: newNode })).toEqual({
+      ...state,
+      nodes: {
+        ...state.nodes,
+        4: {
+          id: 4,
+          character: 'this is,an array',
+          text: '125',
+          children: [2],
+        },
+      },
+    });
+  });
+
   it('should properly reorder when insertAfter is specified', () => {
     const newNode = {
       character: 'To be inserted',
@@ -136,6 +157,30 @@ describe('ADD_NODE', () => {
   });
 });
 
+describe('UPDATE_NODE', () => {
+  it('should sanitize input', () => {
+    const updatedNode = {
+      id: '1',
+      character: ['this is', 'an array'],
+      text: 125,
+      children: ['2', 'roger'],
+    };
+
+    expect(reducer(state, { type: 'UPDATE_NODE', payload: updatedNode })).toEqual({
+      ...state,
+      nodes: {
+        ...state.nodes,
+        1: {
+          id: 1,
+          character: 'this is,an array',
+          text: '125',
+          children: [2],
+        },
+      },
+    });
+  });
+});
+
 describe('DELETE_BRANCH', () => {
   it('should delete the specified branch', () => {
     const updatedBranches = { ...state.branches };
@@ -165,6 +210,44 @@ describe('DELETE_BRANCH', () => {
 describe('REVERT_TO_VERSION', () => {
   it('should revert the whole state to a previous version', () => {
     expect(reducer(state, { type: 'REVERT_TO_VERSION', payload: previousState })).toEqual(previousState);
+  });
+});
+
+describe('DELETE_NODE', () => {
+  const updatedNodes = { ...state.nodes };
+  delete updatedNodes[2];
+
+  it('should permanently delete the node', () => {
+    expect(reducer(state, { type: 'DELETE_NODE', payload: 2 })).toEqual({
+      ...state,
+      nodes: {
+        ...updatedNodes,
+        1: {
+          ...state.nodes[1],
+          children: [],
+        }
+      }
+    });
+  });
+});
+
+describe('SOFT_DELETE_NODE', () => {
+  const payload = {
+    id: 3,
+    detachFrom: 2,
+  };
+
+  it('should detach the node from the specified parent', () => {
+    expect(reducer(state, { type: 'SOFT_DELETE_NODE', payload })).toEqual({
+      ...state,
+      nodes: {
+        ...state.nodes,
+        2: {
+          ...state.nodes[2],
+          children: [],
+        }
+      }
+    });
   });
 });
 
