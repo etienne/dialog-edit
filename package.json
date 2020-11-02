@@ -8,7 +8,8 @@
     "start": "next start",
     "export": "next build && next export && mkdir out/api && cp api/index.php out/api/index.php",
     "test": "jest",
-    "test:watch": "npm test -- --watch"
+    "test:watch": "npm test -- --watch",
+    "store:parentsToChildren": "node scripts/parentsToChildren.js"
   },
   "dependencies": {
     "next": "^9.5.5",
