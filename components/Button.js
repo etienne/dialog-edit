@@ -1,7 +1,7 @@
 export default function Button({ title, action, type, icon, disabled }) {
   return (
-    <button onClick={action} className={type} disabled={disabled}>
-      { type === 'icon' ? <img src={`/static/${icon}.svg`} alt={title} /> : title }
+    <button onClick={action} className={type} disabled={disabled} title={title}>
+      { type === 'icon' ? <img src={`/${icon}.svg`} alt={title} /> : title }
       <style jsx>{`
         button {
           background-color: white;

@@ -1,7 +1,8 @@
 import getConfig from 'next/config';
 import { useContext, useEffect } from 'react';
 import { Store } from '../state/store';
-import Branches from './Branches';
+import BranchList from './BranchList';
+import DeletedNodes from './DeletedNodes';
 import Dialog from './Dialog';
 import CharacterList from './CharacterList';
 
@@ -30,8 +31,12 @@ export default function App() {
 
   return (
     <div>
-      <Branches/>
-      <Dialog rootId={state.selectedBranch}/>
+      <BranchList/>
+      { state.selectedBranch === 'trash' 
+        ? <DeletedNodes/>
+        : <Dialog branchId={state.selectedBranch}/>
+      }
+      
       <CharacterList/>
       <style jsx>{`
         div {
@@ -44,6 +49,10 @@ export default function App() {
       `}</style>
       <style global jsx>{`
         @import url('https://fonts.googleapis.com/css?family=Cousine&display=swap');
+
+        h2 {
+          line-height: 1.4;
+        }
       
         body, button, input {
           font-family: 'Cousine';

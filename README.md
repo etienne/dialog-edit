@@ -27,11 +27,23 @@ mina deploy
 
 ## Todo
 
-- **Bug:** des fois on peut pas créer un choix d'options
-- Gérer le cas où on efface un node ayant plusieurs parents (i.e. je veux juste l'enlever à une place)
+### Ça gosse
+- Implanter un login
+- Bug: pas possible de supprimer le premier node d'une branche
+
+### Serait cool
 - Permettre de naviguer avec les flèches haut/bas? pis Enter?
 - Faire que le focus switch automatiquement au nouveau node quand il est créé
-- Jump vers le prochain label au lieu de l'inclure inline?
 - Tweaker les couleurs pour éviter les couleurs très pâles
-- Flow conditionnel?? Stats??
 - Éviter de sauvegarder des versions identiques??
+- Regrouper les versions par jour?
+- Affichage en arborescence
+- Créer une composante pour character + text, pour Node et ChoiceSelector pour l'instant, éventuellement pour un affichage en arborescence
+- Afficher le ID des nodes on hover?
+- Ne pas afficher la poubelle quand elle est vide
+
+### Un mendné
+- Flow conditionnel?? Stats??
+
+### Pas clair
+- Est-ce que le fait de ne pas pouvoir sauter vers une branche (ancien label) est un problème?

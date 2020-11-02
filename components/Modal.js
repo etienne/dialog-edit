@@ -58,4 +58,5 @@ export default function Modal({ children, dismissAction, submitAction, saveLabel
 
 Modal.defaultProps = {
   saveLabel: 'Save',
+  saveValidation: () => true,
 }
