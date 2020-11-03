@@ -97,8 +97,11 @@ export function reducer(state, action) {
     }
 
     case 'SOFT_DELETE_NODE': {
+      const targetNode = state.nodes[action.payload.id];
       const parentId = action.payload.detachFrom;
-      const updatedChildren = state.nodes[parentId].children.filter(c => c != action.payload.id);
+      let updatedChildren = state.nodes[parentId].children.filter(c => c != action.payload.id);
+      updatedChildren = [...updatedChildren, ...targetNode.children];
+      
       const updatedParent = { [parentId]: { ...state.nodes[parentId], children: updatedChildren }};
       return { ...state, nodes: { ...state.nodes, ...updatedParent }};
     }

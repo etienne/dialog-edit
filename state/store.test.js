@@ -158,12 +158,33 @@ describe('ADD_NODE', () => {
 });
 
 describe('UPDATE_NODE', () => {
+  it('should preserve properties that are absent from the payload', () => {
+    const payload = {
+      id: 1,
+      character: 'Roger',
+      text: 'Updated text',
+    };
+
+    expect(reducer(state, { type: 'UPDATE_NODE', payload })).toEqual({
+      ...state,
+      nodes: {
+        ...state.nodes,
+        1: {
+          id: 1,
+          character: 'Roger',
+          text: 'Updated text',
+          children: [2],
+        },
+      },
+    });
+  });
+
   it('should sanitize input', () => {
     const updatedNode = {
       id: '1',
       character: ['this is', 'an array'],
       text: 125,
-      children: ['2', 'roger'],
+      children: ['3', 'roger'],
     };
 
     expect(reducer(state, { type: 'UPDATE_NODE', payload: updatedNode })).toEqual({
@@ -174,7 +195,7 @@ describe('UPDATE_NODE', () => {
           id: 1,
           character: 'this is,an array',
           text: '125',
-          children: [2],
+          children: [3],
         },
       },
     });
@@ -233,18 +254,18 @@ describe('DELETE_NODE', () => {
 
 describe('SOFT_DELETE_NODE', () => {
   const payload = {
-    id: 3,
-    detachFrom: 2,
+    id: 2,
+    detachFrom: 1,
   };
 
-  it('should detach the node from the specified parent', () => {
+  it('should detach the node from the specified parent and transfer its children to it', () => {
     expect(reducer(state, { type: 'SOFT_DELETE_NODE', payload })).toEqual({
       ...state,
       nodes: {
         ...state.nodes,
-        2: {
-          ...state.nodes[2],
-          children: [],
+        1: {
+          ...state.nodes[1],
+          children: [3],
         }
       }
     });

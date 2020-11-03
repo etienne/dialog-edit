@@ -13,8 +13,10 @@ export default function Node({ id, siblings, parentId, permanentDelete }) {
   const [showLinkModal, setShowLinkModal] = useState(false);
   const node = state.nodes[id];
   const updateAction = (data) => {
-    const children = data.children && data.children.split(',');
-    dispatch({ type: 'UPDATE_NODE', payload: { ...state.nodes[id], ...data, children }});
+    if (data.children) {
+      data.children = data.children.split(',');
+    }
+    dispatch({ type: 'UPDATE_NODE', payload: { ...state.nodes[id], ...data }});
   };
   const addNodeAction = () => dispatch({ type: 'ADD_NODE', payload: { insertAfter: id } });
   const showDetailsAction = () => setShowDetails(!showDetails);
