@@ -108,6 +108,27 @@ describe('ADD_NODE', () => {
     });
   });
 
+  it('should properly reorder when inserting after a node with siblings', () => {
+    const newNode = {
+      character: 'To be inserted',
+      text: 'Yo',
+    };
+
+    const payload = {
+      ...newNode,
+      insertAfter: 3,
+    };
+    
+    expect(reducer(state, { type: 'ADD_NODE', payload })).toEqual({
+      ...state,
+      nodes: {
+        ...state.nodes,
+        3: { ...state.nodes[3], children: [nextId] },
+        [nextId]: { id: nextId, ...newNode, children: [5] },
+      },
+    });
+  });
+
   it('should properly reorder when inserting after a node with several children', () => {
     const newNode = {
       character: 'To be inserted',
@@ -126,6 +147,7 @@ describe('ADD_NODE', () => {
         2: { ...state.nodes[2], children: [nextId, 4] },
         [nextId]: { id: nextId, ...newNode, children: [3] },
       },
+      selectedChoices: { 6: 3 },
     });
   });
 

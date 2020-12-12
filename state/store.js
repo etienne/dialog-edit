@@ -37,7 +37,7 @@ export function reducer(state, { type, payload }) {
       const sanitizedPayload = sanitizeNode(payload);
 
       const newNode = { [id]: { id, ...sanitizedPayload } };
-      let selectedChoices = {};
+      let selectedChoices = { ...state.selectedChoices };
       let parentNode = {};
 
       if (payload.branch) {
@@ -50,13 +50,15 @@ export function reducer(state, { type, payload }) {
         delete newNode[id].insertAfter;
 
         const parentData = { ...state.nodes[payload.insertAfter] };
-        const selectedChoiceFromParent = state.selectedChoices[payload.insertAfter];
+        const selectedChoiceFromParent = selectedChoices[payload.insertAfter];
         let newChildren;
 
         if (selectedChoiceFromParent) {
           newChildren = parentData.children.map(c => {
             return selectedChoiceFromParent === c ? id : c;
           });
+          selectedChoices[id] = selectedChoiceFromParent;
+          delete selectedChoices[payload.insertAfter];
         } else {
           newChildren = [id];
         }
@@ -80,10 +82,7 @@ export function reducer(state, { type, payload }) {
           ...newNode,
           ...parentNode,
         },
-        selectedChoices: {
-          ...state.selectedChoices,
-          ...selectedChoices,
-        }
+        selectedChoices,
       };
     }
 
