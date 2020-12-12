@@ -1,5 +1,5 @@
 import { reducer } from './store';
-import { emptyState, state, previousState } from './fixtures';
+import { emptyState, state, previousState, nextId } from './fixtures';
 
 describe('ADD_BRANCH', () => {
   it('should create a new branch', () => {
@@ -40,11 +40,11 @@ describe('ADD_BRANCH', () => {
       ...state,
       branches: {
         ...state.branches,
-        2: { id: 2, firstNode: 4, ...newBranch },
+        2: { id: 2, firstNode: 6, ...newBranch },
       },
       nodes: {
         ...state.nodes,
-        4: { id: 4 },
+        6: { id: 6 },
       },
     });
   });
@@ -61,7 +61,7 @@ describe('ADD_NODE', () => {
       ...state,
       nodes: {
         ...state.nodes,
-        4: { id: 4, ...newNode },
+        [nextId]: { id: nextId, ...newNode },
       },
     });
   });
@@ -77,8 +77,8 @@ describe('ADD_NODE', () => {
       ...state,
       nodes: {
         ...state.nodes,
-        4: {
-          id: 4,
+        [nextId]: {
+          id: nextId,
           character: 'this is,an array',
           text: '125',
           children: [2],
@@ -87,7 +87,28 @@ describe('ADD_NODE', () => {
     });
   });
 
-  it('should properly reorder when insertAfter is specified', () => {
+  it('should properly reorder when inserting after a node with a single child', () => {
+    const newNode = {
+      character: 'To be inserted',
+      text: 'Yo',
+    };
+
+    const payload = {
+      ...newNode,
+      insertAfter: 1,
+    };
+    
+    expect(reducer(state, { type: 'ADD_NODE', payload })).toEqual({
+      ...state,
+      nodes: {
+        ...state.nodes,
+        1: { ...state.nodes[1], children: [nextId] },
+        [nextId]: { id: nextId, ...newNode, children: [2] },
+      },
+    });
+  });
+
+  it('should properly reorder when inserting after a node with several children', () => {
     const newNode = {
       character: 'To be inserted',
       text: 'Yo',
@@ -102,8 +123,8 @@ describe('ADD_NODE', () => {
       ...state,
       nodes: {
         ...state.nodes,
-        2: { ...state.nodes[2], children: [4] },
-        4: { id: 4, ...newNode, children: [3] },
+        2: { ...state.nodes[2], children: [nextId, 4] },
+        [nextId]: { id: nextId, ...newNode, children: [3] },
       },
     });
   });
@@ -123,11 +144,11 @@ describe('ADD_NODE', () => {
       ...state,
       nodes: {
         ...state.nodes,
-        2: { ...state.nodes[2], children: [3, 4] },
-        4: { id: 4, ...newNode },
+        2: { ...state.nodes[2], children: [3, 4, nextId] },
+        [nextId]: { id: nextId, ...newNode },
       },
       selectedChoices: {
-        2: 4,
+        2: nextId,
       },
     });
   });
@@ -147,11 +168,11 @@ describe('ADD_NODE', () => {
       ...state,
       branches: {
         ...state.branches,
-        1: { ...state.branches[1], firstNode: 4 },
+        1: { ...state.branches[1], firstNode: nextId },
       },
       nodes: {
         ...state.nodes,
-        4: { id: 4, ...newNode },
+        [nextId]: { id: nextId, ...newNode },
       },
     });
   });
@@ -265,7 +286,7 @@ describe('SOFT_DELETE_NODE', () => {
         ...state.nodes,
         1: {
           ...state.nodes[1],
-          children: [3],
+          children: [3, 4],
         }
       }
     });

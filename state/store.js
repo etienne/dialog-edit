@@ -10,19 +10,19 @@ const initialState = {
   activeChoice: null,
 };
 
-export function reducer(state, action) {
-  switch (action.type) {
+export function reducer(state, { type, payload }) {
+  switch (type) {
     case 'INITIAL_LOAD': {
-      return { ...state, ...action.payload };
+      return { ...state, ...payload };
     }
 
     case 'ADD_BRANCH': {
       const branchId = getNewId(Object.keys(state.branches));
-      const newBranch = { [branchId]: { id: branchId, ...action.payload } };
+      const newBranch = { [branchId]: { id: branchId, ...payload } };
       let nodes = state.nodes;
       let nodeId, blankNode;
 
-      if (!action.payload.firstNode) {
+      if (!payload.firstNode) {
         nodeId = getNewId(Object.keys(state.nodes));
         blankNode = { [nodeId]: { id: nodeId } };
         newBranch[branchId].firstNode = nodeId;
@@ -34,32 +34,43 @@ export function reducer(state, action) {
 
     case 'ADD_NODE': {
       const id = getNewId(Object.keys(state.nodes));
-      const sanitizedPayload = sanitizeNode(action.payload);
+      const sanitizedPayload = sanitizeNode(payload);
+
       const newNode = { [id]: { id, ...sanitizedPayload } };
-      let redirectedNode = {};
       let selectedChoices = {};
       let parentNode = {};
 
-      if (action.payload.branch) {
+      if (payload.branch) {
+        // Attach node to the specified branch
         delete newNode[id].branch;
-        state.branches[action.payload.branch].firstNode = id;
+        state.branches[payload.branch].firstNode = id;
       }
 
-      if (action.payload.insertAfter) {
+      if (payload.insertAfter) {
         delete newNode[id].insertAfter;
 
-        const parentData = { ...state.nodes[action.payload.insertAfter] };
-        const parentChildren = parentData.children;
-        newNode[id].children = parentChildren;
-        parentData.children = [id];
-        parentNode = { [action.payload.insertAfter]: parentData };
-      } else if (action.payload.branchFrom) {
+        const parentData = { ...state.nodes[payload.insertAfter] };
+        const selectedChoiceFromParent = state.selectedChoices[payload.insertAfter];
+        let newChildren;
+
+        if (selectedChoiceFromParent) {
+          newChildren = parentData.children.map(c => {
+            return selectedChoiceFromParent === c ? id : c;
+          });
+        } else {
+          newChildren = [id];
+        }
+
+        newNode[id].children = selectedChoiceFromParent ? [selectedChoiceFromParent] : parentData.children;
+        parentData.children = newChildren;
+        parentNode = { [payload.insertAfter]: parentData };
+      } else if (payload.branchFrom) {
         delete newNode[id].branchFrom;
 
-        const parentData = { ...state.nodes[action.payload.branchFrom] };
+        const parentData = { ...state.nodes[payload.branchFrom] };
         parentData.children = Array.isArray(parentData.children) ? [...parentData.children, id].sort() : [id];
-        parentNode = { [action.payload.branchFrom]: parentData };
-        selectedChoices[action.payload.branchFrom] = id;
+        parentNode = { [payload.branchFrom]: parentData };
+        selectedChoices[payload.branchFrom] = id;
       }
 
       return {
@@ -67,7 +78,6 @@ export function reducer(state, action) {
         nodes: {
           ...state.nodes,
           ...newNode,
-          ...redirectedNode,
           ...parentNode,
         },
         selectedChoices: {
@@ -79,27 +89,27 @@ export function reducer(state, action) {
 
     case 'DELETE_BRANCH': {
       const updatedBranches = { ...state.branches };
-      delete updatedBranches[action.payload];
+      delete updatedBranches[payload];
       return { ...state, branches: updatedBranches, selectedBranch: null };
     }
 
     case 'UPDATE_BRANCH': {
-      const { id } = action.payload;
-      const updatedBranch = { [id]: { ...state.branches[id], ...action.payload } };
+      const { id } = payload;
+      const updatedBranch = { [id]: { ...state.branches[id], ...payload } };
       return { ...state, branches: { ...state.branches, ...updatedBranch }};
     }
 
     case 'UPDATE_NODE': {
-      const sanitizedPayload = sanitizeNode(action.payload);
+      const sanitizedPayload = sanitizeNode(payload);
       const { id } = sanitizedPayload;
       const updatedNode = { [id]: { ...state.nodes[id], ...sanitizedPayload } };
       return { ...state, nodes: { ...state.nodes, ...updatedNode }};
     }
 
     case 'SOFT_DELETE_NODE': {
-      const targetNode = state.nodes[action.payload.id];
-      const parentId = action.payload.detachFrom;
-      let updatedChildren = state.nodes[parentId].children.filter(c => c != action.payload.id);
+      const targetNode = state.nodes[payload.id];
+      const parentId = payload.detachFrom;
+      let updatedChildren = state.nodes[parentId].children.filter(c => c != payload.id);
       updatedChildren = [...updatedChildren, ...targetNode.children];
       
       const updatedParent = { [parentId]: { ...state.nodes[parentId], children: updatedChildren }};
@@ -111,28 +121,28 @@ export function reducer(state, action) {
 
       Object.keys(state.nodes).forEach((id) => {
         if (updatedNodes[id].children) {
-          updatedNodes[id].children = state.nodes[id].children.filter(id => id != action.payload);
+          updatedNodes[id].children = state.nodes[id].children.filter(id => id != payload);
         }
       });
 
       const updatedSelectedChoices = {};
-      const choicesToReset = Object.keys(state.selectedChoices).filter(id => state.selectedChoices[id] == action.payload);
+      const choicesToReset = Object.keys(state.selectedChoices).filter(id => state.selectedChoices[id] == payload);
       choicesToReset.forEach(id => updatedSelectedChoices[id] = null);
 
-      delete updatedNodes[action.payload];
+      delete updatedNodes[payload];
       return { ...state, nodes: updatedNodes, selectedChoices: { ...state.selectedChoices, ...updatedSelectedChoices } };
     }
     case 'SET_ACTIVE_CHOICE': {
-      return { ...state, activeChoice: action.payload };
+      return { ...state, activeChoice: payload };
     }
     case 'SET_SELECTED_BRANCH': {
-      return { ...state, selectedBranch: action.payload };
+      return { ...state, selectedBranch: payload };
     }
     case 'SET_SELECTED_CHOICE': {
-      return { ...state, selectedChoices: { ...state.selectedChoices, ...action.payload }};
+      return { ...state, selectedChoices: { ...state.selectedChoices, ...payload }};
     }
     case 'REVERT_TO_VERSION': {
-      return action.payload;
+      return payload;
     }
     default:
       console.error('Invalid action type:', action);
