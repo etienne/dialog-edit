@@ -108,11 +108,25 @@ export function reducer(state, { type, payload }) {
     case 'SOFT_DELETE_NODE': {
       const targetNode = state.nodes[payload.id];
       const parentId = payload.detachFrom;
-      let updatedChildren = state.nodes[parentId].children.filter(c => c != payload.id);
-      updatedChildren = [...updatedChildren, ...targetNode.children];
-      
-      const updatedParent = { [parentId]: { ...state.nodes[parentId], children: updatedChildren }};
-      return { ...state, nodes: { ...state.nodes, ...updatedParent }};
+
+      if (parentId) {
+        let updatedChildren = state.nodes[parentId].children.filter(c => c != payload.id);
+
+        if (targetNode.children) {
+          updatedChildren = [...updatedChildren, ...targetNode.children];
+        }
+        
+        const updatedParent = { [parentId]: { ...state.nodes[parentId], children: updatedChildren }};
+        return { ...state, nodes: { ...state.nodes, ...updatedParent }};
+      } else {
+          const updatedBranch = {
+          [state.selectedBranch]: {
+            ...state.branches[state.selectedBranch],
+            firstNode: targetNode.children[0], // FIXME: Will break if target node has several children
+          },
+        }
+        return { ...state, branches: { ...state.branches, ...updatedBranch }};
+      }
     }
 
     case 'DELETE_NODE': {

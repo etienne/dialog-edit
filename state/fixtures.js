@@ -42,7 +42,7 @@ const state = {
       id: 5,
     }
   },
-  selectedBranch: null,
+  selectedBranch: 1,
   selectedChoices: { 2: 3 },
   activeChoice: null,
 };

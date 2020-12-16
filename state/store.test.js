@@ -1,5 +1,10 @@
 import { reducer } from './store';
 import { emptyState, state, previousState, nextId } from './fixtures';
+let pristineState = {};
+
+beforeEach(() => {
+  pristineState = JSON.parse(JSON.stringify(state));
+});
 
 describe('ADD_BRANCH', () => {
   it('should create a new branch', () => {
@@ -8,7 +13,7 @@ describe('ADD_BRANCH', () => {
       firstNode: 1,
     };
 
-    expect(reducer(state, { type: 'ADD_BRANCH', payload: newBranch })).toEqual({
+    expect(reducer(pristineState, { type: 'ADD_BRANCH', payload: newBranch })).toEqual({
       ...state,
       branches: {
         ...state.branches,
@@ -36,7 +41,7 @@ describe('ADD_BRANCH', () => {
       label: 'Trop cool ta branche sans firstNode',
     };
 
-    expect(reducer(state, { type: 'ADD_BRANCH', payload: newBranch })).toEqual({
+    expect(reducer(pristineState, { type: 'ADD_BRANCH', payload: newBranch })).toEqual({
       ...state,
       branches: {
         ...state.branches,
@@ -57,7 +62,7 @@ describe('ADD_NODE', () => {
       text: 'Yo',
     };
     
-    expect(reducer(state, { type: 'ADD_NODE', payload: newNode })).toEqual({
+    expect(reducer(pristineState, { type: 'ADD_NODE', payload: newNode })).toEqual({
       ...state,
       nodes: {
         ...state.nodes,
@@ -73,7 +78,7 @@ describe('ADD_NODE', () => {
       children: ['2', 'roger'],
     };
 
-    expect(reducer(state, { type: 'ADD_NODE', payload: newNode })).toEqual({
+    expect(reducer(pristineState, { type: 'ADD_NODE', payload: newNode })).toEqual({
       ...state,
       nodes: {
         ...state.nodes,
@@ -98,7 +103,7 @@ describe('ADD_NODE', () => {
       insertAfter: 1,
     };
     
-    expect(reducer(state, { type: 'ADD_NODE', payload })).toEqual({
+    expect(reducer(pristineState, { type: 'ADD_NODE', payload })).toEqual({
       ...state,
       nodes: {
         ...state.nodes,
@@ -119,7 +124,7 @@ describe('ADD_NODE', () => {
       insertAfter: 3,
     };
     
-    expect(reducer(state, { type: 'ADD_NODE', payload })).toEqual({
+    expect(reducer(pristineState, { type: 'ADD_NODE', payload })).toEqual({
       ...state,
       nodes: {
         ...state.nodes,
@@ -140,7 +145,7 @@ describe('ADD_NODE', () => {
       insertAfter: 2,
     };
     
-    expect(reducer(state, { type: 'ADD_NODE', payload })).toEqual({
+    expect(reducer(pristineState, { type: 'ADD_NODE', payload })).toEqual({
       ...state,
       nodes: {
         ...state.nodes,
@@ -162,7 +167,7 @@ describe('ADD_NODE', () => {
       branchFrom: 2,
     };
     
-    expect(reducer(state, { type: 'ADD_NODE', payload })).toEqual({
+    expect(reducer(pristineState, { type: 'ADD_NODE', payload })).toEqual({
       ...state,
       nodes: {
         ...state.nodes,
@@ -186,7 +191,7 @@ describe('ADD_NODE', () => {
       branch: 1,
     };
     
-    expect(reducer(state, { type: 'ADD_NODE', payload })).toEqual({
+    expect(reducer(pristineState, { type: 'ADD_NODE', payload })).toEqual({
       ...state,
       branches: {
         ...state.branches,
@@ -208,7 +213,7 @@ describe('UPDATE_NODE', () => {
       text: 'Updated text',
     };
 
-    expect(reducer(state, { type: 'UPDATE_NODE', payload })).toEqual({
+    expect(reducer(pristineState, { type: 'UPDATE_NODE', payload })).toEqual({
       ...state,
       nodes: {
         ...state.nodes,
@@ -230,7 +235,7 @@ describe('UPDATE_NODE', () => {
       children: ['3', 'roger'],
     };
 
-    expect(reducer(state, { type: 'UPDATE_NODE', payload: updatedNode })).toEqual({
+    expect(reducer(pristineState, { type: 'UPDATE_NODE', payload: updatedNode })).toEqual({
       ...state,
       nodes: {
         ...state.nodes,
@@ -249,7 +254,7 @@ describe('DELETE_BRANCH', () => {
   it('should delete the specified branch', () => {
     const updatedBranches = { ...state.branches };
     delete updatedBranches[1];
-    expect(reducer(state, { type: 'DELETE_BRANCH', payload: 1 })).toEqual({
+    expect(reducer(pristineState, { type: 'DELETE_BRANCH', payload: 1 })).toEqual({
       ...state,
       branches: updatedBranches,
       selectedBranch: null,
@@ -261,7 +266,7 @@ describe('DELETE_BRANCH', () => {
 //   it('should change the selected branch', () => {
 //     const selectedBranch = 2;
     
-//     expect(reducer(state, { type: 'ADD_NODE', payload: newNode })).toEqual({
+//     expect(reducer(pristineState, { type: 'ADD_NODE', payload: newNode })).toEqual({
 //       ...state,
 //       nodes: {
 //         ...state.nodes,
@@ -273,7 +278,7 @@ describe('DELETE_BRANCH', () => {
 
 describe('REVERT_TO_VERSION', () => {
   it('should revert the whole state to a previous version', () => {
-    expect(reducer(state, { type: 'REVERT_TO_VERSION', payload: previousState })).toEqual(previousState);
+    expect(reducer(pristineState, { type: 'REVERT_TO_VERSION', payload: previousState })).toEqual(previousState);
   });
 });
 
@@ -282,7 +287,7 @@ describe('DELETE_NODE', () => {
   delete updatedNodes[2];
 
   it('should permanently delete the node', () => {
-    expect(reducer(state, { type: 'DELETE_NODE', payload: 2 })).toEqual({
+    expect(reducer(pristineState, { type: 'DELETE_NODE', payload: 2 })).toEqual({
       ...state,
       nodes: {
         ...updatedNodes,
@@ -296,13 +301,13 @@ describe('DELETE_NODE', () => {
 });
 
 describe('SOFT_DELETE_NODE', () => {
-  const payload = {
-    id: 2,
-    detachFrom: 1,
-  };
-
   it('should detach the node from the specified parent and transfer its children to it', () => {
-    expect(reducer(state, { type: 'SOFT_DELETE_NODE', payload })).toEqual({
+    const payload = {
+      id: 2,
+      detachFrom: 1,
+    };
+  
+    expect(reducer(pristineState, { type: 'SOFT_DELETE_NODE', payload })).toEqual({
       ...state,
       nodes: {
         ...state.nodes,
@@ -313,6 +318,43 @@ describe('SOFT_DELETE_NODE', () => {
       }
     });
   });
+
+  it('should work when target node has no children', () => {
+    const payload = {
+      id: 5,
+      detachFrom: 3,
+    };
+
+    expect(reducer(pristineState, { type: 'SOFT_DELETE_NODE', payload })).toEqual({
+      ...state,
+      nodes: {
+        ...state.nodes,
+        3: {
+          ...state.nodes[3],
+          children: [],
+        }
+      }
+    });
+  });
+
+  it('should work when target node has no parent', () => {
+    const payload = {
+      id: 1,
+      detachFrom: undefined,
+    };
+
+    expect(reducer(pristineState, { type: 'SOFT_DELETE_NODE', payload })).toEqual({
+      ...state,
+      branches: {
+        ...state.branches,
+        1: {
+          ...state.branches[1],
+          firstNode: 2,
+        }
+      }
+    });
+  });
+
 });
 
 describe('UPDATE_BRANCH', () => {
@@ -322,7 +364,7 @@ describe('UPDATE_BRANCH', () => {
       label: 'Trop malade ta branche',
     };
 
-    expect(reducer(state, { type: 'UPDATE_BRANCH', payload: updatedBranch })).toEqual({
+    expect(reducer(pristineState, { type: 'UPDATE_BRANCH', payload: updatedBranch })).toEqual({
       ...state,
       branches: {
         ...state.branches,
