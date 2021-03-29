@@ -29,7 +29,7 @@ mina deploy
 
 ### Ça gosse
 - Implanter un login
-- Bug: pas possible de supprimer le premier node d'une branche
+- Bug: pas possible de supprimer le premier node d'un dialogue
 
 ### Serait cool
 - Permettre de naviguer avec les flèches haut/bas? pis Enter?
@@ -46,4 +46,4 @@ mina deploy
 - Flow conditionnel?? Stats??
 
 ### Pas clair
-- Est-ce que le fait de ne pas pouvoir sauter vers une branche (ancien label) est un problème?
+- Est-ce que le fait de ne pas pouvoir sauter vers un dialogue (ancien label) est un problème?

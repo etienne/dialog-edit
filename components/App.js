@@ -1,9 +1,9 @@
 import getConfig from 'next/config';
 import { useContext, useEffect } from 'react';
 import { Store } from '../state/store';
-import BranchList from './BranchList';
+import DialogList from './DialogList';
 import DeletedNodes from './DeletedNodes';
-import Dialog from './Dialog';
+import Dialog from './DialogView';
 import CharacterList from './CharacterList';
 
 const { publicRuntimeConfig } = getConfig();
@@ -31,10 +31,10 @@ export default function App() {
 
   return (
     <div>
-      <BranchList/>
-      { state.selectedBranch === 'trash' 
+      <DialogList/>
+      { state.selectedDialog === 'trash' 
         ? <DeletedNodes/>
-        : <Dialog branchId={state.selectedBranch}/>
+        : <Dialog id={state.selectedDialog}/>
       }
       
       <CharacterList/>

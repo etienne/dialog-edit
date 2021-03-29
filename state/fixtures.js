@@ -1,7 +1,7 @@
 const emptyState = {
-  branches: {},
+  dialogs: {},
   nodes: {},
-  selectedBranch: null,
+  selectedDialog: null,
   selectedChoices: {},
   activeChoice: null,
 };
@@ -19,7 +19,7 @@ const emptyState = {
 */
 
 const state = {
-  branches: {
+  dialogs: {
     1: {
       id: 1,
       label: 'Branche existante',
@@ -53,7 +53,7 @@ const state = {
       id: 7,
     },
   },
-  selectedBranch: 1,
+  selectedDialog: 1,
   selectedChoices: { 2: 3, 4: 6 },
   activeChoice: null,
 };

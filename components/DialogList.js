@@ -1,39 +1,39 @@
 import { useContext, useState } from 'react';
 import { Store } from '../state/store';
-import Branch from './Branch';
+import Dialog from './Dialog';
 import Button from './Button';
 import VersionsModal from './VersionsModal';
-import DeleteBranchModal from './DeleteBranchModal';
+import DeleteDialogModal from './DeleteDialogModal';
 
-export default function BranchList() {
-  const { state: { branches, selectedBranch }, dispatch } = useContext(Store);
+export default function DialogList() {
+  const { state: { dialogs, selectedDialog }, dispatch } = useContext(Store);
   const [showVersions, setShowVersions] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const branchIds = Object.keys(branches);
-  const addBranchAction = () => dispatch({ type: 'ADD_BRANCH', payload: { label: 'untitled branch' } });
+  const dialogIds = Object.keys(dialogs);
+  const addDialogAction = () => dispatch({ type: 'ADD_DIALOG', payload: { label: 'untitled dialog' } });
   const showVersionsAction = () => setShowVersions(true);
   const hideVersionsAction = () => setShowVersions(false);
   const showDeleteConfirmationAction = () => setShowDeleteConfirmation(true);
   const hideDeleteConfirmationAction = () => setShowDeleteConfirmation(false);
-  const deleteBranchAction = () => dispatch({ type: 'DELETE_BRANCH', payload: selectedBranch });
+  const deleteDialogAction = () => dispatch({ type: 'DELETE_DIALOG', payload: selectedDialog });
   const revertAction = (version) => dispatch({ type: 'REVERT_TO_VERSION', payload: version });
-  const selectTrashAction = () => dispatch({ type: 'SET_SELECTED_BRANCH', payload: 'trash' });
+  const selectTrashAction = () => dispatch({ type: 'SET_SELECTED_DIALOG', payload: 'trash' });
 
   return (
     <section>
-      { branchIds.map((id) => {
-        const action = () => dispatch({ type: 'SET_SELECTED_BRANCH', payload: id });
-        return <Branch key={`branch-${id}`} label={branches[id].label} selected={selectedBranch == id} action={action}/>;
+      { dialogIds.map((id) => {
+        const action = () => dispatch({ type: 'SET_SELECTED_DIALOG', payload: id });
+        return <Dialog key={`dialog-${id}`} label={dialogs[id].label} selected={selectedDialog == id} action={action}/>;
       }) }
       <hr/>
-      <Branch key="trash" label="Trash" selected={selectedBranch == 'trash'} action={selectTrashAction}/>
+      <Dialog key="trash" label="Trash" selected={selectedDialog == 'trash'} action={selectTrashAction}/>
       <div className="actions">
-        <Button action={addBranchAction} type="icon" icon="plus" title="Add Branch"/>
+        <Button action={addDialogAction} type="icon" icon="plus" title="Add Dialog"/>
         <Button action={showVersionsAction} type="icon" icon="clock" title="Browse versions"/>
-        { selectedBranch && selectedBranch !== 'trash' && <Button action={showDeleteConfirmationAction} type="icon" icon="delete" title="Delete Branch"/> }
+        { selectedDialog && selectedDialog !== 'trash' && <Button action={showDeleteConfirmationAction} type="icon" icon="delete" title="Delete Dialog"/> }
       </div>
       { showVersions && <VersionsModal submitAction={revertAction} dismissAction={hideVersionsAction}/> }
-      { showDeleteConfirmation && <DeleteBranchModal submitAction={deleteBranchAction} dismissAction={hideDeleteConfirmationAction}/> }
+      { showDeleteConfirmation && <DeleteDialogModal submitAction={deleteDialogAction} dismissAction={hideDeleteConfirmationAction}/> }
       <style jsx>{`
         section {
           position: fixed;

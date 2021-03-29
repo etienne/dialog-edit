@@ -4,8 +4,8 @@ export const Store = React.createContext();
 
 const initialState = {
   nodes: {},
-  branches: {},
-  selectedBranch: null,
+  dialogs: {},
+  selectedDialog: null,
   selectedChoices: {},
   activeChoice: null,
 };
@@ -16,20 +16,20 @@ export function reducer(state, { type, payload }) {
       return { ...state, ...payload };
     }
 
-    case 'ADD_BRANCH': {
-      const branchId = getNewId(Object.keys(state.branches));
-      const newBranch = { [branchId]: { id: branchId, ...payload } };
+    case 'ADD_DIALOG': {
+      const dialogId = getNewId(Object.keys(state.dialogs));
+      const newDialog = { [dialogId]: { id: dialogId, ...payload } };
       let nodes = state.nodes;
       let nodeId, blankNode;
 
       if (!payload.firstNode) {
         nodeId = getNewId(Object.keys(state.nodes));
         blankNode = { [nodeId]: { id: nodeId } };
-        newBranch[branchId].firstNode = nodeId;
+        newDialog[dialogId].firstNode = nodeId;
         nodes = { ...state.nodes, ...blankNode };
       }
 
-      return { ...state, branches: { ...state.branches, ...newBranch }, nodes };
+      return { ...state, dialogs: { ...state.dialogs, ...newDialog }, nodes };
     }
 
     case 'ADD_NODE': {
@@ -40,10 +40,10 @@ export function reducer(state, { type, payload }) {
       let selectedChoices = { ...state.selectedChoices };
       let parentNode = {};
 
-      if (payload.branch) {
-        // Attach node to the specified branch
-        delete newNode[id].branch;
-        state.branches[payload.branch].firstNode = id;
+      if (payload.dialog) {
+        // Attach node to the specified dialog
+        delete newNode[id].dialog;
+        state.dialogs[payload.dialog].firstNode = id;
       }
 
       if (payload.insertAfter) {
@@ -86,16 +86,16 @@ export function reducer(state, { type, payload }) {
       };
     }
 
-    case 'DELETE_BRANCH': {
-      const updatedBranches = { ...state.branches };
-      delete updatedBranches[payload];
-      return { ...state, branches: updatedBranches, selectedBranch: null };
+    case 'DELETE_DIALOG': {
+      const updatedDialogs = { ...state.dialogs };
+      delete updatedDialogs[payload];
+      return { ...state, dialogs: updatedDialogs, selectedDialog: null };
     }
 
-    case 'UPDATE_BRANCH': {
+    case 'UPDATE_DIALOG': {
       const { id } = payload;
-      const updatedBranch = { [id]: { ...state.branches[id], ...payload } };
-      return { ...state, branches: { ...state.branches, ...updatedBranch }};
+      const updatedDialog = { [id]: { ...state.dialogs[id], ...payload } };
+      return { ...state, dialogs: { ...state.dialogs, ...updatedDialog }};
     }
 
     case 'UPDATE_NODE': {
@@ -137,13 +137,13 @@ export function reducer(state, { type, payload }) {
         const updatedParent = { [parentId]: { ...state.nodes[parentId], children: updatedChildren }};
         return { ...state, nodes: { ...state.nodes, ...updatedParent }, selectedChoices};
       } else {
-          const updatedBranch = {
-          [state.selectedBranch]: {
-            ...state.branches[state.selectedBranch],
+          const updatedDialog = {
+          [state.selectedDialog]: {
+            ...state.dialogs[state.selectedDialog],
             firstNode: targetNode.children[0], // FIXME: Will break if target node has several children
           },
         }
-        return { ...state, branches: { ...state.branches, ...updatedBranch }};
+        return { ...state, dialogs: { ...state.dialogs, ...updatedDialog }};
       }
     }
 
@@ -166,8 +166,8 @@ export function reducer(state, { type, payload }) {
     case 'SET_ACTIVE_CHOICE': {
       return { ...state, activeChoice: payload };
     }
-    case 'SET_SELECTED_BRANCH': {
-      return { ...state, selectedBranch: payload };
+    case 'SET_SELECTED_DIALOG': {
+      return { ...state, selectedDialog: payload };
     }
     case 'SET_SELECTED_CHOICE': {
       return { ...state, selectedChoices: { ...state.selectedChoices, ...payload }};

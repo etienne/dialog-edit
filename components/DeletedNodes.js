@@ -5,10 +5,10 @@ import Node from './Node';
 
 export default function DeletedNodes() {
   const { state } = useContext(Store);
-  const { nodes, branches } = state;
+  const { nodes, dialogs } = state;
 
   const allNodeIds = Object.keys(nodes).map(id => Number(id));
-  const rootNodeIds = Object.keys(branches).map(id => branches[id].firstNode);
+  const rootNodeIds = Object.keys(dialogs).map(id => dialogs[id].firstNode);
   let activeNodeIds = rootNodeIds;
   let previousActiveNodeIds = activeNodeIds;
 

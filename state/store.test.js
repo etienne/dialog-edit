@@ -6,46 +6,46 @@ beforeEach(() => {
   pristineState = JSON.parse(JSON.stringify(state));
 });
 
-describe('ADD_BRANCH', () => {
-  it('should create a new branch', () => {
-    const newBranch = {
-      label: 'Trop cool ta branche',
+describe('ADD_DIALOG', () => {
+  it('should create a new dialog', () => {
+    const newDialog = {
+      label: 'Trop cool ton dialogue',
       firstNode: 1,
     };
 
-    expect(reducer(pristineState, { type: 'ADD_BRANCH', payload: newBranch })).toEqual({
+    expect(reducer(pristineState, { type: 'ADD_DIALOG', payload: newDialog })).toEqual({
       ...state,
-      branches: {
-        ...state.branches,
-        2: { id: 2, ...newBranch },
+      dialogs: {
+        ...state.dialogs,
+        2: { id: 2, ...newDialog },
       },
     });
   })
 
-  it('should assign id 1 for first branch', () => {
-    const newBranch = {
-      label: 'Trop cool ta branche',
+  it('should assign id 1 for first dialog', () => {
+    const newDialog = {
+      label: 'Trop cool ton dialogue',
       firstNode: 1,
     };
 
-    expect(reducer(emptyState, { type: 'ADD_BRANCH', payload: newBranch })).toEqual({
+    expect(reducer(emptyState, { type: 'ADD_DIALOG', payload: newDialog })).toEqual({
       ...emptyState,
-      branches: {
-        1: { id: 1, ...newBranch },
+      dialogs: {
+        1: { id: 1, ...newDialog },
       },
     });
   })
 
   it('should create a blank node if no firstNode is given', () => {
-    const newBranch = {
-      label: 'Trop cool ta branche sans firstNode',
+    const newDialog = {
+      label: 'Trop cool ton dialogue sans firstNode',
     };
 
-    expect(reducer(pristineState, { type: 'ADD_BRANCH', payload: newBranch })).toEqual({
+    expect(reducer(pristineState, { type: 'ADD_DIALOG', payload: newDialog })).toEqual({
       ...state,
-      branches: {
-        ...state.branches,
-        2: { id: 2, firstNode: nextId, ...newBranch },
+      dialogs: {
+        ...state.dialogs,
+        2: { id: 2, firstNode: nextId, ...newDialog },
       },
       nodes: {
         ...state.nodes,
@@ -181,7 +181,7 @@ describe('ADD_NODE', () => {
     });
   });
 
-  it('should attach the node to a branch when specified', () => {
+  it('should attach the node to a dialog when specified', () => {
     const newNode = {
       character: 'Roger',
       text: 'Yo',
@@ -189,14 +189,14 @@ describe('ADD_NODE', () => {
 
     const payload = {
       ...newNode,
-      branch: 1,
+      dialog: 1,
     };
     
     expect(reducer(pristineState, { type: 'ADD_NODE', payload })).toEqual({
       ...state,
-      branches: {
-        ...state.branches,
-        1: { ...state.branches[1], firstNode: nextId },
+      dialogs: {
+        ...state.dialogs,
+        1: { ...state.dialogs[1], firstNode: nextId },
       },
       nodes: {
         ...state.nodes,
@@ -251,21 +251,21 @@ describe('UPDATE_NODE', () => {
   });
 });
 
-describe('DELETE_BRANCH', () => {
-  it('should delete the specified branch', () => {
-    const updatedBranches = { ...state.branches };
-    delete updatedBranches[1];
-    expect(reducer(pristineState, { type: 'DELETE_BRANCH', payload: 1 })).toEqual({
+describe('DELETE_DIALOG', () => {
+  it('should delete the specified dialog', () => {
+    const updatedDialogs = { ...state.dialogs };
+    delete updatedDialogs[1];
+    expect(reducer(pristineState, { type: 'DELETE_DIALOG', payload: 1 })).toEqual({
       ...state,
-      branches: updatedBranches,
-      selectedBranch: null,
+      dialogs: updatedDialogs,
+      selectedDialog: null,
     });
   });
 });
 
-// describe('SET_SELECTED_BRANCH', () => {
+// describe('SET_SELECTED_DIALOG', () => {
 //   it('should change the selected branch', () => {
-//     const selectedBranch = 2;
+//     const selectedDialog = 2;
     
 //     expect(reducer(pristineState, { type: 'ADD_NODE', payload: newNode })).toEqual({
 //       ...state,
@@ -375,10 +375,10 @@ describe('SOFT_DELETE_NODE', () => {
 
     expect(reducer(pristineState, { type: 'SOFT_DELETE_NODE', payload })).toEqual({
       ...state,
-      branches: {
-        ...state.branches,
+      dialogs: {
+        ...state.dialogs,
         1: {
-          ...state.branches[1],
+          ...state.dialogs[1],
           firstNode: 2,
         }
       }
@@ -386,18 +386,18 @@ describe('SOFT_DELETE_NODE', () => {
   });
 });
 
-describe('UPDATE_BRANCH', () => {
-  it('should update the branch', () => {
-    const updatedBranch = {
+describe('UPDATE_DIALOG', () => {
+  it('should update the dialog', () => {
+    const updatedDialog = {
       id: 1,
-      label: 'Trop malade ta branche',
+      label: 'Trop malade ton dialogue',
     };
 
-    expect(reducer(pristineState, { type: 'UPDATE_BRANCH', payload: updatedBranch })).toEqual({
+    expect(reducer(pristineState, { type: 'UPDATE_DIALOG', payload: updatedDialog })).toEqual({
       ...state,
-      branches: {
-        ...state.branches,
-        1: { ...state.branches[1], ...updatedBranch },
+      dialogs: {
+        ...state.dialogs,
+        1: { ...state.dialogs[1], ...updatedDialog },
       },
     });
   })
