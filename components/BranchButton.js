@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import { Store } from '../state/store';
 
-export default function ChoiceSwitch({ count, parentId }) {
+export default function BranchButton({ count, parentId }) {
   const { dispatch } = useContext(Store);
 
   return (
-    <button className={parentId ? 'active' : 'inactive'} onClick={() => dispatch({ type: 'SET_ACTIVE_CHOICE', payload: parentId })}>
+    <button className={parentId ? 'active' : 'inactive'} onClick={() => dispatch({ type: 'SET_ACTIVE_BRANCH', payload: parentId })}>
       {count}
       <img src={`/chevronDown.svg`} alt=""/>
       <style jsx>{`

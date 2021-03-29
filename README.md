@@ -38,7 +38,7 @@ mina deploy
 - Éviter de sauvegarder des versions identiques??
 - Regrouper les versions par jour?
 - Affichage en arborescence
-- Créer une composante pour character + text, pour Node et ChoiceSelector pour l'instant, éventuellement pour un affichage en arborescence
+- Créer une composante pour character + text, pour Node et BranchSelector pour l'instant, éventuellement pour un affichage en arborescence
 - Afficher le ID des nodes on hover?
 - Ne pas afficher la poubelle quand elle est vide
 

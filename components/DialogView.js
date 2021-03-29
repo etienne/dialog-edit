@@ -5,16 +5,16 @@ import Content from './Content';
 import Field from './Field';
 import Node from './Node';
 
-export default function Dialog({ id }) {
+export default function DialogView({ id }) {
   if (!id) {
     return null;
   }
 
   const { state, dispatch } = useContext(Store);
-  const { dialogs, nodes, selectedChoices } = state;
+  const { dialogs, nodes, selectedBranches } = state;
   const dialog = dialogs[id];
   const nodeIds = [];
-  const choiceNodes = [];
+  const branchNodes = [];
   let nodeId = dialog.firstNode;
   let childrenNodeIds;
 
@@ -23,9 +23,9 @@ export default function Dialog({ id }) {
       nodeIds.push(nodeId);
       childrenNodeIds = nodes[nodeId].children || [];
       if (childrenNodeIds.length > 1) {
-        choiceNodes.push(nodeId);
+        branchNodes.push(nodeId);
       }
-    } while (childrenNodeIds.length && (nodeId = selectedChoices[nodeId] || childrenNodeIds[0]));
+    } while (childrenNodeIds.length && (nodeId = selectedBranches[nodeId] || childrenNodeIds[0]));
   }
 
   const updateDialog = data => dispatch({ type: 'UPDATE_DIALOG', payload: { ...dialog, ...data} });
@@ -38,7 +38,7 @@ export default function Dialog({ id }) {
         ? nodeIds.map((id, index) => {
           const parentId = nodeIds[index - 1];
           let siblings = [];
-          if (choiceNodes.indexOf(parentId) !== -1) {
+          if (branchNodes.indexOf(parentId) !== -1) {
             siblings = nodes[parentId].children;
           }
           return <Node key={id} id={id} siblings={siblings} parentId={parentId}/>;

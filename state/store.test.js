@@ -152,7 +152,7 @@ describe('ADD_NODE', () => {
         2: { ...state.nodes[2], children: [nextId, 4] },
         [nextId]: { id: nextId, ...newNode, children: [3] },
       },
-      selectedChoices: { 4: 6, [nextId]: 3 },
+      selectedBranches: { 4: 6, [nextId]: 3 },
     });
   });
 
@@ -174,7 +174,7 @@ describe('ADD_NODE', () => {
         2: { ...state.nodes[2], children: [3, 4, nextId] },
         [nextId]: { id: nextId, ...newNode },
       },
-      selectedChoices: {
+      selectedBranches: {
         2: nextId,
         4: 6,
       },
@@ -348,7 +348,7 @@ describe('SOFT_DELETE_NODE', () => {
   });
 
   it('should work when target node has both siblings and children', () => {
-    const startState = reducer(pristineState, { type: 'SET_SELECTED_CHOICE', payload: { 2: 4 }});
+    const startState = reducer(pristineState, { type: 'SET_SELECTED_BRANCH', payload: { 2: 4 }});
 
     const payload = {
       id: 4,

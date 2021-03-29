@@ -2,8 +2,8 @@ const emptyState = {
   dialogs: {},
   nodes: {},
   selectedDialog: null,
-  selectedChoices: {},
-  activeChoice: null,
+  selectedBranches: {},
+  activeBranch: null,
 };
 
 /*
@@ -54,8 +54,8 @@ const state = {
     },
   },
   selectedDialog: 1,
-  selectedChoices: { 2: 3, 4: 6 },
-  activeChoice: null,
+  selectedBranches: { 2: 3, 4: 6 },
+  activeBranch: null,
 };
 
 const nextId = 8;

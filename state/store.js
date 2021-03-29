@@ -6,8 +6,8 @@ const initialState = {
   nodes: {},
   dialogs: {},
   selectedDialog: null,
-  selectedChoices: {},
-  activeChoice: null,
+  selectedBranches: {},
+  activeBranch: null,
 };
 
 export function reducer(state, { type, payload }) {
@@ -37,7 +37,7 @@ export function reducer(state, { type, payload }) {
       const sanitizedPayload = sanitizeNode(payload);
 
       const newNode = { [id]: { id, ...sanitizedPayload } };
-      let selectedChoices = { ...state.selectedChoices };
+      let selectedBranches = { ...state.selectedBranches };
       let parentNode = {};
 
       if (payload.dialog) {
@@ -50,20 +50,20 @@ export function reducer(state, { type, payload }) {
         delete newNode[id].insertAfter;
 
         const parentData = { ...state.nodes[payload.insertAfter] };
-        const selectedChoiceFromParent = selectedChoices[payload.insertAfter];
+        const selectedBranchFromParent = selectedBranches[payload.insertAfter];
         let newChildren;
 
-        if (selectedChoiceFromParent) {
+        if (selectedBranchFromParent) {
           newChildren = parentData.children.map(c => {
-            return selectedChoiceFromParent === c ? id : c;
+            return selectedBranchFromParent === c ? id : c;
           });
-          selectedChoices[id] = selectedChoiceFromParent;
-          delete selectedChoices[payload.insertAfter];
+          selectedBranches[id] = selectedBranchFromParent;
+          delete selectedBranches[payload.insertAfter];
         } else {
           newChildren = [id];
         }
 
-        newNode[id].children = selectedChoiceFromParent ? [selectedChoiceFromParent] : parentData.children;
+        newNode[id].children = selectedBranchFromParent ? [selectedBranchFromParent] : parentData.children;
         parentData.children = newChildren;
         parentNode = { [payload.insertAfter]: parentData };
       } else if (payload.branchFrom) {
@@ -72,7 +72,7 @@ export function reducer(state, { type, payload }) {
         const parentData = { ...state.nodes[payload.branchFrom] };
         parentData.children = Array.isArray(parentData.children) ? [...parentData.children, id].sort() : [id];
         parentNode = { [payload.branchFrom]: parentData };
-        selectedChoices[payload.branchFrom] = id;
+        selectedBranches[payload.branchFrom] = id;
       }
 
       return {
@@ -82,7 +82,7 @@ export function reducer(state, { type, payload }) {
           ...newNode,
           ...parentNode,
         },
-        selectedChoices,
+        selectedBranches,
       };
     }
 
@@ -119,23 +119,23 @@ export function reducer(state, { type, payload }) {
         let updatedChildren = state.nodes[parentId].children.filter(c => c != payload.id);
 
         if (targetNode.children) {
-          const selectedChoiceForTargetNode = state.selectedChoices[targetNode.id];
+          const selectedBranchForTargetNode = state.selectedBranches[targetNode.id];
 
-          if (selectedChoiceForTargetNode) {
-            updatedChildren = [...updatedChildren, ...targetNode.children.filter(c => c == selectedChoiceForTargetNode)];
+          if (selectedBranchForTargetNode) {
+            updatedChildren = [...updatedChildren, ...targetNode.children.filter(c => c == selectedBranchForTargetNode)];
           } else {
             updatedChildren = [...updatedChildren, ...targetNode.children];
           }
         }
 
-        let selectedChoices = state.selectedChoices;
+        let selectedBranches = state.selectedBranches;
 
-        if (selectedChoices[parentId] && updatedChildren.length) {
-          selectedChoices[parentId] = updatedChildren[0];
+        if (selectedBranches[parentId] && updatedChildren.length) {
+          selectedBranches[parentId] = updatedChildren[0];
         }
         
         const updatedParent = { [parentId]: { ...state.nodes[parentId], children: updatedChildren }};
-        return { ...state, nodes: { ...state.nodes, ...updatedParent }, selectedChoices};
+        return { ...state, nodes: { ...state.nodes, ...updatedParent }, selectedBranches};
       } else {
           const updatedDialog = {
           [state.selectedDialog]: {
@@ -156,21 +156,21 @@ export function reducer(state, { type, payload }) {
         }
       });
 
-      const updatedSelectedChoices = {};
-      const choicesToReset = Object.keys(state.selectedChoices).filter(id => state.selectedChoices[id] == payload);
-      choicesToReset.forEach(id => updatedSelectedChoices[id] = null);
+      const updatedselectedBranches = {};
+      const branchesToReset = Object.keys(state.selectedBranches).filter(id => state.selectedBranches[id] == payload);
+      branchesToReset.forEach(id => updatedselectedBranches[id] = null);
 
       delete updatedNodes[payload];
-      return { ...state, nodes: updatedNodes, selectedChoices: { ...state.selectedChoices, ...updatedSelectedChoices } };
+      return { ...state, nodes: updatedNodes, selectedBranches: { ...state.selectedBranches, ...updatedselectedBranches } };
     }
-    case 'SET_ACTIVE_CHOICE': {
-      return { ...state, activeChoice: payload };
+    case 'SET_ACTIVE_BRANCH': {
+      return { ...state, activeBranch: payload };
     }
     case 'SET_SELECTED_DIALOG': {
       return { ...state, selectedDialog: payload };
     }
-    case 'SET_SELECTED_CHOICE': {
-      return { ...state, selectedChoices: { ...state.selectedChoices, ...payload }};
+    case 'SET_SELECTED_BRANCH': {
+      return { ...state, selectedBranches: { ...state.selectedBranches, ...payload }};
     }
     case 'REVERT_TO_VERSION': {
       return payload;

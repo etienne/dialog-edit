@@ -1,23 +1,23 @@
 import { useContext } from 'react';
 import { Store } from '../state/store';
-import ChoiceSwitch from './ChoiceSwitch';
+import BranchButton from './BranchButton';
 import stringToColor from '../helpers/stringToColor';
 
-export default function ChoiceSelector({ nodeIds, parentId }) {
+export default function BranchSelector({ nodeIds, parentId }) {
   const { state, dispatch } = useContext(Store);
   return (
     <section>
-      <ChoiceSwitch count={nodeIds.length}/>
+      <BranchButton count={nodeIds.length}/>
       <div>
         { nodeIds.map(id => {
           const node = state.nodes[id];
           const payload = { [parentId]: id };
           const color = { style: { color: stringToColor(node.character) }};
           const action = () => {
-            dispatch({ type: 'SET_ACTIVE_CHOICE', payload: null });
-            dispatch({ type: 'SET_SELECTED_CHOICE', payload });
+            dispatch({ type: 'SET_ACTIVE_BRANCH', payload: null });
+            dispatch({ type: 'SET_SELECTED_BRANCH', payload });
           };
-          const className = state.selectedChoices[parentId] === Number(id) ? 'selected' : 'unselected';
+          const className = state.selectedBranches[parentId] === Number(id) ? 'selected' : 'unselected';
 
           return (
             <button key={id} onClick={action} className={className}>
