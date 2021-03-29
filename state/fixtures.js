@@ -6,7 +6,17 @@ const emptyState = {
   activeChoice: null,
 };
 
-const nextId = 6;
+/*
+
+(1)
+ |
+(2)
+ +—————+
+(3)   (4)
+ |     +—————+
+(5)   (6)   (7)
+
+*/
 
 const state = {
   branches: {
@@ -19,33 +29,36 @@ const state = {
   nodes: {
     1: {
       id: 1,
-      character: "Bernard",
-      text: "Faque toi Stefano, tu fais quoi dans vie? T’es tu aux études?",
       children: [2],
     },
     2: {
       id: 2,
-      character: "Stefano",
-      text: "Non, je travaille! Je suis à mon compte.",
       children: [3, 4],
     },
     3: {
       id: 3,
-      character: "Bernard",
-      text: "Ah, c’est bon ça. Pas de boss!",
       children: [5],
     },
     4: {
       id: 4,
+      children: [6, 7],
     },
     5: {
       id: 5,
-    }
+    },
+    6: {
+      id: 6,
+    },
+    7: {
+      id: 7,
+    },
   },
   selectedBranch: 1,
-  selectedChoices: { 2: 3 },
+  selectedChoices: { 2: 3, 4: 6 },
   activeChoice: null,
 };
+
+const nextId = 8;
 
 const previousState = {
   nodes: {

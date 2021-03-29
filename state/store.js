@@ -110,14 +110,32 @@ export function reducer(state, { type, payload }) {
       const parentId = payload.detachFrom;
 
       if (parentId) {
+        const childrenOfParent = state.nodes[parentId].children;
+        
+        if (!childrenOfParent.includes(targetNode.id)) {
+          return state;          
+        }
+
         let updatedChildren = state.nodes[parentId].children.filter(c => c != payload.id);
 
         if (targetNode.children) {
-          updatedChildren = [...updatedChildren, ...targetNode.children];
+          const selectedChoiceForTargetNode = state.selectedChoices[targetNode.id];
+
+          if (selectedChoiceForTargetNode) {
+            updatedChildren = [...updatedChildren, ...targetNode.children.filter(c => c == selectedChoiceForTargetNode)];
+          } else {
+            updatedChildren = [...updatedChildren, ...targetNode.children];
+          }
+        }
+
+        let selectedChoices = state.selectedChoices;
+
+        if (selectedChoices[parentId] && updatedChildren.length) {
+          selectedChoices[parentId] = updatedChildren[0];
         }
         
         const updatedParent = { [parentId]: { ...state.nodes[parentId], children: updatedChildren }};
-        return { ...state, nodes: { ...state.nodes, ...updatedParent }};
+        return { ...state, nodes: { ...state.nodes, ...updatedParent }, selectedChoices};
       } else {
           const updatedBranch = {
           [state.selectedBranch]: {

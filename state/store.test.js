@@ -45,11 +45,11 @@ describe('ADD_BRANCH', () => {
       ...state,
       branches: {
         ...state.branches,
-        2: { id: 2, firstNode: 6, ...newBranch },
+        2: { id: 2, firstNode: nextId, ...newBranch },
       },
       nodes: {
         ...state.nodes,
-        6: { id: 6 },
+        [nextId]: { id: nextId },
       },
     });
   });
@@ -152,7 +152,7 @@ describe('ADD_NODE', () => {
         2: { ...state.nodes[2], children: [nextId, 4] },
         [nextId]: { id: nextId, ...newNode, children: [3] },
       },
-      selectedChoices: { 6: 3 },
+      selectedChoices: { 4: 6, [nextId]: 3 },
     });
   });
 
@@ -176,6 +176,7 @@ describe('ADD_NODE', () => {
       },
       selectedChoices: {
         2: nextId,
+        4: 6,
       },
     });
   });
@@ -313,10 +314,19 @@ describe('SOFT_DELETE_NODE', () => {
         ...state.nodes,
         1: {
           ...state.nodes[1],
-          children: [3, 4],
+          children: [3],
         }
       }
     });
+  });
+
+  it('should do nothing if specified parent doesn’t have the target node as child', () => {
+    const payload = {
+      id: 2,
+      detachFrom: 3,
+    };
+
+    expect(reducer(pristineState, { type: 'SOFT_DELETE_NODE', payload })).toEqual(pristineState);
   });
 
   it('should work when target node has no children', () => {
@@ -332,7 +342,27 @@ describe('SOFT_DELETE_NODE', () => {
         3: {
           ...state.nodes[3],
           children: [],
-        }
+        },
+      },
+    });
+  });
+
+  it('should work when target node has both siblings and children', () => {
+    const startState = reducer(pristineState, { type: 'SET_SELECTED_CHOICE', payload: { 2: 4 }});
+
+    const payload = {
+      id: 4,
+      detachFrom: 2,
+    };
+
+    expect(reducer(startState, { type: 'SOFT_DELETE_NODE', payload })).toEqual({
+      ...state,
+      nodes: {
+        ...state.nodes,
+        2: {
+          ...state.nodes[2],
+          children: [3, 6],
+        },
       }
     });
   });
@@ -354,7 +384,6 @@ describe('SOFT_DELETE_NODE', () => {
       }
     });
   });
-
 });
 
 describe('UPDATE_BRANCH', () => {
