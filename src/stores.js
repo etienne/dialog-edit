@@ -7,11 +7,21 @@ function createDialogs() {
 		subscribe,
     add: () => update(d => {
       const newId = getNewId(Object.keys(d));
-      d[newId] = { id: newId, label: 'untitled dialog' };
+      d[newId] = {
+        id: newId,
+        label: 'untitled dialog',
+        nodes: [{}],
+      };
       return d;
     }),
     update: newDialog => update(d => {
       return {...d, [newDialog.id]: newDialog };
+    }),
+    updateNode: (dialogId, index, newNode) => update(d => {
+      const newNodes = [...d[dialogId].nodes];
+      newNodes[index] = newNode;
+      const newDialog = {...d[dialogId], nodes: newNodes};
+      return {...d, [dialogId]: newDialog};
     }),
 	};
 }

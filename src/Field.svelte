@@ -1,8 +1,8 @@
 <script>
-  export let value = '', action, type;
+  export let value = '', action, type = '', placeholder;
 </script>
 
-<input bind:value={value} on:change={() => action(value)} class={type}>
+<input bind:value={value} on:change={() => action(value)} class={type} placeholder={placeholder}>
 
 <style>
   input, textarea {
