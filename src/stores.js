@@ -8,7 +8,6 @@ function createDialogs() {
     add: () => update(d => {
       const newId = getNewId(Object.keys(d));
       d[newId] = { id: newId, label: 'untitled dialog' };
-      console.log('d=', d);
       return d;
     }),
 	};
@@ -22,3 +21,4 @@ function getNewId(ids) {
 }
 
 export const dialogs = createDialogs();
+export const selectedDialog = writable(1);

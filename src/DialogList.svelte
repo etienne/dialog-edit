@@ -11,7 +11,7 @@
   {#if ids.length}
     {#each ids as id}
       <li>
-        <DialogItem label={$dialogs[id].label}/>
+        <DialogItem dialog={$dialogs[id]}/>
       </li>
     {/each}
   {/if}
