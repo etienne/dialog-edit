@@ -1,5 +1,5 @@
 <script>
-  import ButtonIcon from './ButtonIcon.svelte';
+  import Button from './Button.svelte';
   import DialogItem from './DialogItem.svelte';
   import { dialogs } from './stores.js';
 
@@ -7,14 +7,22 @@
   $: ids = Object.keys($dialogs);
 </script>
 
-<ul>
+<aside>
   {#if ids.length}
-    {#each ids as id}
-      <li>
-        <DialogItem dialog={$dialogs[id]}/>
-      </li>
-    {/each}
+  <ul>
+      {#each ids as id}
+        <li>
+          <DialogItem dialog={$dialogs[id]}/>
+        </li>
+      {/each}
+  </ul>
   {/if}
-</ul>
+  
+  <Button action={() => dialogs.add()} label="New Dialog" icon="plus"/>
+</aside>
 
-<ButtonIcon action={() => dialogs.add()} label="New Dialog"/>
+<style>
+  ul {
+    margin-bottom: 2rem;
+  }
+</style>

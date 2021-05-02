@@ -8,4 +8,3 @@
 {#if dialog && dialog.label}
   <h1>{dialog.label}</h1>
 {/if}
-
