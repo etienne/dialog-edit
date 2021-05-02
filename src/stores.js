@@ -10,6 +10,9 @@ function createDialogs() {
       d[newId] = { id: newId, label: 'untitled dialog' };
       return d;
     }),
+    update: newDialog => update(d => {
+      return {...d, [newDialog.id]: newDialog };
+    }),
 	};
 }
 
