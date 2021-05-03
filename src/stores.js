@@ -23,6 +23,12 @@ function createDialogs() {
       const newDialog = {...d[dialogId], nodes: newNodes};
       return {...d, [dialogId]: newDialog};
     }),
+    insertNodeAfter: (dialogId, index) => update(d => {
+      const newNodes = [...d[dialogId].nodes];
+      newNodes.splice(index + 1, 0, {});
+      const newDialog = {...d[dialogId], nodes: newNodes};
+      return {...d, [dialogId]: newDialog};
+    }),
 	};
 }
 
