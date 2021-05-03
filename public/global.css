@@ -37,6 +37,7 @@ input, button, select, textarea {
 	font-family: inherit;
 	font-size: inherit;
 	line-height: inherit;
+	color: inherit;
 }
 
 input:disabled {
@@ -62,8 +63,8 @@ button:focus {
 	box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
 }
 
-input:focus, textarea:focus {
-	outline-color: #aaa;
+input:focus, textarea:focus, div[contenteditable]:focus {
+	outline-color: rgba(0, 0, 0, 0.2);
 }
 
 h2 {

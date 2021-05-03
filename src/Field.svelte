@@ -1,26 +1,32 @@
 <script>
   export let value = '', action, type = '', placeholder;
+  const onChange = () => action(value);
 </script>
 
-<input bind:value={value} on:change={() => action(value)} class={type} placeholder={placeholder}>
+{#if type == 'autoresize'}
+  <div contenteditable="true" bind:textContent={value} on:input={onChange} data-placeholder={placeholder}></div>
+{:else}
+  <input bind:value={value} on:input={onChange} class={type} placeholder={placeholder}>
+{/if}
 
 <style>
-  input, textarea {
+  input, div {
     width: 100%;
     display: block;
     border: 1px solid white;
     padding: 0;
   }
 
-  textarea {
-    resize: none;
-  }
-
-  input::placeholder, textarea::placeholder {
+  input::placeholder {
     color: #ccc;
   }
+
+  div:empty:before {
+    color: #ccc;
+    content: attr(data-placeholder);
+  }
   
-  input:hover, textarea:hover {
+  input:hover, div:hover {
     border: 1px solid #ccc;
   }
 
