@@ -19,6 +19,7 @@
   
   <ul class="actions">
     <li><Button action={() => dialogs.insertNodeAfter(dialogId, index)} label="Insert Node" icon="plus"/></li>
+    <li><Button action={() => dialogs.deleteNode(dialogId, index)} label="Delete Node" icon="trash"/></li>
   </ul>
 </div>
 
@@ -26,6 +27,7 @@
   ul.actions {
     opacity: 0.5;
     visibility: hidden;
+    display: flex;
   }
 
   div:hover ul.actions {

@@ -29,6 +29,18 @@ function createDialogs() {
       const newDialog = {...d[dialogId], nodes: newNodes};
       return {...d, [dialogId]: newDialog};
     }),
+    prependNode: dialogId => update(d => {
+      const newNodes = [...d[dialogId].nodes];
+      newNodes.unshift({});
+      const newDialog = {...d[dialogId], nodes: newNodes};
+      return {...d, [dialogId]: newDialog};
+    }),
+    deleteNode: (dialogId, index) => update(d => {
+      const newNodes = [...d[dialogId].nodes];
+      newNodes.splice(index, 1);
+      const newDialog = {...d[dialogId], nodes: newNodes};
+      return {...d, [dialogId]: newDialog};
+    }),
 	};
 }
 
