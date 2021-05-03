@@ -1,12 +1,35 @@
 <script>
   export let value = '', action, type = '', placeholder;
-  const onChange = () => action(value);
+
+  function onInput() {
+    return action(value)
+  };
+
+  function stringToColor(string) {
+    if (!string) { return 'inherit'; }
+
+    const s = JSON.stringify(string);
+    const hash = s.split("").reduce((a, _, i) => (a += s.charCodeAt(i) + (a << 5)), 0);
+    return `#${(hash & 0x00ffffff).toString(16)}`;
+  }
+
+  function updateColor() {
+    if (type === 'character') {
+      this.style.color = stringToColor(value);
+    }
+  }
+
+  function resetColor() {
+    this.style.color = 'inherit';
+  }
+
+  const initialColor = type === 'character' ? stringToColor(value) : 'inherit';
 </script>
 
 {#if type == 'autoresize'}
-  <div contenteditable="true" bind:textContent={value} on:input={onChange} data-placeholder={placeholder}></div>
+  <div contenteditable="true" bind:textContent={value} on:input={onInput} data-placeholder={placeholder}></div>
 {:else}
-  <input bind:value={value} on:input={onChange} class={type} placeholder={placeholder}>
+  <input bind:value={value} on:input={onInput} on:change={updateColor} on:focus={resetColor} class={type} placeholder={placeholder} style={`color: ${initialColor}`}>
 {/if}
 
 <style>
@@ -34,10 +57,6 @@
     text-transform: uppercase;
     font-size: 13px;
   }
-  
-  /* input.character:not(:focus) {
-    color: ${stringToColor(value)};
-  } */
   
   input.label {
     font-size: 2em;

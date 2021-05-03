@@ -12,5 +12,5 @@
   }
 </script>
 
-<Field value={node.character} action={characterAction} placeholder="Character"/>
+<Field value={node.character} action={characterAction} type="character" placeholder="Character"/>
 <Field value={node.text} action={textAction} type="autoresize" placeholder="Text"/>
