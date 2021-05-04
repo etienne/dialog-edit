@@ -1,6 +1,9 @@
 <script>
-  export let action, label, icon;
-  let className = icon ? 'icon' : '';
+  export let action, label, icon, block;
+  let className = [
+    icon ? 'icon' : '',
+    block ? 'block' : '',
+  ].filter(c => c !== '').join(' ');
 </script>
 
 <button on:click={action} class={className}>
@@ -13,7 +16,7 @@
 
 <style>
   button {
-    background-color: white;
+    background-color: transparent;
     border: 1px solid #ccc;
     padding: 0.4em 1em;
     border-radius: 5px;
@@ -31,10 +34,10 @@
     background-color: #eee;
   }
 
-  button img {
+  button.block {
     display: block;
   }
-  
+
   button.primary {
     box-shadow: 0 0 0 2px white, 0 0 0 3px #ccc;
   }
@@ -55,5 +58,13 @@
   button.icon {
     padding: 0.2em;
     margin-right: 0.6em;
+  }
+
+  button.icon:last-child {
+    margin-right: 0;
+  }
+
+  button img {
+    display: block;
   }
 </style>

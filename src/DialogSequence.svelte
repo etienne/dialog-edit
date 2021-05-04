@@ -1,5 +1,6 @@
 <script>
   import { dialogs, selectedDialog, dialogSequence } from './stores.js';
+  import BranchTabs from './BranchTabs.svelte';
   import Dialog from './Dialog.svelte';
   import Field from './Field.svelte';
 
@@ -19,6 +20,9 @@
     {/if}
     {#each $dialogSequence as dialogId}
       <Dialog dialog={$dialogs[dialogId]}/>
+      {#if $dialogs[dialogId].branchTo}
+        <BranchTabs branches={$dialogs[dialogId].branchTo}/>
+      {/if}
     {/each}
   {:else}
     <p>← Create a dialog to get started.</p>
