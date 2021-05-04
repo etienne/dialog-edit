@@ -1,11 +1,11 @@
 <script>
 	import DialogList from './DialogList.svelte';
-	import Dialog from './Dialog.svelte';
+	import DialogSequence from './DialogSequence.svelte';
 </script>
 
 <main>
 	<DialogList/>
-	<Dialog/>
+	<DialogSequence/>
 </main>
 
 <style>

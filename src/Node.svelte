@@ -19,6 +19,9 @@
   
   <ul class="actions">
     <li><Button action={() => dialogs.insertNodeAfter(dialogId, index)} label="Insert Node" icon="plus"/></li>
+    {#if index > 0}
+      <li><Button action={() => dialogs.branchFrom(dialogId, index)} label="Add branch" icon="addBranch"/></li>
+    {/if}
     <li><Button action={() => dialogs.deleteNode(dialogId, index)} label="Delete Node" icon="trash"/></li>
   </ul>
 </div>

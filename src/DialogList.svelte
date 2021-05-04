@@ -1,16 +1,13 @@
 <script>
   import Button from './Button.svelte';
   import DialogItem from './DialogItem.svelte';
-  import { dialogs } from './stores.js';
-
-  let ids;
-  $: ids = Object.keys($dialogs);
+  import { dialogs, labelledDialogIds } from './stores.js';
 </script>
 
 <aside>
-  {#if ids.length}
+  {#if $labelledDialogIds.length}
   <ul>
-      {#each ids as id}
+      {#each $labelledDialogIds as id}
         <li>
           <DialogItem dialog={$dialogs[id]}/>
         </li>
