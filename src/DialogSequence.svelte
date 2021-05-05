@@ -21,7 +21,7 @@
     {#each $dialogSequence as dialogId}
       <Dialog dialog={$dialogs[dialogId]}/>
       {#if $dialogs[dialogId].branchTo}
-        <BranchTabs branches={$dialogs[dialogId].branchTo}/>
+        <BranchTabs dialog={$dialogs[dialogId]}/>
       {/if}
     {/each}
   {:else}

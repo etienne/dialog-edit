@@ -1,7 +1,7 @@
 import { writable, derived } from 'svelte/store';
 
 function createDialogs() {
-	const { subscribe, set, update } = writable({});
+	const { subscribe, update } = writable({});
 
 	return {
 		subscribe,
@@ -37,10 +37,12 @@ function createDialogs() {
     branchFrom: (dialogId, index) => update(d => {
       const nodesToKeep = [...d[dialogId].nodes].slice(0, index);
       const nodesToBranchOff = [...d[dialogId].nodes].slice(index);
-      const newId = getNewId(Object.keys(d));
-      const updatedDialog = {...d[dialogId], nodes: nodesToKeep, branchTo: [newId]};
-      const newDialog = {id: newId, nodes: nodesToBranchOff};
-      return {...d, [dialogId]: updatedDialog, [newId]: newDialog};
+      const branchedId = getNewId(Object.keys(d));
+      const newId = getNewId([...Object.keys(d), branchedId]);
+      const updatedDialog = {...d[dialogId], nodes: nodesToKeep, branchTo: [branchedId, newId]};
+      const branchedDialog = {id: branchedId, nodes: nodesToBranchOff};
+      const newDialog = {id: newId, nodes: [{}]};
+      return {...d, [dialogId]: updatedDialog, [branchedId]: branchedDialog, [newId]: newDialog};
     }),
 
     prependNode: dialogId => update(d => {
@@ -68,18 +70,23 @@ function getNewId(ids) {
 
 export const dialogs = createDialogs();
 export const selectedDialog = writable(1);
+export const selectedBranches = writable({});
 
-export const dialogSequence = derived([dialogs, selectedDialog], ([$dialogs, $selectedDialog]) => {
-  let currentDialog = $dialogs[$selectedDialog];
-  let dialogSequence = [$selectedDialog];
+export const dialogSequence = derived(
+  [dialogs, selectedDialog, selectedBranches],
+  ([$dialogs, $selectedDialog, $selectedBranches]) => {
+    let currentDialog = $dialogs[$selectedDialog];
+    let dialogSequence = [$selectedDialog];
 
-  while (currentDialog && currentDialog.branchTo && currentDialog.branchTo.length) {
-    dialogSequence.push(currentDialog.branchTo[0]);
-    currentDialog = $dialogs[currentDialog.branchTo[0]];
+    while (currentDialog && currentDialog.branchTo && currentDialog.branchTo.length) {
+      let selectedBranch = $selectedBranches[currentDialog.id] || 0;
+      dialogSequence.push(currentDialog.branchTo[selectedBranch]);
+      currentDialog = $dialogs[currentDialog.branchTo[selectedBranch]];
+    }
+
+    return dialogSequence;
   }
-
-  return dialogSequence;
-});
+);
 
 export const labelledDialogIds = derived(dialogs, $dialogs => {
   let ids = Object.keys($dialogs);

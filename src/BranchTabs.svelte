@@ -1,13 +1,19 @@
 <script>
-  import { dialogs } from './stores.js';
+  import { dialogs, selectedBranches } from './stores.js';
   import Button from './Button.svelte';
-  export let branches = [];
+  export let dialog = {};
+
+  function updateBranch(index) {
+    selectedBranches.update(b => {
+      return {...b, [dialog.id]: index };
+    });
+  }
 </script>
 
 <ul>
-  {#each branches as id}
-    <li class="tab">
-      <button>
+  {#each dialog.branchTo as id, index}
+    <li class={`tab ${((!$selectedBranches[dialog.id] && index == 0) || $selectedBranches[dialog.id] == index) ? 'selected' : 'unselected'}`}>
+      <button on:click={() => updateBranch(index)}>
         {($dialogs[id].nodes[0] && $dialogs[id].nodes[0].text) || 'empty branch'}
       </button>
     </li>
@@ -24,10 +30,18 @@
     font-size: 0.75em;
   }
 
+  li.tab {
+    margin-right: 0.2em;
+  }
+
   li.tab button {
-    background-color: white;
+    background-color: transparent;
     border: none;
     border-radius: 5px;
+  }
+
+  li.tab.selected button {
+    background-color: white;
   }
 
   li.action {

@@ -1,5 +1,5 @@
 <script>
-  export let action, label, icon, block;
+  export let action, label, icon, block = false;
   let className = [
     icon ? 'icon' : '',
     block ? 'block' : '',
