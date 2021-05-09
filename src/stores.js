@@ -20,6 +20,32 @@ function createDialogs() {
       return {...d, [newDialog.id]: newDialog };
     }),
 
+    delete: deleteId => update(d => {
+      // Not currently used
+      Object.keys(d).forEach(id => {
+        if (d[id].branchTo) {
+          const updatedBranchTo = d[id].branchTo.filter(b => b !== deleteId);
+          d[id] = {...d[id], branchTo: updatedBranchTo, selectedBranch: 0};
+        }
+      });
+      delete d[deleteId];
+      return d;
+    }),
+
+    deleteBranch: (dialogId, index) => update(d => {
+      const parentBranch = d[dialogId];
+      parentBranch.branchTo.splice(index, 1);
+      if (parentBranch.branchTo.length === 1) {
+        // Only one branch remains after deletion; merge last branch back into parent branch
+        const updatedNodes = [...parentBranch.nodes, ...d[parentBranch.branchTo[0]].nodes];
+        return {...d, [dialogId]: {...parentBranch, nodes: updatedNodes, branchTo: null, selectedBranch: null}};
+      } else {
+        const newSelectedBranch = index - 1 >= 0 ? index - 1 : 0;
+        const updatedDialog = {...parentBranch, selectedBranch: newSelectedBranch};
+        return {...d, [dialogId]: updatedDialog};
+        }
+    }),
+
     updateNode: (dialogId, index, newNode) => update(d => {
       const newNodes = [...d[dialogId].nodes];
       newNodes[index] = newNode;
@@ -35,14 +61,28 @@ function createDialogs() {
     }),
 
     branchFrom: (dialogId, index) => update(d => {
-      const nodesToKeep = [...d[dialogId].nodes].slice(0, index);
-      const nodesToBranchOff = [...d[dialogId].nodes].slice(index);
-      const branchedId = getNewId(Object.keys(d));
-      const newId = getNewId([...Object.keys(d), branchedId]);
-      const updatedDialog = {...d[dialogId], nodes: nodesToKeep, branchTo: [branchedId, newId]};
-      const branchedDialog = {id: branchedId, nodes: nodesToBranchOff};
+      const newId = getNewId(Object.keys(d));
       const newDialog = {id: newId, nodes: [{}]};
-      return {...d, [dialogId]: updatedDialog, [branchedId]: branchedDialog, [newId]: newDialog};
+      const currentBranchIds = d[dialogId].branchTo || [];
+
+      if (index) {
+        const nodesToKeep = [...d[dialogId].nodes].slice(0, index);
+        const nodesToBranchOff = [...d[dialogId].nodes].slice(index);
+        const branchedId = getNewId([...Object.keys(d), newId]);
+        const newBranchTo = [...currentBranchIds, branchedId, newId];
+        const updatedDialog = {...d[dialogId], nodes: nodesToKeep, branchTo: newBranchTo, selectedBranch: newBranchTo.length - 1};
+        const branchedDialog = {id: branchedId, nodes: nodesToBranchOff};
+        return {...d, [dialogId]: updatedDialog, [branchedId]: branchedDialog, [newId]: newDialog};
+      } else {
+        const newBranchTo = [...currentBranchIds, newId];
+        const updatedDialog = {...d[dialogId], branchTo: newBranchTo, selectedBranch: newBranchTo.length - 1};
+        return {...d, [dialogId]: updatedDialog, [newId]: newDialog};
+      }
+    }),
+
+    selectBranch: (dialogId, index) => update(d => {
+      const updatedDialog = {...d[dialogId], selectedBranch: index };
+      return {...d, [dialogId]: updatedDialog};
     }),
 
     prependNode: dialogId => update(d => {
@@ -70,18 +110,15 @@ function getNewId(ids) {
 
 export const dialogs = createDialogs();
 export const selectedDialog = writable(1);
-export const selectedBranches = writable({});
 
-export const dialogSequence = derived(
-  [dialogs, selectedDialog, selectedBranches],
-  ([$dialogs, $selectedDialog, $selectedBranches]) => {
+export const dialogSequence = derived([dialogs, selectedDialog], ([$dialogs, $selectedDialog]) => {
     let currentDialog = $dialogs[$selectedDialog];
     let dialogSequence = [$selectedDialog];
 
     while (currentDialog && currentDialog.branchTo && currentDialog.branchTo.length) {
-      let selectedBranch = $selectedBranches[currentDialog.id] || 0;
-      dialogSequence.push(currentDialog.branchTo[selectedBranch]);
-      currentDialog = $dialogs[currentDialog.branchTo[selectedBranch]];
+      let selectedBranchIndex = currentDialog.selectedBranch || 0;
+      dialogSequence.push(currentDialog.branchTo[selectedBranchIndex]);
+      currentDialog = $dialogs[currentDialog.branchTo[selectedBranchIndex]];
     }
 
     return dialogSequence;
