@@ -5,7 +5,7 @@
   export let dialog;
 </script>
 
-<ul class={`actions ${(dialog.nodes && dialog.nodes.length) ? '' : 'empty'}`}>
+<ul class="actions" class:empty={!(dialog.nodes && dialog.nodes.length)}>
   <li><Button action={() => dialogs.prependNode(dialog.id)} label="Insert Node" icon="plus"/></li>
 </ul>
 {#if dialog.nodes && dialog.nodes.length}
@@ -18,11 +18,13 @@
 
 <style>
   ul.actions {
-    opacity: 0;
+    opacity: 0.5;
     display: flex;
+    visibility: hidden;
   }
 
   ul.actions:hover, ul.actions.empty {
     opacity: 0.5;
+    visibility: visible;
   }
 </style>

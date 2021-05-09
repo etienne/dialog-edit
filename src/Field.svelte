@@ -1,7 +1,16 @@
 <script>
   import { afterUpdate } from 'svelte';
   let domNode;
-  export let value = '', action, type = '', placeholder, focusOnMount = false, touch = () => {};
+  export let value = '',
+             action,
+             type = '',
+             placeholder,
+             focusOnMount = false,
+             touch = () => {},
+             keyDown = () => {};
+
+
+  console.log('focusOnMount=', focusOnMount);
 
   afterUpdate(() => {
     if (focusOnMount) {
@@ -37,9 +46,9 @@
 </script>
 
 {#if type == 'autoresize'}
-  <div contenteditable="true" bind:textContent={value} bind:this={domNode} on:input={onInput} data-placeholder={placeholder}></div>
+  <div contenteditable="true" bind:textContent={value} bind:this={domNode} on:input={onInput} data-placeholder={placeholder} on:keydown={keyDown}></div>
 {:else}
-  <input bind:value={value} bind:this={domNode} on:input={onInput} on:change={updateColor} on:focus={resetColor} class={type} placeholder={placeholder} style={`color: ${initialColor}`}>
+  <input bind:value={value} bind:this={domNode} on:input={onInput} on:change={updateColor} on:focus={resetColor} class={type} placeholder={placeholder} style={`color: ${initialColor}`} on:keydown={keyDown}>
 {/if}
 
 <style>
