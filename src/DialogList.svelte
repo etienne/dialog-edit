@@ -1,7 +1,11 @@
 <script>
   import Button from './Button.svelte';
   import DialogItem from './DialogItem.svelte';
-  import { dialogs, labelledDialogIds } from './stores.js';
+  import { dialogs, labelledDialogIds, selectedDialog } from './stores.js';
+
+  function addNode() {
+    dialogs.add();
+  }
 </script>
 
 <aside>
@@ -15,7 +19,7 @@
   </ul>
   {/if}
   
-  <Button action={() => dialogs.add()} label="New Dialog" icon="plus"/>
+  <Button action={addNode} label="New Dialog" icon="plus"/>
 </aside>
 
 <style>

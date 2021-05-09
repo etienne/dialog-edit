@@ -11,12 +11,16 @@
     const newDialog = { ...startDialog, label: newLabel };
     dialogs.update(newDialog);
   }
+
+  function touch() {
+    dialogs.touch(startDialog.id);
+  }
 </script>
 
 <section>
   {#if startDialog}
     {#if startDialog.label}
-      <Field value={startDialog.label} action={updateDialog} type="label" placeholder="Dialog label"/>
+      <Field value={startDialog.label} action={updateDialog} type="label" placeholder="Dialog label" focusOnMount={startDialog.newlyCreated} touch={touch}/>
     {/if}
     {#each $dialogSequence as dialogId}
       <Dialog dialog={$dialogs[dialogId]}/>

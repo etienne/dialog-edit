@@ -12,12 +12,22 @@ function createDialogs() {
         id: newId,
         label: 'untitled dialog',
         nodes: [{}],
+        newlyCreated: true,
       };
+      selectedDialog.set(newId);
       return d;
     }),
 
     update: newDialog => update(d => {
       return {...d, [newDialog.id]: newDialog };
+    }),
+
+    touch: dialogId => update(d => {
+      const updatedDialog = d[dialogId];
+      if (updatedDialog.newlyCreated) {
+        delete updatedDialog.newlyCreated;
+      }
+      return {...d, [dialogId]: updatedDialog};
     }),
 
     delete: deleteId => update(d => {

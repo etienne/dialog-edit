@@ -33,6 +33,10 @@
     display: flex;
   }
 
+  ul.actions li {
+    margin-right: 0.5rem;
+  }
+
   div:hover ul.actions {
     visibility: visible;
   }

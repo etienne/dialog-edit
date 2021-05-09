@@ -19,7 +19,7 @@
 
 <ul>
   {#each dialog.branchTo as id, index}
-    <li class={`tab ${((!dialog.selectedBranch && index == 0) || dialog.selectedBranch == index) ? 'selected' : 'unselected'}`}>
+    <li class="tab" class:selected={(!dialog.selectedBranch && index == 0) || dialog.selectedBranch == index}>
       <button on:click={() => selectBranch(index)}>
         {($dialogs[id].nodes[0] && $dialogs[id].nodes[0].text) || 'empty branch'}
       </button>
