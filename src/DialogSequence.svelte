@@ -28,8 +28,6 @@
         <BranchTabs dialog={$dialogs[dialogId]}/>
       {/if}
     {/each}
-  {:else}
-    <p>← Create a dialog to get started.</p>
   {/if}
 </section>
 

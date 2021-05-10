@@ -31,7 +31,6 @@ function createDialogs() {
     }),
 
     delete: deleteId => update(d => {
-      // Not currently used
       Object.keys(d).forEach(id => {
         if (d[id].branchTo) {
           const updatedBranchTo = d[id].branchTo.filter(b => b !== deleteId);
@@ -39,6 +38,7 @@ function createDialogs() {
         }
       });
       delete d[deleteId];
+
       return d;
     }),
 
@@ -141,7 +141,6 @@ export const labelledDialogIds = derived(dialogs, $dialogs => {
   let ids = Object.keys($dialogs);
   return ids.filter(id => 'label' in $dialogs[id]);
 });
-
 
 export const characters = derived(dialogs, $dialogs => {
   let ids = Object.keys($dialogs);
