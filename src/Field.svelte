@@ -38,7 +38,6 @@
 
   let className;
   $: className = getClass(value);
-  $: console.log(className);
 </script>
 
 {#if type == 'autoresize'}

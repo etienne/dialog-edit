@@ -1,7 +1,7 @@
 import { writable, derived } from 'svelte/store';
 
 function createDialogs() {
-	const { subscribe, update } = writable({});
+	const { subscribe, update } = writable(JSON.parse(localStorage.getItem('dialogs')) || {});
 
 	return {
 		subscribe,
@@ -119,6 +119,8 @@ function getNewId(ids) {
 }
 
 export const dialogs = createDialogs();
+dialogs.subscribe(value => localStorage.dialogs = JSON.stringify(value));
+
 export const selectedDialog = writable(1);
 
 export const dialogSequence = derived([dialogs, selectedDialog], ([$dialogs, $selectedDialog]) => {
