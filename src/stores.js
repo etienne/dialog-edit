@@ -139,3 +139,19 @@ export const labelledDialogIds = derived(dialogs, $dialogs => {
   let ids = Object.keys($dialogs);
   return ids.filter(id => 'label' in $dialogs[id]);
 });
+
+
+export const characters = derived(dialogs, $dialogs => {
+  let ids = Object.keys($dialogs);
+  let characters = [];
+  ids.forEach(id => {
+    if ($dialogs[id].nodes && $dialogs[id].nodes.length) {
+      $dialogs[id].nodes.forEach(node => {
+        if (node.character && characters.indexOf(node.character) === -1) {
+          characters.push(node.character);
+        }
+      });
+    }
+  });
+  return characters;
+});
