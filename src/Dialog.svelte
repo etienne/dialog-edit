@@ -24,7 +24,6 @@
   }
 
   ul.actions:hover, ul.actions.empty {
-    opacity: 0.5;
     visibility: visible;
   }
 </style>

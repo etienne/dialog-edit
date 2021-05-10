@@ -122,6 +122,7 @@ export const dialogs = createDialogs();
 dialogs.subscribe(value => localStorage.dialogs = JSON.stringify(value));
 
 export const selectedDialog = writable(1);
+export const currentPreview = writable();
 
 export const dialogSequence = derived([dialogs, selectedDialog], ([$dialogs, $selectedDialog]) => {
     let currentDialog = $dialogs[$selectedDialog];

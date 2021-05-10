@@ -1,8 +1,8 @@
 <script>
-  import { dialogs } from './stores.js';
+  import { dialogs, currentPreview } from './stores.js';
   import Button from './Button.svelte';
   import Field from './Field.svelte';
-  export let node = {}, dialogId, index;
+  export let node = {}, dialogId, index, preview = false;
 
   function characterAction(newCharacter) {
     dialogs.updateNode(dialogId, index, {...node, character: newCharacter});
@@ -32,13 +32,16 @@
   <Field value={node.character} action={characterAction} type="character" placeholder="Character" focusOnMount={node.newlyCreated} touch={touch}/>
   <Field value={node.text} action={textAction} type="autoresize" placeholder="Text" keyDown={onKeyDown}/>
   
-  <ul class="actions">
-    <li><Button action={insertNode} label="Insert Node" icon="plus"/></li>
-    {#if index > 0}
-      <li><Button action={() => dialogs.branchFrom(dialogId, index)} label="Add branch" icon="addBranch"/></li>
-    {/if}
-    <li><Button action={() => dialogs.deleteNode(dialogId, index)} label="Delete Node" icon="trash"/></li>
-  </ul>
+  {#if !preview}
+    <ul class="actions">
+      <li><Button action={insertNode} label="Insert Node" icon="plus"/></li>
+      {#if index > 0}
+        <li><Button action={() => dialogs.branchFrom(dialogId, index)} label="Add branch" icon="addBranch"/></li>
+      {/if}
+      <li><Button action={() => currentPreview.set([dialogId, index])} label="Preview" icon="play"/></li>
+      <li><Button action={() => dialogs.deleteNode(dialogId, index)} label="Delete Node" icon="trash"/></li>
+    </ul>
+  {/if}
 </div>
 
 <style>

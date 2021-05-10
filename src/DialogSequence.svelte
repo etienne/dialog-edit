@@ -31,9 +31,3 @@
   {/if}
 </section>
 
-<style>
-  p {
-    margin-top: 0;
-    opacity: 0.4;
-  }
-</style>
