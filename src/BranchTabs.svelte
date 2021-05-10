@@ -45,10 +45,14 @@
   }
 
   li.tab button {
+    max-width: 10em;
+    overflow: hidden;
     background-color: transparent;
     padding: 0.2rem 0.6rem;
     border: none;
     border-radius: 5px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     cursor: pointer;
   }
 
