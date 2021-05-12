@@ -8,8 +8,8 @@ html, body {
 
 body {
 	color: #333;
-	margin: 2em;
-	padding: 0;
+	margin: 0;
+	padding: 2em;
 	box-sizing: border-box;
 	font-family: 'Cousine', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 	font-size: 15px;

@@ -1,12 +1,8 @@
 <script>
-  export let action, label, icon, block = false;
-  let className = [
-    icon ? 'icon' : '',
-    block ? 'block' : '',
-  ].filter(c => c !== '').join(' ');
+  export let action, label, icon = null, block = false, large = false, primary = false;
 </script>
 
-<button on:click={action} class={className}>
+<button on:click={action} class:icon class:block class:large class:primary>
   {#if icon}
     <img src={`/${icon}.svg`} alt={label}>
   {:else}
@@ -42,6 +38,10 @@
     box-shadow: 0 0 0 2px white, 0 0 0 3px #ccc;
   }
 
+  button.large {
+    padding: 0.8em 2em;
+  }
+
   button:disabled {
     border-color: #eee;
     cursor: auto;
@@ -58,6 +58,10 @@
   button.icon {
     padding: 0.2em;
     margin-right: 0.6em;
+  }
+
+  button.icon.large {
+    padding: 0.4em;
   }
 
   button.icon:last-child {
