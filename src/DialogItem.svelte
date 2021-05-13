@@ -3,7 +3,7 @@
   import { selectedDialog } from './stores.js';
 </script>
 
-<button on:click={() => selectedDialog.set(dialog.id)} class:selected={$selectedDialog === dialog.id}>
+<button on:click={() => $selectedDialog = dialog.id} class:selected={$selectedDialog == dialog.id}>
   {dialog.label}
 </button>
 

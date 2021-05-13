@@ -121,7 +121,9 @@ function getNewId(ids) {
 export const dialogs = createDialogs();
 dialogs.subscribe(value => localStorage.dialogs = JSON.stringify(value));
 
-export const selectedDialog = writable(1);
+export const selectedDialog = writable(localStorage.getItem('selectedDialog') || 1);
+selectedDialog.subscribe(value => localStorage.selectedDialog = value);
+
 export const currentPreview = writable();
 
 export const dialogSequence = derived([dialogs, selectedDialog], ([$dialogs, $selectedDialog]) => {
