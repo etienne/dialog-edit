@@ -1,5 +1,5 @@
 <script>
-  import { afterUpdate } from 'svelte';
+  import { afterUpdate, onMount } from 'svelte';
   let domNode;
   export let value = '',
              action,
@@ -7,7 +7,12 @@
              placeholder,
              focusOnMount = false,
              touch = () => {},
-             keyDown = () => {};
+             keyDown = () => {},
+             registerNode = () => {};
+
+  onMount(() => {
+    registerNode(domNode);
+  });
 
   afterUpdate(() => {
     if (focusOnMount) {

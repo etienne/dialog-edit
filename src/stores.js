@@ -125,6 +125,7 @@ export const selectedDialog = writable(localStorage.getItem('selectedDialog') ||
 selectedDialog.subscribe(value => localStorage.selectedDialog = value);
 
 export const currentPreview = writable();
+export const firstCharacterFieldNodes = writable({});
 
 export const dialogSequence = derived([dialogs, selectedDialog], ([$dialogs, $selectedDialog]) => {
     let currentDialog = $dialogs[$selectedDialog];

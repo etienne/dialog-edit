@@ -5,9 +5,11 @@
   export let dialog;
 </script>
 
-<ul class="actions" class:empty={!(dialog.nodes && dialog.nodes.length)}>
-  <li><Button action={() => dialogs.prependNode(dialog.id)} label="Insert Node" icon="plus"/></li>
-</ul>
+<div class:empty={!(dialog.nodes && dialog.nodes.length)}>
+  <ul class="actions">
+    <li><Button action={() => dialogs.prependNode(dialog.id)} label="Insert Node" icon="plus"/></li>
+  </ul>
+</div>
 {#if dialog.nodes && dialog.nodes.length}
   <ul>
     {#each dialog.nodes as node, index}
@@ -23,7 +25,7 @@
     visibility: hidden;
   }
 
-  ul.actions:hover, ul.actions.empty {
+  div:hover ul.actions, div.empty ul.actions {
     visibility: visible;
   }
 </style>

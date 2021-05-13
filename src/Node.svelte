@@ -1,8 +1,9 @@
 <script>
-  import { dialogs, currentPreview } from './stores.js';
+  import { dialogs, currentPreview, firstCharacterFieldNodes } from './stores.js';
   import Button from './Button.svelte';
   import Field from './Field.svelte';
   export let node = {}, dialogId, index, preview = false;
+  let textFieldNode;
 
   function characterAction(newCharacter) {
     dialogs.updateNode(dialogId, index, {...node, character: newCharacter});
@@ -16,9 +17,18 @@
     dialogs.insertNodeAfter(dialogId, index);
   }
 
-  function onKeyDown(e) {
+  function onEnterInsertNode(e) {
     if (e.key === 'Enter') {
       insertNode();
+      e.preventDefault();
+    };
+  }
+
+  function onEnterFocusNext(e) {
+    if (e.key === 'Enter') {
+      if (textFieldNode) {
+        textFieldNode.focus();
+      }
       e.preventDefault();
     };
   }
@@ -26,11 +36,37 @@
   function touch() {
     dialogs.updateNode(dialogId, index, {...node, newlyCreated: false});
   }
+
+  function registerCharacterField(node) {
+    if (index === 0) {
+      $firstCharacterFieldNodes[dialogId] = node;
+    }
+  }
+
+  function registerTextField(node) {
+    textFieldNode = node;
+  }
 </script>
 
 <div>
-  <Field value={node.character} action={characterAction} type="character" placeholder="Character" focusOnMount={node.newlyCreated} touch={touch}/>
-  <Field value={node.text} action={textAction} type="autoresize" placeholder="Text" keyDown={onKeyDown}/>
+  <Field
+    action={characterAction}
+    focusOnMount={node.newlyCreated}
+    keyDown={onEnterFocusNext}
+    placeholder="Character"
+    registerNode={registerCharacterField}
+    touch={touch}
+    type="character"
+    value={node.character}
+  />
+  <Field
+    action={textAction}
+    keyDown={onEnterInsertNode}
+    placeholder="Text"
+    registerNode={registerTextField}
+    type="autoresize"
+    value={node.text}
+  />
   
   {#if !preview}
     <ul class="actions">
