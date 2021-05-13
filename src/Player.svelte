@@ -25,7 +25,7 @@
 />
 
 <nav>
-  <Button label="Close" icon="x" large action={() => currentPreview.set(null)}/>
+  <Button label="Close" icon="chevronLeft" large action={() => currentPreview.set(null)}/>
 </nav>
 
 <section>
@@ -45,7 +45,7 @@
         {/each}
       </ul>
     {:else}
-      <p>You have reached the end of this dialog.</p>
+      <p>(End of dialog)</p>
     {/if}
   {:else}
     <p>Click to continue</p>
@@ -56,7 +56,7 @@
   nav {
     position: absolute;
     top: 2em;
-    right: 2em;
+    left: 2em;
   }
 
   section {
