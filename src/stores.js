@@ -57,16 +57,21 @@ function createDialogs() {
     }),
 
     updateNode: (dialogId, index, newNode) => update(d => {
-      const newNodes = [...d[dialogId].nodes];
-      newNodes[index] = newNode;
-      const newDialog = {...d[dialogId], nodes: newNodes};
+      const updatedNodes = [...d[dialogId].nodes];
+      updatedNodes[index] = newNode;
+      const newDialog = {...d[dialogId], nodes: updatedNodes};
       return {...d, [dialogId]: newDialog};
     }),
 
     insertNodeAfter: (dialogId, index) => update(d => {
-      const newNodes = [...d[dialogId].nodes];
-      newNodes.splice(index + 1, 0, {newlyCreated: true});
-      const newDialog = {...d[dialogId], nodes: newNodes};
+      const updatedNodes = [...d[dialogId].nodes];
+      let character;
+      if (index > 0) {
+        character = updatedNodes[index - 1].character;
+      }
+      console.log('index=', index, 'character=', character);
+      updatedNodes.splice(index + 1, 0, {newlyCreated: true, character});
+      const newDialog = {...d[dialogId], nodes: updatedNodes};
       return {...d, [dialogId]: newDialog};
     }),
 
