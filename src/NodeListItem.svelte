@@ -1,10 +1,10 @@
 <script>
-  export let dialog;
-  import { selectedDialog } from './stores.js';
+  export let node;
+  import { selectedNode } from './stores.js';
 </script>
 
-<button on:click={() => $selectedDialog = dialog.id} class:selected={$selectedDialog == dialog.id}>
-  {dialog.label}
+<button on:click={() => $selectedNode = node.id} class:selected={$selectedNode == node.id}>
+  {node.label}
 </button>
 
 <style>

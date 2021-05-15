@@ -1,7 +1,7 @@
 <script>
 	import CharacterList from './CharacterList.svelte';
-	import DialogList from './DialogList.svelte';
-	import DialogSequence from './DialogSequence.svelte';
+	import NodeList from './NodeList.svelte';
+	import NodeSequence from './NodeSequence.svelte';
 	import Player from './Player.svelte';
 	import { currentPreview } from './stores';
 </script>
@@ -12,8 +12,8 @@
 	</main>
 {:else}
 	<main class="editor">
-		<DialogList/>
-		<DialogSequence/>
+		<NodeList/>
+		<NodeSequence/>
 		<CharacterList/>
 	</main>
 {/if}

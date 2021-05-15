@@ -1,7 +1,7 @@
 import { writable, derived } from 'svelte/store';
 
-function createDialogs() {
-	const { subscribe, update } = writable(JSON.parse(localStorage.getItem('dialogs')) || {});
+function createNodes() {
+	const { subscribe, update } = writable(JSON.parse(localStorage.getItem('nodes')) || {});
 
 	return {
 		subscribe,
@@ -10,24 +10,24 @@ function createDialogs() {
       const newId = getNewId(Object.keys(d));
       d[newId] = {
         id: newId,
-        label: 'untitled dialog',
+        label: 'untitled node',
         lines: [{}],
         newlyCreated: true,
       };
-      selectedDialog.set(newId);
+      selectedNode.set(newId);
       return d;
     }),
 
-    update: newDialog => update(d => {
-      return {...d, [newDialog.id]: newDialog };
+    update: newNode => update(d => {
+      return {...d, [newNode.id]: newNode };
     }),
 
-    touch: dialogId => update(d => {
-      const updatedDialog = d[dialogId];
-      if (updatedDialog.newlyCreated) {
-        delete updatedDialog.newlyCreated;
+    touch: nodeId => update(d => {
+      const updatedNode = d[nodeId];
+      if (updatedNode.newlyCreated) {
+        delete updatedNode.newlyCreated;
       }
-      return {...d, [dialogId]: updatedDialog};
+      return {...d, [nodeId]: updatedNode};
     }),
 
     delete: deleteId => update(d => {
@@ -42,76 +42,76 @@ function createDialogs() {
       return d;
     }),
 
-    deleteBranch: (dialogId, index) => update(d => {
-      const parentBranch = d[dialogId];
+    deleteBranch: (nodeId, index) => update(d => {
+      const parentBranch = d[nodeId];
       parentBranch.branchTo.splice(index, 1);
       if (parentBranch.branchTo.length === 1) {
         // Only one branch remains after deletion; merge last branch back into parent branch
         const updatedLines = [...parentBranch.lines, ...d[parentBranch.branchTo[0]].lines];
-        return {...d, [dialogId]: {...parentBranch, lines: updatedLines, branchTo: null, selectedBranch: null}};
+        return {...d, [nodeId]: {...parentBranch, lines: updatedLines, branchTo: null, selectedBranch: null}};
       } else {
         const newSelectedBranch = index - 1 >= 0 ? index - 1 : 0;
-        const updatedDialog = {...parentBranch, selectedBranch: newSelectedBranch};
-        return {...d, [dialogId]: updatedDialog};
+        const updatedNode = {...parentBranch, selectedBranch: newSelectedBranch};
+        return {...d, [nodeId]: updatedNode};
         }
     }),
 
-    updateLine: (dialogId, index, newLine) => update(d => {
-      const updatedLines = [...d[dialogId].lines];
+    updateLine: (nodeId, index, newLine) => update(d => {
+      const updatedLines = [...d[nodeId].lines];
       updatedLines[index] = newLine;
-      const newDialog = {...d[dialogId], lines: updatedLines};
-      return {...d, [dialogId]: newDialog};
+      const newNode = {...d[nodeId], lines: updatedLines};
+      return {...d, [nodeId]: newNode};
     }),
 
-    insertLineAfter: (dialogId, index) => update(d => {
-      const updatedLines = [...d[dialogId].lines];
+    insertLineAfter: (nodeId, index) => update(d => {
+      const updatedLines = [...d[nodeId].lines];
       let character;
       if (index > 0) {
         character = updatedLines[index - 1].character;
       }
       console.log('index=', index, 'character=', character);
       updatedLines.splice(index + 1, 0, {newlyCreated: true, character});
-      const newDialog = {...d[dialogId], lines: updatedLines};
-      return {...d, [dialogId]: newDialog};
+      const newNode = {...d[nodeId], lines: updatedLines};
+      return {...d, [nodeId]: newNode};
     }),
 
-    branchFrom: (dialogId, index) => update(d => {
+    branchFrom: (nodeId, index) => update(d => {
       const newId = getNewId(Object.keys(d));
-      const newDialog = {id: newId, lines: [{}]};
-      const currentBranchIds = d[dialogId].branchTo || [];
+      const newNode = {id: newId, lines: [{}]};
+      const currentBranchIds = d[nodeId].branchTo || [];
 
       if (index) {
-        const linesToKeep = [...d[dialogId].lines].slice(0, index);
-        const linesToBranchOff = [...d[dialogId].lines].slice(index);
+        const linesToKeep = [...d[nodeId].lines].slice(0, index);
+        const linesToBranchOff = [...d[nodeId].lines].slice(index);
         const branchedId = getNewId([...Object.keys(d), newId]);
         const newBranchTo = [...currentBranchIds, branchedId, newId];
-        const updatedDialog = {...d[dialogId], lines: linesToKeep, branchTo: newBranchTo, selectedBranch: newBranchTo.length - 1};
-        const branchedDialog = {id: branchedId, lines: linesToBranchOff};
-        return {...d, [dialogId]: updatedDialog, [branchedId]: branchedDialog, [newId]: newDialog};
+        const updatedNode = {...d[nodeId], lines: linesToKeep, branchTo: newBranchTo, selectedBranch: newBranchTo.length - 1};
+        const branchedNode = {id: branchedId, lines: linesToBranchOff};
+        return {...d, [nodeId]: updatedNode, [branchedId]: branchedNode, [newId]: newNode};
       } else {
         const newBranchTo = [...currentBranchIds, newId];
-        const updatedDialog = {...d[dialogId], branchTo: newBranchTo, selectedBranch: newBranchTo.length - 1};
-        return {...d, [dialogId]: updatedDialog, [newId]: newDialog};
+        const updatedNode = {...d[nodeId], branchTo: newBranchTo, selectedBranch: newBranchTo.length - 1};
+        return {...d, [nodeId]: updatedNode, [newId]: newNode};
       }
     }),
 
-    selectBranch: (dialogId, index) => update(d => {
-      const updatedDialog = {...d[dialogId], selectedBranch: index };
-      return {...d, [dialogId]: updatedDialog};
+    selectBranch: (nodeId, index) => update(d => {
+      const updatedNode = {...d[nodeId], selectedBranch: index };
+      return {...d, [nodeId]: updatedNode};
     }),
 
-    prependLine: dialogId => update(d => {
-      const newLines = [...d[dialogId].lines];
+    prependLine: nodeId => update(d => {
+      const newLines = [...d[nodeId].lines];
       newLines.unshift({});
-      const newDialog = {...d[dialogId], lines: newLines};
-      return {...d, [dialogId]: newDialog};
+      const newNode = {...d[nodeId], lines: newLines};
+      return {...d, [nodeId]: newNode};
     }),
 
-    deleteLine: (dialogId, index) => update(d => {
-      const newLines = [...d[dialogId].lines];
+    deleteLine: (nodeId, index) => update(d => {
+      const newLines = [...d[nodeId].lines];
       newLines.splice(index, 1);
-      const newDialog = {...d[dialogId], lines: newLines};
-      return {...d, [dialogId]: newDialog};
+      const newNode = {...d[nodeId], lines: newLines};
+      return {...d, [nodeId]: newNode};
     }),
 	};
 }
@@ -123,40 +123,40 @@ function getNewId(ids) {
   return 1;
 }
 
-export const dialogs = createDialogs();
-dialogs.subscribe(value => localStorage.dialogs = JSON.stringify(value));
+export const nodes = createNodes();
+nodes.subscribe(value => localStorage.nodes = JSON.stringify(value));
 
-export const selectedDialog = writable(localStorage.getItem('selectedDialog') || 1);
-selectedDialog.subscribe(value => localStorage.selectedDialog = value);
+export const selectedNode = writable(localStorage.getItem('selectedNode') || 1);
+selectedNode.subscribe(value => localStorage.selectedNode = value);
 
 export const currentPreview = writable();
 export const firstCharacterFieldElements = writable({});
 
-export const dialogSequence = derived([dialogs, selectedDialog], ([$dialogs, $selectedDialog]) => {
-    let currentDialog = $dialogs[$selectedDialog];
-    let dialogSequence = [$selectedDialog];
+export const nodeSequence = derived([nodes, selectedNode], ([$nodes, $selectedNode]) => {
+    let currentNode = $nodes[$selectedNode];
+    let nodeSequence = [$selectedNode];
 
-    while (currentDialog && currentDialog.branchTo && currentDialog.branchTo.length) {
-      let selectedBranchIndex = currentDialog.selectedBranch || 0;
-      dialogSequence.push(currentDialog.branchTo[selectedBranchIndex]);
-      currentDialog = $dialogs[currentDialog.branchTo[selectedBranchIndex]];
+    while (currentNode && currentNode.branchTo && currentNode.branchTo.length) {
+      let selectedBranchIndex = currentNode.selectedBranch || 0;
+      nodeSequence.push(currentNode.branchTo[selectedBranchIndex]);
+      currentNode = $nodes[currentNode.branchTo[selectedBranchIndex]];
     }
 
-    return dialogSequence;
+    return nodeSequence;
   }
 );
 
-export const labelledDialogIds = derived(dialogs, $dialogs => {
-  let ids = Object.keys($dialogs);
-  return ids.filter(id => 'label' in $dialogs[id]);
+export const labelledNodeIds = derived(nodes, $nodes => {
+  let ids = Object.keys($nodes);
+  return ids.filter(id => 'label' in $nodes[id]);
 });
 
-export const characters = derived(dialogs, $dialogs => {
-  let ids = Object.keys($dialogs);
+export const characters = derived(nodes, $nodes => {
+  let ids = Object.keys($nodes);
   let characters = [];
   ids.forEach(id => {
-    if ($dialogs[id].lines && $dialogs[id].lines.length) {
-      $dialogs[id].lines.forEach(line => {
+    if ($nodes[id].lines && $nodes[id].lines.length) {
+      $nodes[id].lines.forEach(line => {
         if (line.character && characters.indexOf(line.character) === -1) {
           characters.push(line.character);
         }

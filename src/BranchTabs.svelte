@@ -1,27 +1,27 @@
 <script>
-  import { dialogs } from './stores.js';
+  import { nodes } from './stores.js';
   import Button from './Button.svelte';
-  export let dialog = {};
+  export let node = {};
 
   function selectBranch(index) {
-    dialogs.selectBranch(dialog.id, index);
+    nodes.selectBranch(node.id, index);
   }
 
   function addSibling() {
-    dialogs.branchFrom(dialog.id);
+    nodes.branchFrom(node.id);
   }
 
   function deleteBranch() {
-    const index = dialog.selectedBranch || 0;
-    dialogs.deleteBranch(dialog.id, index);
+    const index = node.selectedBranch || 0;
+    nodes.deleteBranch(node.id, index);
   }
 </script>
 
 <ul>
-  {#each dialog.branchTo as id, index}
-    <li class="tab" class:selected={(!dialog.selectedBranch && index == 0) || dialog.selectedBranch == index}>
+  {#each node.branchTo as id, index}
+    <li class="tab" class:selected={(!node.selectedBranch && index == 0) || node.selectedBranch == index}>
       <button on:click={() => selectBranch(index)}>
-        {($dialogs[id].lines[0] && $dialogs[id].lines[0].text) || 'empty branch'}
+        {($nodes[id].lines[0] && $nodes[id].lines[0].text) || 'empty branch'}
       </button>
     </li>
   {/each}

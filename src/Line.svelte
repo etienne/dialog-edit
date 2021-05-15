@@ -1,20 +1,20 @@
 <script>
-  import { dialogs, currentPreview, firstCharacterFieldElements } from './stores.js';
+  import { nodes, currentPreview, firstCharacterFieldElements } from './stores.js';
   import Button from './Button.svelte';
   import Field from './Field.svelte';
-  export let line = {}, dialogId, index, preview = false;
+  export let line = {}, nodeId, index, preview = false;
   let textFieldElement;
 
   function characterAction(newCharacter) {
-    dialogs.updateLine(dialogId, index, {...line, character: newCharacter});
+    nodes.updateLine(nodeId, index, {...line, character: newCharacter});
   }
 
   function textAction(newText) {
-    dialogs.updateLine(dialogId, index, {...line, text: newText});
+    nodes.updateLine(nodeId, index, {...line, text: newText});
   }
 
   function insertLine() {
-    dialogs.insertLineAfter(dialogId, index);
+    nodes.insertLineAfter(nodeId, index);
   }
 
   function onEnterInsertLine(e) {
@@ -34,12 +34,12 @@
   }
 
   function touch() {
-    dialogs.updateLine(dialogId, index, {...line, newlyCreated: false});
+    nodes.updateLine(nodeId, index, {...line, newlyCreated: false});
   }
 
   function registerCharacterField(line) {
     if (index === 0) {
-      $firstCharacterFieldElements[dialogId] = line;
+      $firstCharacterFieldElements[nodeId] = line;
     }
   }
 
@@ -74,10 +74,10 @@
     <ul class="actions">
       <li><Button action={insertLine} label="Insert Line" icon="plus"/></li>
       {#if index > 0}
-        <li><Button action={() => dialogs.branchFrom(dialogId, index)} label="Add branch" icon="addBranch"/></li>
+        <li><Button action={() => nodes.branchFrom(nodeId, index)} label="Add branch" icon="addBranch"/></li>
       {/if}
-      <li><Button action={() => currentPreview.set([dialogId, index])} label="Preview" icon="play"/></li>
-      <li><Button action={() => dialogs.deleteLine(dialogId, index)} label="Delete Line" icon="trash"/></li>
+      <li><Button action={() => currentPreview.set([nodeId, index])} label="Preview" icon="play"/></li>
+      <li><Button action={() => nodes.deleteLine(nodeId, index)} label="Delete Line" icon="trash"/></li>
     </ul>
   {/if}
 </div>
