@@ -1,6 +1,6 @@
 <script>
   import { afterUpdate, onMount } from 'svelte';
-  let domNode;
+  let domElement;
   export let value = '',
              action,
              type = '',
@@ -9,16 +9,16 @@
              focusOnMount = false,
              touch = () => {},
              keyDown = () => {},
-             registerNode = () => {};
+             registerElement = () => {};
 
   onMount(() => {
-    registerNode(domNode);
+    registerElement(domElement);
   });
 
   afterUpdate(() => {
     if (focusOnMount) {
-      domNode.focus();
-      domNode.select();
+      domElement.focus();
+      domElement.select();
       touch();
     }
   });
@@ -50,7 +50,7 @@
   <div
     contenteditable="true"
     bind:textContent={value}
-    bind:this={domNode}
+    bind:this={domElement}
     class:preview
     on:input={onInput}
     on:keydown={keyDown}
@@ -60,7 +60,7 @@
 {:else}
   <input
     bind:value={value}
-    bind:this={domNode}
+    bind:this={domElement}
     on:input={onInput}
     on:keydown={keyDown}
     list={type == 'character' ? 'characters' : undefined}

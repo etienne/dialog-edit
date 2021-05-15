@@ -1,19 +1,19 @@
 <script>
   import { dialogs } from './stores.js';
   import Button from './Button.svelte';
-  import Node from './Node.svelte';
+  import Line from './Line.svelte';
   export let dialog;
 </script>
 
-<div class:empty={!(dialog.nodes && dialog.nodes.length)}>
+<div class:empty={!(dialog.lines && dialog.lines.length)}>
   <ul class="actions">
-    <li><Button action={() => dialogs.prependNode(dialog.id)} label="Insert Node" icon="plus"/></li>
+    <li><Button action={() => dialogs.prependLine(dialog.id)} label="Insert Line" icon="plus"/></li>
   </ul>
 </div>
-{#if dialog.nodes && dialog.nodes.length}
+{#if dialog.lines && dialog.lines.length}
   <ul>
-    {#each dialog.nodes as node, index}
-      <li><Node node={node} dialogId={dialog.id} index={index}/></li>
+    {#each dialog.lines as line, index}
+      <li><Line line={line} dialogId={dialog.id} index={index}/></li>
     {/each}
   </ul>
 {/if}

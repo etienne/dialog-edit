@@ -1,83 +1,83 @@
 <script>
-  import { dialogs, currentPreview, firstCharacterFieldNodes } from './stores.js';
+  import { dialogs, currentPreview, firstCharacterFieldElements } from './stores.js';
   import Button from './Button.svelte';
   import Field from './Field.svelte';
-  export let node = {}, dialogId, index, preview = false;
-  let textFieldNode;
+  export let line = {}, dialogId, index, preview = false;
+  let textFieldElement;
 
   function characterAction(newCharacter) {
-    dialogs.updateNode(dialogId, index, {...node, character: newCharacter});
+    dialogs.updateLine(dialogId, index, {...line, character: newCharacter});
   }
 
   function textAction(newText) {
-    dialogs.updateNode(dialogId, index, {...node, text: newText});
+    dialogs.updateLine(dialogId, index, {...line, text: newText});
   }
 
-  function insertNode() {
-    dialogs.insertNodeAfter(dialogId, index);
+  function insertLine() {
+    dialogs.insertLineAfter(dialogId, index);
   }
 
-  function onEnterInsertNode(e) {
+  function onEnterInsertLine(e) {
     if (e.key === 'Enter') {
-      insertNode();
+      insertLine();
       e.preventDefault();
     };
   }
 
   function onEnterFocusNext(e) {
     if (e.key === 'Enter') {
-      if (textFieldNode) {
-        textFieldNode.focus();
+      if (textFieldElement) {
+        textFieldElement.focus();
       }
       e.preventDefault();
     };
   }
 
   function touch() {
-    dialogs.updateNode(dialogId, index, {...node, newlyCreated: false});
+    dialogs.updateLine(dialogId, index, {...line, newlyCreated: false});
   }
 
-  function registerCharacterField(node) {
+  function registerCharacterField(line) {
     if (index === 0) {
-      $firstCharacterFieldNodes[dialogId] = node;
+      $firstCharacterFieldElements[dialogId] = line;
     }
   }
 
-  function registerTextField(node) {
-    textFieldNode = node;
+  function registerTextField(line) {
+    textFieldElement = line;
   }
 </script>
 
 <div>
   <Field
     action={characterAction}
-    focusOnMount={node.newlyCreated}
+    focusOnMount={line.newlyCreated}
     keyDown={onEnterFocusNext}
     placeholder="Character"
     preview={preview}
-    registerNode={registerCharacterField}
+    registerElement={registerCharacterField}
     touch={touch}
     type="character"
-    value={node.character}
+    value={line.character}
   />
   <Field
     action={textAction}
-    keyDown={onEnterInsertNode}
+    keyDown={onEnterInsertLine}
     placeholder="Text"
     preview={preview}
-    registerNode={registerTextField}
+    registerElement={registerTextField}
     type="autoresize"
-    value={node.text}
+    value={line.text}
   />
   
   {#if !preview}
     <ul class="actions">
-      <li><Button action={insertNode} label="Insert Node" icon="plus"/></li>
+      <li><Button action={insertLine} label="Insert Line" icon="plus"/></li>
       {#if index > 0}
         <li><Button action={() => dialogs.branchFrom(dialogId, index)} label="Add branch" icon="addBranch"/></li>
       {/if}
       <li><Button action={() => currentPreview.set([dialogId, index])} label="Preview" icon="play"/></li>
-      <li><Button action={() => dialogs.deleteNode(dialogId, index)} label="Delete Node" icon="trash"/></li>
+      <li><Button action={() => dialogs.deleteLine(dialogId, index)} label="Delete Line" icon="trash"/></li>
     </ul>
   {/if}
 </div>

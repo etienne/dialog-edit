@@ -1,5 +1,5 @@
 <script>
-  import { dialogs, selectedDialog, dialogSequence, firstCharacterFieldNodes } from './stores.js';
+  import { dialogs, selectedDialog, dialogSequence, firstCharacterFieldElements } from './stores.js';
   import BranchTabs from './BranchTabs.svelte';
   import Dialog from './Dialog.svelte';
   import Field from './Field.svelte';
@@ -19,10 +19,10 @@
   function onKeyDown(e) {
     if (e.key === 'Enter') {
       if (startDialog) {
-        const firstNode = $firstCharacterFieldNodes[startDialog.id];
+        const firstLine = $firstCharacterFieldElements[startDialog.id];
 
-        if (firstNode) {
-          firstNode.focus();
+        if (firstLine) {
+          firstLine.focus();
         }
       }
       e.preventDefault();

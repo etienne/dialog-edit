@@ -1,16 +1,16 @@
 <script>
   import { dialogs, currentPreview } from './stores';
   import Button from './Button.svelte';
-  import Node from './Node.svelte';
+  import Line from './Line.svelte';
 
-  let dialogId, index, node, dialog, isLastNode;
+  let dialogId, index, line, dialog, isLastLine;
   $: [dialogId, index] = $currentPreview;
   $: dialog = $dialogs[dialogId];
-  $: node = dialog.nodes[index];
-  $: isLastNode = index == dialog.nodes.length - 1;
+  $: line = dialog.lines[index];
+  $: isLastLine = index == dialog.lines.length - 1;
 
   function advance() {
-    if (!isLastNode) {
+    if (!isLastLine) {
       $currentPreview = [dialogId, index + 1];
     }
   }
@@ -30,16 +30,16 @@
 
 <section>
   <div>
-    <Node node={node} dialogId={dialogId} index={index} preview/>
+    <Line line={line} dialogId={dialogId} index={index} preview/>
   </div>
 
-  {#if isLastNode}
+  {#if isLastLine}
     {#if dialog.branchTo}
       <ul>
         {#each dialog.branchTo as branchTo}
           <li>
             <button on:click={() => pickBranch(branchTo)}>
-              {$dialogs[branchTo].nodes[0].text}
+              {$dialogs[branchTo].lines[0].text}
             </button>
           </li>
         {/each}
