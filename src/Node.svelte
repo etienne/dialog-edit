@@ -54,6 +54,7 @@
     focusOnMount={node.newlyCreated}
     keyDown={onEnterFocusNext}
     placeholder="Character"
+    preview={preview}
     registerNode={registerCharacterField}
     touch={touch}
     type="character"
@@ -63,6 +64,7 @@
     action={textAction}
     keyDown={onEnterInsertNode}
     placeholder="Text"
+    preview={preview}
     registerNode={registerTextField}
     type="autoresize"
     value={node.text}

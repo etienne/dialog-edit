@@ -5,6 +5,7 @@
              action,
              type = '',
              placeholder,
+             preview = false,
              focusOnMount = false,
              touch = () => {},
              keyDown = () => {},
@@ -50,6 +51,7 @@
     contenteditable="true"
     bind:textContent={value}
     bind:this={domNode}
+    class:preview
     on:input={onInput}
     on:keydown={keyDown}
     data-placeholder={placeholder}
@@ -63,6 +65,7 @@
     on:keydown={keyDown}
     list={type == 'character' ? 'characters' : undefined}
     class={className}
+    class:preview
     placeholder={placeholder}
   >
 {/if}
@@ -73,6 +76,11 @@
     display: block;
     border: 1px solid white;
     padding: 0;
+  }
+
+  div.preview {
+    font-size: 1.5em;
+    line-height: 1.3;
   }
 
   input::placeholder {
@@ -116,6 +124,7 @@
 
   input.label {
     font-size: 2em;
+    line-height: 1.3;
     margin: 0.8em 0;
   }
 </style>
