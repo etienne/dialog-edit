@@ -4,7 +4,7 @@
 </script>
 
 <button on:click={() => $selectedNode = node.id} class:selected={$selectedNode == node.id}>
-  {node.label}
+  {node.label || 'untitled node'}
 </button>
 
 <style>

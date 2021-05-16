@@ -32,8 +32,8 @@
 
 <section>
   {#if startNode}
-    {#if startNode.label}
-      <Field value={startNode.label} action={updateNode} type="label" placeholder="Node label" focusOnMount={startNode.newlyCreated} touch={touch} keyDown={onKeyDown}/>
+    {#if startNode.label || startNode.label === ''}
+      <Field value={startNode.label} action={updateNode} type="label" placeholder="untitled node" focusOnMount={startNode.newlyCreated} touch={touch} keyDown={onKeyDown}/>
     {/if}
     {#each $nodeSequence as nodeId}
       <Node node={$nodes[nodeId]}/>

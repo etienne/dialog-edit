@@ -10,7 +10,7 @@ function createNodes() {
       const newId = getNewId(Object.keys(d));
       d[newId] = {
         id: newId,
-        label: 'untitled node',
+        label: '',
         lines: [{}],
         newlyCreated: true,
       };
