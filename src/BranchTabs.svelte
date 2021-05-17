@@ -33,9 +33,8 @@
 
 <style>
   ul {
-    background-color: #e5e5e5;
     display: flex;
-    padding: 5px;
+    padding: 1em 0;
     border-radius: 8px;
     font-size: 0.75em;
   }
@@ -56,8 +55,12 @@
     cursor: pointer;
   }
 
+  li.tab button:hover {
+    background-color: var(--lighter-color);
+  }
+
   li.tab.selected button {
-    background-color: white;
+    background-color: var(--light-color);
   }
 
   li.actions {

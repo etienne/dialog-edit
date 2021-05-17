@@ -13,7 +13,7 @@
 <style>
   button {
     background-color: transparent;
-    border: 1px solid #ccc;
+    border: 1px solid var(--medium-color);
     padding: 0.4em 1em;
     border-radius: 5px;
     margin-right: 1em;
@@ -27,7 +27,7 @@
   }
 
   button:hover {
-    background-color: #eee;
+    background-color: var(--lighter-color);
   }
 
   button.block {
@@ -35,7 +35,7 @@
   }
 
   button.primary {
-    box-shadow: 0 0 0 2px white, 0 0 0 3px #ccc;
+    box-shadow: 0 0 0 2px white, 0 0 0 3px var(--light-color);
   }
 
   button.large {
@@ -43,16 +43,16 @@
   }
 
   button:disabled {
-    border-color: #eee;
+    border-color: var(--lighter-color);
     cursor: auto;
   }
 
   button:disabled:hover {
-    background-color: white;
+    background-color: var(--bg-color);
   }
 
   button.primary:disabled {
-    box-shadow: 0 0 0 2px white, 0 0 0 3px #eee;
+    box-shadow: 0 0 0 2px white, 0 0 0 3px var(--light-color);
   }
   
   button.icon {

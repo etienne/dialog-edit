@@ -65,8 +65,8 @@
   }
 
   div {
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    background-color: var(--lighter-color);
+    border-radius: 6px;
     padding: 2rem;
     margin-bottom: 2rem;
   }
@@ -82,14 +82,14 @@
   button {
     width: 100%;
     margin-bottom: -1px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--medium-color);
     background: transparent;
     padding: 1rem 2rem;
     cursor: pointer;
   }
 
   button:hover {
-    background-color: rgba(0,0,0,0.06);
+    background-color: var(--light-color);
   }
 
   p {

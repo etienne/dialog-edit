@@ -20,10 +20,10 @@
   }
 
   button:hover {
-    background-color: rgba(0,0,0,0.06);
+    background-color: var(--lighter-color);
   }
 
   button.selected {
-    background-color: rgba(0,0,0,0.1);
+    background-color: var(--light-color);
   }
 </style>

@@ -84,7 +84,6 @@
 
 <style>
   ul.actions {
-    opacity: 0.5;
     visibility: hidden;
     display: flex;
   }

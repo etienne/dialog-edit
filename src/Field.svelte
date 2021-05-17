@@ -74,8 +74,9 @@
   input, div {
     width: 100%;
     display: block;
-    border: 1px solid white;
+    border: 1px solid var(--lighter-color);
     padding: 0;
+    background-color: var(--lighter-color);
   }
 
   div.preview {
@@ -125,6 +126,6 @@
   input.label {
     font-size: 2em;
     line-height: 1.3;
-    margin: 0.8em 0;
+    margin: 0.4em 0;
   }
 </style>
