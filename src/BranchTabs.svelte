@@ -34,8 +34,9 @@
 <style>
   ul {
     display: flex;
-    padding: 1em 0;
-    border-radius: 8px;
+    background-color: var(--lighter-color);
+    padding: 0.5em;
+    border-radius: 8px 8px 0 0;
     font-size: 0.75em;
   }
 
@@ -56,11 +57,11 @@
   }
 
   li.tab button:hover {
-    background-color: var(--lighter-color);
+    background-color: var(--light-color);
   }
 
   li.tab.selected button {
-    background-color: var(--light-color);
+    background-color: var(--bg-color);
   }
 
   li.actions {

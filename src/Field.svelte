@@ -74,9 +74,8 @@
   input, div {
     width: 100%;
     display: block;
-    border: 1px solid var(--lighter-color);
+    border: 1px solid var(--bg-color);
     padding: 0;
-    background-color: var(--lighter-color);
   }
 
   div.preview {
@@ -94,7 +93,7 @@
   }
   
   input:hover, div:hover {
-    border: 1px solid #ccc;
+    border: 1px solid var(--light-color);
   }
 
   input.character {

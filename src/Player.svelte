@@ -20,9 +20,7 @@
   }
 </script>
 
-<svelte:body
-	on:click|capture|self={advance}
-/>
+<svelte:body on:click|capture|self={advance}/>
 
 <nav>
   <Button label="Close" icon="chevronLeft" large action={() => currentPreview.set(null)}/>
@@ -65,8 +63,9 @@
   }
 
   div {
-    background-color: var(--lighter-color);
+    border: 1px solid var(--light-color);
     border-radius: 6px;
+    box-shadow: 0 5px 35px 0 var(--light-color);
     padding: 2rem;
     margin-bottom: 2rem;
   }
@@ -82,14 +81,14 @@
   button {
     width: 100%;
     margin-bottom: -1px;
-    border: 1px solid var(--medium-color);
-    background: transparent;
+    border: 1px solid var(--light-color);
+    background-color: var(--bg-color);
     padding: 1rem 2rem;
     cursor: pointer;
   }
 
   button:hover {
-    background-color: var(--light-color);
+    background-color: var(--lighter-color);
   }
 
   p {

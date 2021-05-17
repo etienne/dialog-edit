@@ -30,6 +30,7 @@
 </script>
 
 <section>
+  <span>#{node.id}</span>
   {#if node.label || node.label === ''}
     <Field value={node.label} action={updateNode} type="label" placeholder="untitled node" focusOnMount={node.newlyCreated} touch={touch} keyDown={onKeyDown}/>
   {/if}
@@ -49,9 +50,17 @@
 
 <style>
   section {
-    padding: 1rem 2rem;
-    border-radius: 6px;
-    background-color: var(--lighter-color);
+    position: relative;
+    border-top: 1px solid var(--light-color);
+    padding-top: 0.5em;
+  }
+
+  span {
+    position: absolute;
+    top: 0.5em;
+    right: 0;
+    font-size: 12px;
+    color: var(--medium-color);
   }
 
   ul.actions {
