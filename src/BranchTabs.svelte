@@ -36,7 +36,7 @@
     display: flex;
     background-color: var(--lighter-color);
     padding: 0.5em;
-    border-radius: 8px 8px 0 0;
+    border-radius: 8px;
     font-size: 0.75em;
   }
 
