@@ -2,9 +2,10 @@
 
 :root {
 	--bg-color: white;
-	--lighter-color: #F4F6F8;
-	--light-color: #E9EEF0;
-  --medium-color: #DBE4E9;
+	--lighter-color: #F2F5F6;
+	--light-color: #DFE5E9;
+  --medium-color: #D0D9DE;
+	--medium-alpha-30: rgba(208, 217, 222, 0.3);
 }
 
 html, body {

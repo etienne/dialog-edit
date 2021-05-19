@@ -12,8 +12,8 @@
 
 <style>
   button {
-    background-color: transparent;
-    border: 1px solid var(--medium-color);
+    background-color: var(--medium-alpha-30);
+    border: 0;
     padding: 0.4em 1em;
     border-radius: 5px;
     margin-right: 1em;
@@ -27,7 +27,7 @@
   }
 
   button:hover {
-    background-color: var(--lighter-color);
+    background-color: var(--light-color);
   }
 
   button.block {
@@ -56,7 +56,7 @@
   }
   
   button.icon {
-    padding: 0.2em;
+    padding: 0.25em;
     margin-right: 0.6em;
   }
 
