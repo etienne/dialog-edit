@@ -1,6 +1,8 @@
 <script>
   import { nodes, firstCharacterFieldElements } from './stores.js';
   import Button from './Button.svelte';
+  import BranchTabs from './BranchTabs.svelte';
+  import NodeEnd from './NodeEnd.svelte';
   import Line from './Line.svelte';
   import Field from './Field.svelte';
   export let node;
@@ -45,14 +47,14 @@
       {/each}
     </ul>
   {/if}
+  {#if node.branchTo && node.branchTo.length}
+    <BranchTabs node={node}/>
+  {:else}
+    <NodeEnd node={node}/>
+  {/if}
 </section>
 
 <style>
-  section {
-    position: relative;
-    padding-top: 0.5em;
-  }
-
   ul.actions {
     display: flex;
     visibility: hidden;
