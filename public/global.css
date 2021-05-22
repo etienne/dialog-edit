@@ -2,10 +2,12 @@
 
 :root {
 	--bg-color: white;
-	--lighter-color: #F2F5F6;
+	--lighter-color: #ECEFF1;
 	--light-color: #DFE5E9;
   --medium-color: #D0D9DE;
 	--medium-alpha-30: rgba(208, 217, 222, 0.3);
+	--yellow-alpha-20: rgba(255, 187, 0, 0.2);
+	--yellow-alpha-10: rgba(255, 187, 0, 0.1);
 }
 
 html, body {
@@ -47,10 +49,6 @@ input, button, select, textarea {
 	font-size: inherit;
 	line-height: inherit;
 	color: inherit;
-}
-
-input:disabled {
-	color: #ccc;
 }
 
 button {

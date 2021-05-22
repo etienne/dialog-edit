@@ -3,6 +3,7 @@
   let domElement;
   export let value = '',
              action,
+             disabled = false,
              type = '',
              placeholder,
              preview = false,
@@ -52,6 +53,7 @@
     bind:textContent={value}
     bind:this={domElement}
     class:preview
+    class:disabled
     on:input={onInput}
     on:keydown={keyDown}
     data-placeholder={placeholder}
@@ -67,6 +69,7 @@
     class={className}
     class:preview
     placeholder={placeholder}
+    disabled={disabled}
   >
 {/if}
 
@@ -76,6 +79,10 @@
     display: block;
     border: 1px solid var(--bg-color);
     padding: 0;
+  }
+
+  input:disabled {
+    background-color: var(--bg-color);
   }
 
   div.preview {
@@ -92,7 +99,7 @@
     content: attr(data-placeholder);
   }
   
-  input:hover, div:hover {
+  input:not(:disabled):hover, div:not(.disabled):hover {
     border: 1px solid var(--light-color);
   }
 

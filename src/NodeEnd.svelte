@@ -1,26 +1,25 @@
 <script>
-  import { nodes } from './stores';
+  import { selectLinkFromNode } from './stores';
   import Button from './Button.svelte';
   export let node;
 
-  function jumpTo() {
-
+  function linkTo(e) {
+    $selectLinkFromNode = node.id;
   }
 </script>
 
 <section>
   <span>End of node.</span>
   <div class="actions">
-    <Button action={jumpTo} label="Jump to…" icon="link" block/>
+    <Button action={linkTo} label="Link to…" icon="link" block/>
   </div>
 </section>
 
 <style>
   section {
     display: flex;
-    background-color: var(--lighter-color);
-    padding: 0.5em;
-    border-radius: 8px;
+    border-top: 1px solid var(--lighter-color);
+    padding-top: 0.5em;
     font-size: 0.75em;
     color: var(--medium-color);
   }

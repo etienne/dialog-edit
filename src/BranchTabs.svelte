@@ -1,5 +1,5 @@
 <script>
-  import { nodes } from './stores.js';
+  import { nodes, selectLinkFromNode } from './stores.js';
   import Button from './Button.svelte';
   export let node = {};
 
@@ -25,10 +25,12 @@
       </button>
     </li>
   {/each}
-  <li class="actions">
-    <Button action={deleteBranch} label="Delete Branch" icon="trash" block/>
-    <Button action={addSibling} label="Add Branch" icon="plus" block/>
-  </li>
+  {#if !$selectLinkFromNode}
+    <li class="actions">
+      <Button action={deleteBranch} label="Delete Branch" icon="trash" block/>
+      <Button action={addSibling} label="Add Branch" icon="plus" block/>
+    </li>
+  {/if}
 </ul>
 
 <style>

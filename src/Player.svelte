@@ -12,6 +12,8 @@
   function advance() {
     if (!isLastLine) {
       $currentPreview = [nodeId, index + 1];
+    } else if (node.linkTo) {
+      $currentPreview = [node.linkTo, 0];
     }
   }
 
@@ -31,7 +33,7 @@
     <Line line={line} nodeId={nodeId} index={index} preview/>
   </div>
 
-  {#if isLastLine}
+  {#if isLastLine && !node.linkTo}
     {#if node.branchTo}
       <ul>
         {#each node.branchTo as branchTo}

@@ -3,7 +3,8 @@
 	import NodeList from './NodeList.svelte';
 	import NodeSequence from './NodeSequence.svelte';
 	import Player from './Player.svelte';
-	import { currentPreview } from './stores';
+	import SelectLinkNotification from './SelectLinkNotification.svelte';
+	import { currentPreview, selectLinkFromNode } from './stores';
 </script>
 
 {#if $currentPreview}
@@ -11,6 +12,9 @@
 		<Player/>
 	</main>
 {:else}
+	{#if $selectLinkFromNode}
+		<SelectLinkNotification/>		
+	{/if}
 	<main class="editor">
 		<NodeList/>
 		<NodeSequence/>

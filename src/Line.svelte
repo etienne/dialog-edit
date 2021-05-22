@@ -1,12 +1,22 @@
 <script>
-  import { nodes, currentPreview, firstCharacterFieldElements } from './stores.js';
+  import { nodes, currentPreview, firstCharacterFieldElements, selectLinkFromNode } from './stores.js';
   import Button from './Button.svelte';
   import Field from './Field.svelte';
-  export let line = {}, nodeId, index, preview = false;
-  let textFieldElement;
+  export let line = {}, nodeId, index, preview = false, disabled = false;
+  let node, textFieldElement, canLink, selectable;
+  $: node = $nodes[nodeId];
+  $: canLink = index == node.lines.length - 1 && !node.linkTo && !(node.branchTo && node.branchTo.length);
+  $: selectable = !!$selectLinkFromNode && $selectLinkFromNode !== nodeId;
 
   function characterAction(newCharacter) {
     nodes.updateLine(nodeId, index, {...line, character: newCharacter});
+  }
+
+  function selectAsTarget() {
+    if ($selectLinkFromNode && selectable) {
+      nodes.link($selectLinkFromNode, nodeId, index);
+      $selectLinkFromNode = null;
+    }
   }
 
   function textAction(newText) {
@@ -15,6 +25,11 @@
 
   function insertLine() {
     nodes.insertLineAfter(nodeId, index);
+  }
+
+  function linkTo(e) {
+    $selectLinkFromNode = nodeId;
+    e.stopPropagation();
   }
 
   function onEnterInsertLine(e) {
@@ -48,9 +63,10 @@
   }
 </script>
 
-<div>
+<div on:click={selectAsTarget} class:selectable>
   <Field
     action={characterAction}
+    disabled={disabled}
     focusOnMount={line.newlyCreated}
     keyDown={onEnterFocusNext}
     placeholder="Character"
@@ -62,6 +78,7 @@
   />
   <Field
     action={textAction}
+    disabled={disabled}
     keyDown={onEnterInsertLine}
     placeholder="Text"
     preview={preview}
@@ -71,10 +88,13 @@
   />
   
   {#if !preview}
-    <ul class="actions">
+    <ul class="actions" class:disabled={disabled}>
       <li><Button action={insertLine} label="Insert Line" icon="plus"/></li>
       {#if index > 0}
         <li><Button action={() => nodes.branchFrom(nodeId, index)} label="Add branch" icon="addBranch"/></li>
+      {/if}
+      {#if canLink}
+        <li><Button action={linkTo} label="Link to node…" icon="link"/></li>
       {/if}
       <li><Button action={() => currentPreview.set([nodeId, index])} label="Preview" icon="play"/></li>
       <li><Button action={() => nodes.deleteLine(nodeId, index)} label="Delete Line" icon="trash"/></li>
@@ -83,6 +103,22 @@
 </div>
 
 <style>
+  div.selectable {
+    cursor: pointer;
+    position: relative;
+  }
+
+  div.selectable:hover:after {
+    position: absolute;
+    content: '';
+    background-color: var(--yellow-alpha-20);
+    border-radius: 1em;
+    top: -1em;
+    left: -1em;
+    right: -1em;
+    bottom: 1em;
+  }
+
   ul.actions {
     visibility: hidden;
     display: flex;
@@ -92,7 +128,7 @@
     margin-right: 0.5rem;
   }
 
-  div:hover ul.actions {
+  div:hover ul.actions:not(.disabled) {
     visibility: visible;
   }
 </style>

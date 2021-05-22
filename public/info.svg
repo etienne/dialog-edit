@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="19px" height="19px" viewBox="0 0 19 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>info</title>
+    <g id="info" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0.4">
+        <path d="M9.5,3 C13.0898509,3 16,5.91014913 16,9.5 C16,13.0898509 13.0898509,16 9.5,16 C5.91014913,16 3,13.0898509 3,9.5 C3,5.91014913 5.91014913,3 9.5,3 Z M9.5,4 C6.46243388,4 4,6.46243388 4,9.5 C4,12.5375661 6.46243388,15 9.5,15 C12.5375661,15 15,12.5375661 15,9.5 C15,6.46243388 12.5375661,4 9.5,4 Z" id="Shape" fill="#000000" fill-rule="nonzero" opacity="0.600000024"></path>
+        <polygon id="Path" fill="#000000" fill-rule="nonzero" points="10 9 10 13 9 13 9 9"></polygon>
+        <polygon id="Path" fill="#000000" fill-rule="nonzero" points="10 6 10 8 9 8 9 6"></polygon>
+    </g>
+</svg>
