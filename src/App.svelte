@@ -1,10 +1,10 @@
 <script>
 	import CharacterList from './CharacterList.svelte';
-	import NodeList from './NodeList.svelte';
-	import NodeSequence from './NodeSequence.svelte';
+	import ChapterList from './ChapterList.svelte';
+	import Chapter from './Chapter.svelte';
 	import Player from './Player.svelte';
 	import SelectLinkNotification from './SelectLinkNotification.svelte';
-	import { currentPreview, selectLinkFromNode } from './stores';
+	import { currentPreview, selectLinkFromNode, selectedChapter } from './stores';
 </script>
 
 {#if $currentPreview}
@@ -16,8 +16,10 @@
 		<SelectLinkNotification/>		
 	{/if}
 	<main class="editor">
-		<NodeList/>
-		<NodeSequence/>
+		<ChapterList/>
+		{#if $selectedChapter}
+			<Chapter chapter={$selectedChapter}/>
+		{/if}
 		<CharacterList/>
 	</main>
 {/if}

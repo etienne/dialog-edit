@@ -52,9 +52,9 @@
     nodes.updateLine(nodeId, index, {...line, newlyCreated: false});
   }
 
-  function registerCharacterField(line) {
+  function registerCharacterField(element) {
     if (index === 0) {
-      $firstCharacterFieldElements[nodeId] = line;
+      $firstCharacterFieldElements[nodeId] = element;
     }
   }
 

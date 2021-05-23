@@ -12,16 +12,13 @@
              keyDown = () => {},
              registerElement = () => {};
 
-  onMount(() => {
-    registerElement(domElement);
-  });
-
   afterUpdate(() => {
     if (focusOnMount) {
       domElement.focus();
       domElement.select();
       touch();
     }
+    registerElement(domElement);
   });
 
   function onInput() {

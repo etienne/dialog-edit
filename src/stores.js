@@ -1,4 +1,4 @@
-import { writable, derived } from 'svelte/store';
+import { get, writable, derived } from 'svelte/store';
 
 function createNodes() {
 	const { subscribe, update } = writable(JSON.parse(localStorage.getItem('nodes')) || {});
@@ -10,24 +10,13 @@ function createNodes() {
       const newId = getNewId(Object.keys(n));
       n[newId] = {
         id: newId,
-        label: '',
         lines: [{}],
-        newlyCreated: true,
       };
-      selectedNode.set(newId);
       return n;
     }),
 
     update: newNode => update(n => {
       return {...n, [newNode.id]: newNode };
-    }),
-
-    touch: nodeId => update(n => {
-      const updatedNode = n[nodeId];
-      if (updatedNode.newlyCreated) {
-        delete updatedNode.newlyCreated;
-      }
-      return {...n, [nodeId]: updatedNode};
     }),
 
     delete: deleteId => update(n => {
@@ -151,17 +140,70 @@ function createNodes() {
 export const nodes = createNodes();
 nodes.subscribe(value => localStorage.nodes = JSON.stringify(value));
 
-export const selectedNode = writable(localStorage.getItem('selectedNode') || 1);
-selectedNode.subscribe(value => localStorage.selectedNode = value);
+function createChapters() {
+	const { subscribe, update } = writable(JSON.parse(localStorage.getItem('chapters')) || []);
+
+	return {
+		subscribe,
+
+    add: () => update(c => {
+      const ids = c.map(chapter => chapter.id);
+      const newId = getNewId(ids);
+      c.push({
+        id: newId,
+        name: '',
+        newlyCreated: true,
+        firstNode: get(nextNodeId),
+      });
+      selectedChapterId.set(newId);
+      nodes.add();
+      return c;
+    }),
+
+    update: (updatedChapter) => update(c => {
+      c = c.map(chapter => chapter.id == updatedChapter.id ? updatedChapter : chapter)
+      return c;
+    }),
+
+    touch: chapterId => update(c => {
+      c = c.map(chapter => chapter.id == chapterId ? {...chapter, newlyCreated: false} : chapter);
+      return c;
+    }),
+
+    delete: deleteId => update(c => {
+      const index = c.filter(chapter => chapter.id === deleteId);
+      c.splice(index, 1);
+      if (c.length) {
+        selectedChapterId.set(c[0].id);
+      } else {
+        selectedChapterId.set(null);
+      }
+      return c;
+    }),
+  }
+}
+
+export const chapters = createChapters();
+chapters.subscribe(value => localStorage.chapters = JSON.stringify(value));
+
+export const selectedChapterId = writable(localStorage.getItem('selectedChapterId'));
+selectedChapterId.subscribe(value => localStorage.selectedChapterId = value);
+
+export const selectedChapter = derived([chapters, selectedChapterId], ([$chapters, $selectedChapterId]) => {
+  return $chapters.filter(c => c.id == Number($selectedChapterId))[0];
+});
 
 export const currentPreview = writable();
 export const selectLinkFromNode = writable();
 export const firstCharacterFieldElements = writable({});
 
-export const nodeSequence = derived([nodes, selectedNode], ([$nodes, $selectedNode]) => {
-    let currentNode = $nodes[$selectedNode];
-    let nodeSequence = [$selectedNode];
+export const nodeSequence = derived([nodes, selectedChapter], ([$nodes, $selectedChapter]) => {
+  let nodeSequence = [];
 
+  if ($selectedChapter) {
+    let currentNode = $nodes[$selectedChapter.firstNode];
+    nodeSequence = [$selectedChapter.firstNode];
+  
     while (currentNode && ((currentNode.branchTo && currentNode.branchTo.length) || currentNode.linkTo)) {
       if (currentNode.branchTo) {
         let selectedBranchIndex = currentNode.selectedBranch || 0;
@@ -172,18 +214,17 @@ export const nodeSequence = derived([nodes, selectedNode], ([$nodes, $selectedNo
         currentNode = $nodes[currentNode.linkTo];
       }
     }
-
-    return nodeSequence;
   }
-);
 
-export const labelledNodeIds = derived(nodes, $nodes => {
-  let ids = Object.keys($nodes);
-  return ids.filter(id => 'label' in $nodes[id]);
+  return nodeSequence;
 });
 
 export const linkPairs = derived(nodes, $nodes => {
   return getLinkPairs($nodes);
+});
+
+export const nextNodeId = derived(nodes, $nodes => {
+  return getNewId(Object.keys($nodes));
 });
 
 function getLinkPairs(nodes) {

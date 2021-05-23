@@ -1,10 +1,10 @@
 <script>
-  export let node;
-  import { selectedNode } from './stores.js';
+  export let chapter;
+  import { selectedChapterId } from './stores.js';
 </script>
 
-<button on:click={() => $selectedNode = node.id} class:selected={$selectedNode == node.id}>
-  {node.label || 'untitled node'}
+<button on:click={() => $selectedChapterId = chapter.id} class:selected={$selectedChapterId == chapter.id}>
+  {chapter.name || 'untitled chapter'}
 </button>
 
 <style>
