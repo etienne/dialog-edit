@@ -172,14 +172,23 @@ function createChapters() {
     }),
 
     delete: deleteId => update(c => {
-      const index = c.filter(chapter => chapter.id === deleteId);
-      c.splice(index, 1);
-      if (c.length) {
-        selectedChapterId.set(c[0].id);
+      const ids = c.map(chapter => chapter.id);
+      const index = ids.indexOf(deleteId);
+      if (index >= 0) {
+        c.splice(index, 1);
+        if (c.length) {
+          if (index == 0) {
+            selectedChapterId.set(c[0].id);
+          } else {
+            selectedChapterId.set(c[index - 1].id);
+          }
+        } else {
+          selectedChapterId.set(null);
+        }
+        return c;
       } else {
-        selectedChapterId.set(null);
+        console.error('Could not delete chapter id', deleteId, '; found index', index);
       }
-      return c;
     }),
   }
 }
