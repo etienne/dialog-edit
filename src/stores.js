@@ -141,10 +141,11 @@ export const nodes = createNodes();
 nodes.subscribe(value => localStorage.nodes = JSON.stringify(value));
 
 function createChapters() {
-	const { subscribe, update } = writable(JSON.parse(localStorage.getItem('chapters')) || []);
+  const { subscribe, update, set } = writable(JSON.parse(localStorage.getItem('chapters')) || []);
 
-	return {
-		subscribe,
+  return {
+    subscribe,
+    set,
 
     add: () => update(c => {
       const ids = c.map(chapter => chapter.id);

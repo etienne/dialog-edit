@@ -3,7 +3,7 @@
   import { selectedChapterId } from './stores.js';
 </script>
 
-<button on:click={() => $selectedChapterId = chapter.id} class:selected={$selectedChapterId == chapter.id}>
+<button on:mouseup|capture={() => $selectedChapterId = chapter.id} class:selected={$selectedChapterId == chapter.id}>
   {chapter.name || 'untitled chapter'}
 </button>
 

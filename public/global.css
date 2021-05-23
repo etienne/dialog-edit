@@ -70,7 +70,7 @@ button:focus {
 	box-shadow: 0 0 0 2px var(--medium-color);
 }
 
-input:focus, textarea:focus, div[contenteditable]:focus {
+input:focus, textarea:focus, div[contenteditable]:focus, li:focus {
 	outline-color: var(--medium-color);
 }
 
