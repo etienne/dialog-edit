@@ -2,12 +2,15 @@
 	import CharacterList from './CharacterList.svelte';
 	import ChapterList from './ChapterList.svelte';
 	import Chapter from './Chapter.svelte';
+	import EditorMenu from './EditorMenu.svelte';
 	import Player from './Player.svelte';
+	import PlayerMenu from './PlayerMenu.svelte';
 	import SelectLinkNotification from './SelectLinkNotification.svelte';
 	import { currentPreview, selectLinkFromNode, selectedChapter } from './stores';
 </script>
 
 {#if $currentPreview}
+	<PlayerMenu/>
 	<main class="player">
 		<Player/>
 	</main>
@@ -15,6 +18,7 @@
 	{#if $selectLinkFromNode}
 		<SelectLinkNotification/>		
 	{/if}
+	<EditorMenu/>
 	<main class="editor">
 		<ChapterList/>
 		{#if $selectedChapter}
@@ -24,8 +28,11 @@
 	</main>
 {/if}
 
-
 <style>
+	main {
+		padding: 2em;
+	}
+
 	main.editor {
 		display: grid;
 		grid-template-columns: 31% auto;

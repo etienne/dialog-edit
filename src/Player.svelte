@@ -1,6 +1,5 @@
 <script>
   import { nodes, currentPreview } from './stores';
-  import Button from './Button.svelte';
   import Line from './Line.svelte';
 
   let nodeId, index, line, node, isLastLine;
@@ -23,10 +22,6 @@
 </script>
 
 <svelte:body on:click|capture|self={advance}/>
-
-<nav>
-  <Button label="Close" icon="chevronLeft" large action={() => currentPreview.set(null)}/>
-</nav>
 
 <section>
   <div>
@@ -53,12 +48,6 @@
 </section>
 
 <style>
-  nav {
-    position: absolute;
-    top: 2em;
-    left: 2em;
-  }
-
   section {
     margin: 6em auto;
     max-width: 48em;
