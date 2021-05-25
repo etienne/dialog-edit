@@ -103,8 +103,10 @@ function createNodes() {
       const linkTo = n[nodeId].linkTo;
       const updatedNode = {...n[nodeId], linkTo: null};
       const linkPairs = getLinkPairs(n);
+      const firstNodes = get(chapters).map(c => c.firstNode);
+      const isLinkToFirstNodeOfChapter = firstNodes.indexOf(linkTo) !== -1;
       let mergedNode = {};
-      if (linkPairs[linkTo].length === 2) {
+      if (linkPairs[linkTo].length === 2 && !isLinkToFirstNodeOfChapter) {
         // Only one link pair will exist after deletion. We need to merge the remaining nodes
         linkPairs[linkTo].forEach(j => {
           if (j != nodeId) {

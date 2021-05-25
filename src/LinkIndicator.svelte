@@ -5,7 +5,6 @@
 
   const nodeCount = $linkPairs[node.linkTo].length;
   const isPlural = nodeCount > 1;
-  console.log('node=', node);
 
   function removeLink() {
     nodes.removeLink(node.id);
@@ -18,7 +17,7 @@
     {#if loop}
       A link was hidden because it would create an infinite loop.
     {:else}
-      {nodeCount} link{isPlural ? 's' : ''} lead{isPlural ? '' : 's'} here
+      This is a link. The content below is shared between several nodes.
     {/if}
   </span>
   <div class="actions">
