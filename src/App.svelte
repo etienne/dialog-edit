@@ -30,7 +30,7 @@
 
 <style>
 	main {
-		padding: 2em;
+		padding: 1em;
 	}
 
 	main.editor {

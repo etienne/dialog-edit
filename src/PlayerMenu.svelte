@@ -18,4 +18,8 @@
   ul li {
     margin-right: 0.5rem;
   }
+
+  li {
+    margin-left: auto;
+  }
 </style>
