@@ -105,8 +105,11 @@ function createNodes() {
       const linkPairs = getLinkPairs(n);
       const firstNodes = get(chapters).map(c => c.firstNode);
       const isLinkToFirstNodeOfChapter = firstNodes.indexOf(linkTo) !== -1;
+      const ids = Object.keys(n);
+      const isLinkToBranch = ids.map(id => n[id].branchTo).flat().filter(id => !!id).indexOf(linkTo) !== -1;
+
       let mergedNode = {};
-      if (linkPairs[linkTo].length === 2 && !isLinkToFirstNodeOfChapter) {
+      if (linkPairs[linkTo].length === 2 && !isLinkToFirstNodeOfChapter && !isLinkToBranch) {
         // Only one link pair will exist after deletion. We need to merge the remaining nodes
         linkPairs[linkTo].forEach(j => {
           if (j != nodeId) {
