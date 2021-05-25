@@ -3,10 +3,11 @@
   import Button from './Button.svelte';
   import Field from './Field.svelte';
   export let line = {}, nodeId, index, preview = false, disabled = false;
-  let node, textFieldElement, canLink, selectable;
+  let node, textFieldElement, isLastLine, canLink, selectable;
   $: node = $nodes[nodeId];
-  $: canLink = index == node.lines.length - 1 && !node.linkTo && !(node.branchTo && node.branchTo.length);
-  $: selectable = !!$selectLinkFromNode && $selectLinkFromNode !== nodeId;
+  $: isLastLine = index == node.lines.length - 1;
+  $: canLink = isLastLine && !node.linkTo && !(node.branchTo && node.branchTo.length);
+  $: selectable = !!$selectLinkFromNode && !($selectLinkFromNode === nodeId && isLastLine);
 
   function characterAction(newCharacter) {
     nodes.updateLine(nodeId, index, {...line, character: newCharacter});

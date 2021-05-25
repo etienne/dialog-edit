@@ -1,10 +1,10 @@
 <script>
-  import { nodes, selectLinkFromNode } from './stores.js';
+  import { nodes, selectLinkFromNode, lastNodeWouldCauseInfiniteLoop } from './stores.js';
   import Button from './Button.svelte';
   import BranchTabs from './BranchTabs.svelte';
-  import LinkIndicator from './LinkIndicator.svelte';
   import Line from './Line.svelte';
-  export let node;
+  import LinkIndicator from './LinkIndicator.svelte';
+  export let node, last = false;
 </script>
 
 <section>
@@ -20,7 +20,9 @@
       {/each}
     </ul>
   {/if}
-  {#if node.branchTo && node.branchTo.length}
+  {#if last && $lastNodeWouldCauseInfiniteLoop}
+    <LinkIndicator node={node} loop/>
+  {:else if node.branchTo && node.branchTo.length}
     <BranchTabs node={node}/>
   {:else if node.linkTo}
     <LinkIndicator node={node}/>

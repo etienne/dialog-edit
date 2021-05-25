@@ -1,20 +1,25 @@
 <script>
   import Button from './Button.svelte';
   import { linkPairs, nodes } from './stores';
-  export let node;
+  export let node, loop = false;
 
   const nodeCount = $linkPairs[node.linkTo].length;
   const isPlural = nodeCount > 1;
+  console.log('node=', node);
 
   function removeLink() {
     nodes.removeLink(node.id);
   }
 </script>
 
-<section>
+<section class:loop>
   <img src="/info.svg" alt="">
   <span>
-    {nodeCount} link{isPlural ? 's' : ''} lead{isPlural ? '' : 's'} here
+    {#if loop}
+      A link was hidden because it would create an infinite loop.
+    {:else}
+      {nodeCount} link{isPlural ? 's' : ''} lead{isPlural ? '' : 's'} here
+    {/if}
   </span>
   <div class="actions">
     <Button action={removeLink} icon="breakLink" label="Break link to the following node"/>
@@ -28,6 +33,10 @@
     padding: 0.5em;
     border-radius: 8px;
     font-size: 0.75em;
+  }
+
+  section.loop {
+    background-color: var(--red-alpha-10);
   }
 
   span {

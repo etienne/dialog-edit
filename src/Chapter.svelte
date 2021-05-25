@@ -44,8 +44,8 @@
   />
 
   {#if startNode}
-    {#each $nodeSequence as nodeId}
-      <Node node={$nodes[nodeId]}/>
+    {#each $nodeSequence as nodeId, index}
+      <Node node={$nodes[nodeId]} last={$nodeSequence.length == index + 1}/>
     {/each}
   {/if}
 </section>

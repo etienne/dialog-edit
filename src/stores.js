@@ -206,6 +206,7 @@ export const selectedChapter = derived([chapters, selectedChapterId], ([$chapter
 export const currentPreview = writable();
 export const selectLinkFromNode = writable();
 export const firstCharacterFieldElements = writable({});
+export const lastNodeWouldCauseInfiniteLoop = writable(false);
 
 export const nodeSequence = derived([nodes, selectedChapter], ([$nodes, $selectedChapter]) => {
   let nodeSequence = [];
@@ -213,15 +214,28 @@ export const nodeSequence = derived([nodes, selectedChapter], ([$nodes, $selecte
   if ($selectedChapter) {
     let currentNode = $nodes[$selectedChapter.firstNode];
     nodeSequence = [$selectedChapter.firstNode];
+    lastNodeWouldCauseInfiniteLoop.set(false);
   
     while (currentNode && ((currentNode.branchTo && currentNode.branchTo.length) || currentNode.linkTo)) {
       if (currentNode.branchTo) {
         let selectedBranchIndex = currentNode.selectedBranch || 0;
-        nodeSequence.push(currentNode.branchTo[selectedBranchIndex]);
-        currentNode = $nodes[currentNode.branchTo[selectedBranchIndex]];
+        let nextNodeId = currentNode.branchTo[selectedBranchIndex];
+        if (nodeSequence.indexOf(nextNodeId) !== -1) {
+          lastNodeWouldCauseInfiniteLoop.set(true);
+          break;
+        } else {
+          nodeSequence.push(nextNodeId);
+          currentNode = $nodes[nextNodeId];
+        }
       } else {
-        nodeSequence.push(currentNode.linkTo);
-        currentNode = $nodes[currentNode.linkTo];
+        let nextNodeId = currentNode.linkTo;
+        if (nodeSequence.indexOf(nextNodeId) !== -1) {
+          lastNodeWouldCauseInfiniteLoop.set(true);
+          break;
+        } else {
+          nodeSequence.push(nextNodeId);
+          currentNode = $nodes[nextNodeId];
+        }
       }
     }
   }
