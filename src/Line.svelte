@@ -1,5 +1,5 @@
 <script>
-  import { nodes, currentPreview, firstCharacterFieldElements, selectLinkFromNode } from './stores.js';
+  import { nodes, currentPreview, firstCharacterFieldElements, selectLinkFromNode, playerHistory } from './stores.js';
   import Button from './Button.svelte';
   import Field from './Field.svelte';
   export let line = {}, nodeId, index, preview = false, disabled = false;
@@ -31,6 +31,15 @@
   function linkTo(e) {
     $selectLinkFromNode = nodeId;
     e.stopPropagation();
+  }
+
+  function play() {
+    let history = [];
+    for (let i = 0; i <= index; i++) {
+      history.push([nodeId, i]);
+    }
+    $currentPreview = [nodeId, index];
+    $playerHistory = history;
   }
 
   function onEnterInsertLine(e) {
@@ -97,7 +106,7 @@
       {#if canLink}
         <li><Button action={linkTo} label="Link to node…" icon="link"/></li>
       {/if}
-      <li><Button action={() => currentPreview.set([nodeId, index])} label="Preview" icon="play"/></li>
+      <li><Button action={play} label="Play" icon="play"/></li>
       <li><Button action={() => nodes.deleteLine(nodeId, index)} label="Delete Line" icon="trash"/></li>
     </ul>
   {/if}

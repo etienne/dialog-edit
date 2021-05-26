@@ -1,5 +1,5 @@
 <script>
-  import { nodes, currentPreview } from './stores';
+  import { nodes, currentPreview, playerHistory } from './stores';
   import Line from './Line.svelte';
 
   let nodeId, index, line, node, isLastLine;
@@ -9,10 +9,14 @@
   $: isLastLine = index == node.lines.length - 1;
 
   function advance() {
+    let next;
     if (!isLastLine) {
-      $currentPreview = [nodeId, index + 1];
+      next = [nodeId, index + 1];
+      $currentPreview = next;
+      $playerHistory.push(next);
     } else if (node.linkTo) {
       $currentPreview = [node.linkTo, 0];
+      $playerHistory.push(next);
     }
   }
 

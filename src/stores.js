@@ -217,6 +217,7 @@ export const currentPreview = writable();
 export const selectLinkFromNode = writable();
 export const firstCharacterFieldElements = writable({});
 export const lastNodeWouldCauseInfiniteLoop = writable(false);
+export const playerHistory = writable([]);
 
 export const nodeSequence = derived([nodes, selectedChapter], ([$nodes, $selectedChapter]) => {
   let nodeSequence = [];

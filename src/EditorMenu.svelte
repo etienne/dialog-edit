@@ -1,7 +1,8 @@
 <script>
   import Button from './Button.svelte';
   import Menu from './Menu.svelte';
-  import { chapters, selectedChapter, currentPreview, nodes } from './stores.js';
+import Player from './Player.svelte';
+  import { chapters, selectedChapter, currentPreview, nodes, playerHistory } from './stores.js';
   let firstNode;
 
   $: if ($selectedChapter && $selectedChapter.firstNode) {
@@ -19,7 +20,9 @@
   }
 
   function play() {
-    $currentPreview = [firstNode, 0];
+    let first = [firstNode, 0];
+    $currentPreview = first;
+    $playerHistory = [first];
   }
 
   function importData() {
@@ -55,7 +58,7 @@
       date.getHours(),
       date.getMinutes(),
     ];
-    element.download = `DialogEdit ${year}-${month}-${day} ${hours}:${minutes}.json`;
+    element.download = `Dialog ${year}-${month}-${day} ${hours}:${minutes}.json`;
     element.href = window.URL.createObjectURL(blob);
     element.click();
   }
