@@ -47,7 +47,15 @@
     };
     const element = document.createElement("a");
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-    element.download = "Dialog.json";
+    const date = new Date();
+    const [year, month, day, hours, minutes] = [
+      date.getFullYear(),
+      String(date.getMonth() + 1).padStart(2, '0'),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+    ];
+    element.download = `DialogEdit ${year}-${month}-${day} ${hours}:${minutes}.json`;
     element.href = window.URL.createObjectURL(blob);
     element.click();
   }
