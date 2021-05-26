@@ -77,10 +77,14 @@ function createNodes() {
         const newBranchTo = [...currentBranchIds, branchedId, newId];
         const updatedNode = {...n[nodeId], lines: linesToKeep, branchTo: newBranchTo, selectedBranch: newBranchTo.length - 1};
         const branchedNode = {id: branchedId, lines: linesToBranchOff};
+        const character = branchedNode.lines[0].character;
+        newNode.lines = [{character}];
         return {...n, [nodeId]: updatedNode, [branchedId]: branchedNode, [newId]: newNode};
       } else {
         const newBranchTo = [...currentBranchIds, newId];
         const updatedNode = {...n[nodeId], branchTo: newBranchTo, selectedBranch: newBranchTo.length - 1};
+        const character = n[currentBranchIds[0]].lines[0].character;
+        newNode.lines = [{character}];
         return {...n, [nodeId]: updatedNode, [newId]: newNode};
       }
     }),

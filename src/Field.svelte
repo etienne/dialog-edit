@@ -1,5 +1,5 @@
 <script>
-  import { afterUpdate, onMount } from 'svelte';
+  import { afterUpdate } from 'svelte';
   let domElement;
   export let value = '',
              action,
