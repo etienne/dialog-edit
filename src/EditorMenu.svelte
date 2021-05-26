@@ -1,11 +1,13 @@
 <script>
   import Button from './Button.svelte';
   import Menu from './Menu.svelte';
-  import { chapters, selectedChapter, currentPreview } from './stores.js';
+  import { chapters, selectedChapter, currentPreview, nodes } from './stores.js';
   let firstNode;
 
   $: if ($selectedChapter && $selectedChapter.firstNode) {
     firstNode = $selectedChapter.firstNode;
+  } else {
+    firstNode = null;
   }
 
   function addChapter() {
@@ -19,16 +21,50 @@
   function play() {
     $currentPreview = [firstNode, 0];
   }
+
+  function importData() {
+    const element = document.createElement("input");
+    element.type = 'file';
+    element.click();
+    element.addEventListener('change', () => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = e.target.result;
+        const json = JSON.parse(content);
+        if (json.chapters && json.nodes) {
+          $chapters = json.chapters;
+          $nodes = json.nodes;
+        }
+      };
+      reader.readAsText(element.files[0]);
+    });
+  }
+
+  function exportData() {
+    const data = {
+      chapters: $chapters,
+      nodes: $nodes,
+    };
+    const element = document.createElement("a");
+    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+    element.download = "Dialog.json";
+    element.href = window.URL.createObjectURL(blob);
+    element.click();
+  }
 </script>
 
 <Menu>
   <ul>
-    <li><Button action={addChapter} label="New Chapter" icon="plus"/></li>
+    <li class:marginRight={!$chapters.length}><Button action={addChapter} label="New Chapter" large icon="plus"/></li>
     {#if $chapters.length}
-      <li><Button action={deleteChapter} label="Delete Chapter" icon="trash"/></li>
+      <li class="marginRight"><Button action={deleteChapter} label="Delete Chapter" large icon="trash"/></li>
+    {/if}
+    <li class="import"><Button action={importData} label="Import" large icon="import"/></li>
+    {#if $chapters.length}
+      <li><Button action={exportData} label="Export" large icon="export"/></li>
     {/if}
     {#if firstNode}
-      <li class="play"><Button action={play} label="Play" icon="play"/></li>
+      <li class="play"><Button action={play} label="Play" large icon="play"/></li>
     {/if}
   </ul>
 </Menu>
@@ -42,7 +78,7 @@
     margin-right: 0.5rem;
   }
 
-  li.play {
-    margin-left: auto;
+  li.marginRight {
+    margin-right: auto;
   }
 </style>

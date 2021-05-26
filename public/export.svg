@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="19px" height="19px" viewBox="0 0 19 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>export</title>
+    <g id="export" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0.4">
+        <g id="Group" transform="translate(9.500000, 9.000000) rotate(-180.000000) translate(-9.500000, -9.000000) translate(4.000000, 3.000000)" fill="#000000" fill-rule="nonzero">
+            <path d="M4.98198052,-0.560660172 L9.2246212,3.68198052 L4.98198052,7.9246212 L4.27487373,7.21751442 L7.26666017,4.22433983 L1.86066017,4.2246212 L1.86066017,3.2246212 L7.35266017,3.22433983 L4.27487373,0.146446609 L4.98198052,-0.560660172 Z" id="Combined-Shape" transform="translate(5.542641, 3.681981) scale(1, -1) rotate(-270.000000) translate(-5.542641, -3.681981) "></path>
+            <polygon id="Path" opacity="0.600000024" points="1 7 1 11 10 11 10 7 11 7 11 12 0 12 0 7"></polygon>
+        </g>
+    </g>
+</svg>

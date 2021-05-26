@@ -1,27 +1,30 @@
 <script>
-  export let action, label, icon = null, block = false, large = false, primary = false;
+  export let action, label, icon = null, block = false, large = false, primary = false, showLabel = false;
 </script>
 
-<button on:click={action} class:icon class:block class:large class:primary>
+<button on:click={action} class:icon class:block class:large class:primary data-label={label}>
   {#if icon}
     <img src={`/${icon}.svg`} alt={label}>
-  {:else}
-    {label}
+  {/if}
+  {#if !icon || showLabel}
+    <span>{label}</span>
   {/if}
 </button>
 
 <style>
   button {
+    display: flex;
     background-color: var(--medium-alpha-30);
     border: 0;
     padding: 0.4em 1em;
     border-radius: 5px;
     margin-right: 1em;
     cursor: pointer;
-    font-size: 13px;
-    text-transform: uppercase;
+    font-size: 0.75em;
+    line-height: 19px;
+    color: var(--dark-color);
   }
-  
+
   button:last-child {
     margin-right: 0;
   }
@@ -58,6 +61,7 @@
   button.icon {
     padding: 0.25em;
     margin-right: 0.6em;
+    position: relative;
   }
 
   button.icon.large {
@@ -70,5 +74,9 @@
 
   button img {
     display: block;
+  }
+
+  button.icon span {
+    padding: 0 0.4em;
   }
 </style>

@@ -1,10 +1,11 @@
 import { get, writable, derived } from 'svelte/store';
 
 function createNodes() {
-	const { subscribe, update } = writable(JSON.parse(localStorage.getItem('nodes')) || {});
+	const { subscribe, update, set } = writable(JSON.parse(localStorage.getItem('nodes')) || {});
 
 	return {
 		subscribe,
+    set,
 
     add: () => update(n => {
       const newId = getNewId(Object.keys(n));

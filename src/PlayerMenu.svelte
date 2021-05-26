@@ -6,7 +6,7 @@
 
 <Menu>
   <ul>
-    <li><Button label="Close" icon="x" action={() => currentPreview.set(null)}/></li>
+    <li><Button label="Exit Player" large icon="x" action={() => currentPreview.set(null)}/></li>
   </ul>
 </Menu>
 
