@@ -27,7 +27,7 @@
 <style>
   section {
     display: flex;
-    background-color: var(--yellow-alpha-10);
+    background-color: var(--green-alpha-10);
     padding: 0.5em;
     border-radius: 8px;
     font-size: 0.75em;

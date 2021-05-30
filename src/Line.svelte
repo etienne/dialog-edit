@@ -121,7 +121,7 @@
   div.selectable:hover:after {
     position: absolute;
     content: '';
-    background-color: var(--yellow-alpha-20);
+    background-color: var(--green-alpha-20);
     border-radius: 1em;
     top: -1em;
     left: -1em;
