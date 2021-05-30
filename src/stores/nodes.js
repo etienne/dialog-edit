@@ -1,4 +1,6 @@
 import { get, writable, derived } from 'svelte/store';
+import { chapters, selectedChapter } from './chapters';
+import { getNewId } from './helpers';
 
 function createNodes() {
 	const { subscribe, update, set } = writable(JSON.parse(localStorage.getItem('nodes')) || {});
@@ -150,75 +152,6 @@ function createNodes() {
 export const nodes = createNodes();
 nodes.subscribe(value => localStorage.nodes = JSON.stringify(value));
 
-function createChapters() {
-  const { subscribe, update, set } = writable(JSON.parse(localStorage.getItem('chapters')) || []);
-
-  return {
-    subscribe,
-    set,
-
-    add: () => update(c => {
-      const ids = c.map(chapter => chapter.id);
-      const newId = getNewId(ids);
-      c.push({
-        id: newId,
-        name: '',
-        newlyCreated: true,
-        firstNode: get(nextNodeId),
-      });
-      selectedChapterId.set(newId);
-      nodes.add();
-      return c;
-    }),
-
-    update: (updatedChapter) => update(c => {
-      c = c.map(chapter => chapter.id == updatedChapter.id ? updatedChapter : chapter)
-      return c;
-    }),
-
-    touch: chapterId => update(c => {
-      c = c.map(chapter => chapter.id == chapterId ? {...chapter, newlyCreated: false} : chapter);
-      return c;
-    }),
-
-    delete: deleteId => update(c => {
-      const ids = c.map(chapter => chapter.id);
-      const index = ids.indexOf(deleteId);
-      if (index >= 0) {
-        c.splice(index, 1);
-        if (c.length) {
-          if (index == 0) {
-            selectedChapterId.set(c[0].id);
-          } else {
-            selectedChapterId.set(c[index - 1].id);
-          }
-        } else {
-          selectedChapterId.set(null);
-        }
-        return c;
-      } else {
-        console.error('Could not delete chapter id', deleteId, '; found index', index);
-      }
-    }),
-  }
-}
-
-export const chapters = createChapters();
-chapters.subscribe(value => localStorage.chapters = JSON.stringify(value));
-
-export const selectedChapterId = writable(localStorage.getItem('selectedChapterId'));
-selectedChapterId.subscribe(value => localStorage.selectedChapterId = value);
-
-export const selectedChapter = derived([chapters, selectedChapterId], ([$chapters, $selectedChapterId]) => {
-  return $chapters.filter(c => c.id == Number($selectedChapterId))[0];
-});
-
-export const currentPreview = writable();
-export const selectLinkFromNode = writable();
-export const firstCharacterFieldElements = writable({});
-export const lastNodeWouldCauseInfiniteLoop = writable(false);
-export const playerHistory = writable([]);
-
 export const nodeSequence = derived([nodes, selectedChapter], ([$nodes, $selectedChapter]) => {
   let nodeSequence = [];
 
@@ -262,22 +195,6 @@ export const nextNodeId = derived(nodes, $nodes => {
   return getNewId(Object.keys($nodes));
 });
 
-function getLinkPairs(nodes) {
-  let ids = Object.keys(nodes);
-  let linkPairs = {};
-  ids.forEach(id => {
-    let linkTo = nodes[id].linkTo;
-    if (linkTo) {
-      if (linkPairs[linkTo]) {
-        linkPairs[linkTo].push(id);
-      } else {
-        linkPairs[linkTo] = [id];
-      }
-    }
-  });
-  return linkPairs;
-}
-
 export const characters = derived(nodes, $nodes => {
   let ids = Object.keys($nodes);
   let characters = [];
@@ -293,11 +210,23 @@ export const characters = derived(nodes, $nodes => {
   return characters;
 });
 
-function getNewId(ids) {
-  if (ids && Array.isArray(ids) && ids.length) {
-    return ids.reduce((maxId, id) => Math.max(id, maxId), -1) + 1;
-  }
-  return 1;
+export const selectLinkFromNode = writable();
+export const lastNodeWouldCauseInfiniteLoop = writable(false);
+
+function getLinkPairs(nodes) {
+  let ids = Object.keys(nodes);
+  let linkPairs = {};
+  ids.forEach(id => {
+    let linkTo = nodes[id].linkTo;
+    if (linkTo) {
+      if (linkPairs[linkTo]) {
+        linkPairs[linkTo].push(id);
+      } else {
+        linkPairs[linkTo] = [id];
+      }
+    }
+  });
+  return linkPairs;
 }
 
 function split(node, index, newId) {

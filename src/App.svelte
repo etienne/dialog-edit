@@ -6,7 +6,9 @@
 	import Player from './Player.svelte';
 	import PlayerMenu from './PlayerMenu.svelte';
 	import SelectLinkNotification from './SelectLinkNotification.svelte';
-	import { currentPreview, selectLinkFromNode, selectedChapter } from './stores';
+	import { currentPreview } from './stores/player';
+	import { selectLinkFromNode } from './stores/nodes';
+	import { selectedChapter } from './stores/chapters';
 </script>
 
 {#if $currentPreview}

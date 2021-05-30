@@ -1,5 +1,5 @@
 <script>
-  import { nodes, selectLinkFromNode, lastNodeWouldCauseInfiniteLoop } from './stores.js';
+  import { nodes, selectLinkFromNode, lastNodeWouldCauseInfiniteLoop } from './stores/nodes';
   import Button from './Button.svelte';
   import BranchTabs from './BranchTabs.svelte';
   import Line from './Line.svelte';

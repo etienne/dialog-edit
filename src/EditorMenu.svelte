@@ -1,8 +1,9 @@
 <script>
   import Button from './Button.svelte';
   import Menu from './Menu.svelte';
-import Player from './Player.svelte';
-  import { chapters, selectedChapter, selectedChapterId, currentPreview, nodes, playerHistory } from './stores.js';
+  import { chapters, selectedChapter, selectedChapterId } from './stores/chapters';
+  import { currentPreview, playerHistory } from './stores/player';
+  import { nodes, nextNodeId } from './stores/nodes';
   let firstNode;
 
   $: if ($selectedChapter && $selectedChapter.firstNode) {
@@ -12,7 +13,9 @@ import Player from './Player.svelte';
   }
 
   function addChapter() {
-    chapters.add();
+    const firstNodeId = $nextNodeId;
+    nodes.add();
+    chapters.add(firstNodeId);
   }
 
   function deleteChapter() {

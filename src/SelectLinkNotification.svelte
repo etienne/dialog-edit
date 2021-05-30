@@ -1,6 +1,6 @@
 <script>
   import Button from './Button.svelte';
-  import { selectLinkFromNode } from './stores';
+  import { selectLinkFromNode } from './stores/nodes';
 
   function cancel() {
     $selectLinkFromNode = null;

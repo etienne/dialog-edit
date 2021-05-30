@@ -1,5 +1,6 @@
 <script>
-  import { nodes, currentPreview, playerHistory } from './stores';
+  import { nodes } from './stores/nodes';
+  import { currentPreview, playerHistory } from './stores/player';
   import Line from './Line.svelte';
 
   let nodeId, index, line, node, isLastLine;

@@ -1,5 +1,7 @@
 <script>
-  import { chapters, nodes, nodeSequence, selectLinkFromNode, firstCharacterFieldElements } from './stores.js';
+  import { chapters } from './stores/chapters';
+  import { nodes, nodeSequence, selectLinkFromNode } from './stores/nodes';
+  import { firstCharacterFieldElements } from './stores/ui.js';
   import Node from './Node.svelte';
   import Field from './Field.svelte';
   export let chapter;

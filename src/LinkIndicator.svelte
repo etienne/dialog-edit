@@ -1,6 +1,6 @@
 <script>
   import Button from './Button.svelte';
-  import { nodes } from './stores';
+  import { nodes } from './stores/nodes';
   export let node, loop = false;
   let image;
   $: image = loop ? '/warning.svg' : '/info.svg';

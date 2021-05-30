@@ -1,7 +1,7 @@
 <script>
   import Button from './Button.svelte';
   import Menu from './Menu.svelte';
-  import { currentPreview, playerHistory } from './stores';
+  import { currentPreview, playerHistory } from './stores/player';
 
   let currentHistoryIndex, disableBack, disableForward;
   $: currentHistoryIndex = $playerHistory.indexOf($currentPreview);

@@ -1,5 +1,5 @@
 <script>
-  import { characters } from './stores';
+  import { characters } from './stores/nodes';
 </script>
 
 <datalist id="characters">

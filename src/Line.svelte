@@ -1,5 +1,7 @@
 <script>
-  import { nodes, currentPreview, firstCharacterFieldElements, selectLinkFromNode, playerHistory } from './stores.js';
+  import { nodes, selectLinkFromNode } from './stores/nodes';
+  import { currentPreview, playerHistory } from './stores/player';
+  import { firstCharacterFieldElements } from './stores/ui';
   import Button from './Button.svelte';
   import Field from './Field.svelte';
   export let line = {}, nodeId, index, preview = false, disabled = false;

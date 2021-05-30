@@ -1,7 +1,7 @@
 <script>
   import { flip } from 'svelte/animate';
   import { dndzone } from 'svelte-dnd-action'
-  import { chapters, selectedChapterId } from './stores.js';
+  import { chapters, selectedChapterId } from './stores/chapters';
   const flipDurationMs = 200;
   const dropTargetStyle = {};
   let items;

@@ -1,5 +1,5 @@
 <script>
-  import { selectLinkFromNode } from './stores';
+  import { selectLinkFromNode } from './stores/nodes';
   import Button from './Button.svelte';
   export let node;
 
