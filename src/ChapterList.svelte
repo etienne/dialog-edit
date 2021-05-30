@@ -4,7 +4,8 @@
   import { chapters, selectedChapterId } from './stores.js';
   const flipDurationMs = 200;
   const dropTargetStyle = {};
-  let items = $chapters;
+  let items;
+  $: items = $chapters;
 
   function handleDndConsider(e) {
 		items = e.detail.items;
