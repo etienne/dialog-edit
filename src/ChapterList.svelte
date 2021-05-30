@@ -4,13 +4,14 @@
   import { chapters, selectedChapterId } from './stores.js';
   const flipDurationMs = 200;
   const dropTargetStyle = {};
+  let items = $chapters;
 
   function handleDndConsider(e) {
-		$chapters = e.detail.items;
+		items = e.detail.items;
 	}
 
   function handleDndFinalize(e) {
-		$chapters = e.detail.items;
+		$chapters = items = e.detail.items;
 	}
 
   function selectChapter(chapter) {
@@ -19,9 +20,9 @@
 </script>
 
 <aside>
-  {#if $chapters.length}
-    <ul class="chapters" use:dndzone={{items: $chapters, flipDurationMs, dropTargetStyle}} on:consider={handleDndConsider} on:finalize={handleDndFinalize}>
-      {#each $chapters as chapter(chapter.id)}
+  {#if items.length}
+    <ul class="chapters" use:dndzone={{items, flipDurationMs, dropTargetStyle}} on:consider={handleDndConsider} on:finalize={handleDndFinalize}>
+      {#each items as chapter(chapter.id)}
         <li animate:flip={{duration: flipDurationMs}} on:click={selectChapter(chapter)} class:selected={$selectedChapterId == chapter.id}>
           {chapter.name || 'untitled chapter'}
         </li>

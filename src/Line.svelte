@@ -5,7 +5,7 @@
   export let line = {}, nodeId, index, preview = false, disabled = false;
   let node, textFieldElement, isLastLine, canLink, selectable;
   $: node = $nodes[nodeId];
-  $: isLastLine = index == node.lines.length - 1;
+  $: isLastLine = node && (index == node.lines.length - 1);
   $: canLink = isLastLine && !node.linkTo && !(node.branchTo && node.branchTo.length);
   $: selectable = !!$selectLinkFromNode && !($selectLinkFromNode === nodeId && isLastLine);
 

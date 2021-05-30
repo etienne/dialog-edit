@@ -1,10 +1,7 @@
 <script>
   import Button from './Button.svelte';
-  import { linkPairs, nodes } from './stores';
+  import { nodes } from './stores';
   export let node, loop = false;
-
-  const nodeCount = $linkPairs[node.linkTo].length;
-  const isPlural = nodeCount > 1;
 
   function removeLink() {
     nodes.removeLink(node.id);

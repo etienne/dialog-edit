@@ -2,7 +2,7 @@
   import Button from './Button.svelte';
   import Menu from './Menu.svelte';
 import Player from './Player.svelte';
-  import { chapters, selectedChapter, currentPreview, nodes, playerHistory } from './stores.js';
+  import { chapters, selectedChapter, selectedChapterId, currentPreview, nodes, playerHistory } from './stores.js';
   let firstNode;
 
   $: if ($selectedChapter && $selectedChapter.firstNode) {
@@ -37,6 +37,7 @@ import Player from './Player.svelte';
         if (json.chapters && json.nodes) {
           $chapters = json.chapters;
           $nodes = json.nodes;
+          $selectedChapterId = json.chapters[0].id;
         }
       };
       reader.readAsText(element.files[0]);
