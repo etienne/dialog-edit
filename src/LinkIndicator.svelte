@@ -2,6 +2,8 @@
   import Button from './Button.svelte';
   import { nodes } from './stores';
   export let node, loop = false;
+  let image;
+  $: image = loop ? '/warning.svg' : '/info.svg';
 
   function removeLink() {
     nodes.removeLink(node.id);
@@ -9,7 +11,7 @@
 </script>
 
 <section class:loop>
-  <img src="/info.svg" alt="">
+  <img src={image} alt="">
   <span>
     {#if loop}
       A link was hidden because it would create an infinite loop.
