@@ -1,27 +1,26 @@
 <script>
   import Button from './Button.svelte';
   import Menu from './Menu.svelte';
-  import { currentPreview, playerHistory } from './stores/player';
-
-  let currentHistoryIndex, disableBack, disableForward;
-  $: currentHistoryIndex = $playerHistory.indexOf($currentPreview);
-  $: disableBack = currentHistoryIndex <= 0;
-  $: disableForward = currentHistoryIndex >= $playerHistory.length - 1;
+  import { playerHistory, currentPlayerIndex, allowBack, allowForward } from './stores/player';
 
   function back() {
-    $currentPreview = $playerHistory[currentHistoryIndex - 1];
+    currentPlayerIndex.back();
   }
 
   function forward() {
-    $currentPreview = $playerHistory[currentHistoryIndex + 1];
+    currentPlayerIndex.forward();
+  }
+
+  function exit() {
+    playerHistory.reset();
   }
 </script>
 
 <Menu>
   <ul>
-    <li><Button label="Back" large disabled={disableBack} icon="chevronLeft" action={back}/></li>
-    <li><Button label="Forward" large disabled={disableForward} icon="chevronRight" action={forward}/></li>
-    <li class="exit"><Button label="Exit Player" large icon="x" action={() => currentPreview.set(null)}/></li>
+    <li><Button label="Back" large disabled={!$allowBack} icon="chevronLeft" action={back}/></li>
+    <li><Button label="Forward" large disabled={!$allowForward} icon="chevronRight" action={forward}/></li>
+    <li class="exit"><Button label="Exit Player" large icon="x" action={exit}/></li>
   </ul>
 </Menu>
 

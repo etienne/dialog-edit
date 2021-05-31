@@ -1,6 +1,6 @@
 <script>
   import { nodes, selectLinkFromNode } from './stores/nodes';
-  import { currentPreview, playerHistory } from './stores/player';
+  import { playerHistory } from './stores/player';
   import { firstCharacterFieldElements } from './stores/ui';
   import Button from './Button.svelte';
   import Field from './Field.svelte';
@@ -36,12 +36,7 @@
   }
 
   function play() {
-    let history = [];
-    for (let i = 0; i <= index; i++) {
-      history.push([nodeId, i]);
-    }
-    $currentPreview = [nodeId, index];
-    $playerHistory = history;
+    playerHistory.append(nodeId, index);
   }
 
   function onEnterInsertLine(e) {

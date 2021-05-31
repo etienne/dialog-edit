@@ -2,7 +2,7 @@
   import Button from './Button.svelte';
   import Menu from './Menu.svelte';
   import { chapters, selectedChapter, selectedChapterId } from './stores/chapters';
-  import { currentPreview, playerHistory } from './stores/player';
+  import { playerHistory } from './stores/player';
   import { nodes, nextNodeId } from './stores/nodes';
   let firstNode;
 
@@ -23,9 +23,7 @@
   }
 
   function play() {
-    let first = [firstNode, 0];
-    $currentPreview = first;
-    $playerHistory = [first];
+    playerHistory.append(firstNode, 0);
   }
 
   function importData() {

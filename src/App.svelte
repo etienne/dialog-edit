@@ -6,12 +6,12 @@
 	import Player from './Player.svelte';
 	import PlayerMenu from './PlayerMenu.svelte';
 	import SelectLinkNotification from './SelectLinkNotification.svelte';
-	import { currentPreview } from './stores/player';
+	import { playerHistory } from './stores/player';
 	import { selectLinkFromNode } from './stores/nodes';
 	import { selectedChapter } from './stores/chapters';
 </script>
 
-{#if $currentPreview}
+{#if $playerHistory.length}
 	<PlayerMenu/>
 	<main class="player">
 		<Player/>

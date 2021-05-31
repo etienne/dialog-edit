@@ -1,28 +1,24 @@
 <script>
   import { nodes } from './stores/nodes';
-  import { currentPreview, playerHistory } from './stores/player';
+  import { playerHistory, currentPlayerIndex } from './stores/player';
   import Line from './Line.svelte';
 
   let nodeId, index, line, node, isLastLine;
-  $: [nodeId, index] = $currentPreview;
+  $: [nodeId, index] = $playerHistory[$currentPlayerIndex];
   $: node = $nodes[nodeId];
   $: line = node.lines[index];
   $: isLastLine = index == node.lines.length - 1;
 
   function advance() {
-    let next;
     if (!isLastLine) {
-      next = [nodeId, index + 1];
-      $currentPreview = next;
-      $playerHistory.push(next);
+      playerHistory.append(nodeId, index + 1);
     } else if (node.linkTo) {
-      $currentPreview = [node.linkTo, 0];
-      $playerHistory.push(next);
+      playerHistory.append(node.linkTo, 0);
     }
   }
 
   function pickBranch(id) {
-    $currentPreview = [id, 0];
+    playerHistory.append(id, 0);
   }
 </script>
 
