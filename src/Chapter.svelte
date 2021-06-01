@@ -51,3 +51,9 @@
     {/each}
   {/if}
 </section>
+
+<style>
+  section {
+    padding-bottom: 25vh;
+  }
+</style>

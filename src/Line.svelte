@@ -1,11 +1,12 @@
 <script>
-  import { nodes, selectLinkFromNode } from './stores/nodes';
+  import { characters, nodes, selectLinkFromNode } from './stores/nodes';
   import { playerHistory } from './stores/player';
   import { firstCharacterFieldElements } from './stores/ui';
   import Button from './Button.svelte';
+  import CharacterList from './CharacterList.svelte';
   import Field from './Field.svelte';
   export let line = {}, nodeId, index, preview = false, disabled = false;
-  let node, textFieldElement, isLastLine, canLink, selectable;
+  let node, textFieldElement, isLastLine, canLink, selectable, showCharacterList, selectedCharacter;
   $: node = $nodes[nodeId];
   $: isLastLine = node && (index == node.lines.length - 1);
   $: canLink = isLastLine && !node.linkTo && !(node.branchTo && node.branchTo.length);
@@ -46,13 +47,41 @@
     };
   }
 
-  function onEnterFocusNext(e) {
+  function onKeyDownCharacter(e) {
+    const max = $characters.length - 1;
     if (e.key === 'Enter') {
+      if (selectedCharacter >= 0) {
+        characterAction($characters[selectedCharacter]);
+        selectedCharacter = null;
+      }
       if (textFieldElement) {
         textFieldElement.focus();
       }
       e.preventDefault();
-    };
+    } else if (e.key === 'ArrowDown') {
+      showCharacterList = true;
+      selectedCharacter = selectedCharacter >= 0 ? Math.min(selectedCharacter + 1, max) : 0;
+    } else if (e.key === 'ArrowUp') {
+      showCharacterList = true;
+      selectedCharacter = selectedCharacter <= max ? Math.max(selectedCharacter - 1, 0) : max;
+    } else if (e.key === 'Escape') {
+      selectedCharacter = null;
+      showCharacterList = false;
+    }
+  }
+
+  function onCharacterSelect(index) {
+    characterAction($characters[index]);
+    showCharacterList = false;
+    selectedCharacter = null;
+  }
+
+  function onCharacterFocus() {
+    showCharacterList = true;
+  }
+
+  function onCharacterBlur() {
+    showCharacterList = false;
   }
 
   function touch() {
@@ -75,14 +104,21 @@
     action={characterAction}
     disabled={disabled}
     focusOnMount={line.newlyCreated}
-    keyDown={onEnterFocusNext}
+    keyDown={onKeyDownCharacter}
     placeholder="Character"
+    onFocus={onCharacterFocus}
+    onBlur={onCharacterBlur}
     preview={preview}
     registerElement={registerCharacterField}
     touch={touch}
     type="character"
     value={line.character}
   />
+
+  {#if showCharacterList}
+    <CharacterList characters={$characters} selectionIndex={selectedCharacter} {onCharacterSelect}/>
+  {/if}
+
   <Field
     action={textAction}
     disabled={disabled}

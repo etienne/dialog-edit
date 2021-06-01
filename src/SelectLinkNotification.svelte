@@ -15,7 +15,7 @@
 <style>
   div {
     position: fixed;
-    z-index: 1000;
+    z-index: 2000;
     top: 2em;
     right: 2em;
     background-color: white;

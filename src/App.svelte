@@ -1,5 +1,4 @@
 <script>
-	import CharacterList from './CharacterList.svelte';
 	import ChapterList from './ChapterList.svelte';
 	import Chapter from './Chapter.svelte';
 	import EditorMenu from './EditorMenu.svelte';
@@ -26,7 +25,6 @@
 		{#if $selectedChapter}
 			<Chapter chapter={$selectedChapter}/>
 		{/if}
-		<CharacterList/>
 	</main>
 {/if}
 
