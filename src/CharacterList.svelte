@@ -31,6 +31,7 @@
     background-color: var(--bg-color);
     box-shadow: 0 5px 35px 0 var(--light-color);
     border-radius: 6px;
+    margin-top: 2px;
     padding: 0.2em;
   }
 

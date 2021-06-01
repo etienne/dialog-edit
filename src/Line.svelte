@@ -6,11 +6,12 @@
   import CharacterList from './CharacterList.svelte';
   import Field from './Field.svelte';
   export let line = {}, nodeId, index, preview = false, disabled = false;
-  let node, textFieldElement, isLastLine, canLink, selectable, showCharacterList, selectedCharacter;
+  let node, textFieldElement, isLastLine, canLink, selectable, showCharacterList, selectedCharacter, filteredCharacters;
   $: node = $nodes[nodeId];
   $: isLastLine = node && (index == node.lines.length - 1);
   $: canLink = isLastLine && !node.linkTo && !(node.branchTo && node.branchTo.length);
   $: selectable = !!$selectLinkFromNode && !($selectLinkFromNode === nodeId && isLastLine);
+  $: filteredCharacters = $characters.filter(c => c !== line.character);
 
   function characterAction(newCharacter) {
     nodes.updateLine(nodeId, index, {...line, character: newCharacter});
@@ -48,11 +49,11 @@
   }
 
   function onKeyDownCharacter(e) {
-    const max = $characters.length - 1;
+    const max = filteredCharacters.length - 1;
     if (e.key === 'Enter') {
       if (selectedCharacter >= 0) {
-        characterAction($characters[selectedCharacter]);
-        selectedCharacter = null;
+        characterAction(filteredCharacters[selectedCharacter]);
+        selectedCharacter = undefined;
       }
       if (textFieldElement) {
         textFieldElement.focus();
@@ -65,15 +66,15 @@
       showCharacterList = true;
       selectedCharacter = selectedCharacter <= max ? Math.max(selectedCharacter - 1, 0) : max;
     } else if (e.key === 'Escape') {
-      selectedCharacter = null;
+      selectedCharacter = undefined;
       showCharacterList = false;
     }
   }
 
   function onCharacterSelect(index) {
-    characterAction($characters[index]);
+    characterAction(filteredCharacters[index]);
     showCharacterList = false;
-    selectedCharacter = null;
+    selectedCharacter = undefined;
   }
 
   function onCharacterFocus() {
@@ -115,8 +116,8 @@
     value={line.character}
   />
 
-  {#if showCharacterList}
-    <CharacterList characters={$characters} selectionIndex={selectedCharacter} {onCharacterSelect}/>
+  {#if showCharacterList && filteredCharacters.length}
+    <CharacterList characters={filteredCharacters} selectionIndex={selectedCharacter} {onCharacterSelect}/>
   {/if}
 
   <Field
