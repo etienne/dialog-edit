@@ -153,12 +153,12 @@
       <li><Button action={insertLine} label="Insert Line" icon="plus"/></li>
       <li><Button action={insertCommand} label="Insert Command" icon="newCommand"/></li>
       {#if index > 0}
-        <li><Button action={() => nodes.branchFrom(nodeId, index)} label="Add branch" icon="addBranch"/></li>
+        <li><Button action={() => nodes.branchFrom(nodeId, index)} label="Add Branch" icon="addBranch"/></li>
       {/if}
       {#if canLink}
         <li><Button action={linkTo} label="Link to node…" icon="link"/></li>
       {/if}
-      <li><Button action={play} label="Play" icon="play"/></li>
+      <li><Button action={play} label="Play from Here" icon="play"/></li>
       <li><Button action={() => nodes.deleteLine(nodeId, index)} label="Delete Line" icon="trash"/></li>
     </ul>
   {/if}

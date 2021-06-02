@@ -35,7 +35,7 @@
     {/if}
   </span>
   <div class="actions">
-    <Button action={removeLink} icon="breakLink" label="Break link to the following node"/>
+    <Button action={removeLink} icon="breakLink" label="Break Link"/>
   </div>
 </section>
 

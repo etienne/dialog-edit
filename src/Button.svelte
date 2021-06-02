@@ -62,6 +62,29 @@
     padding: 0.25em;
     margin-right: 0.6em;
     position: relative;
+    white-space: nowrap;
+  }
+
+  button.icon:after {
+    transition: all 0.1s ease-in-out 0.1s;
+    pointer-events: none;
+    opacity: 0;
+    box-sizing: border-box;
+    position: absolute;
+    content: attr(data-label);
+    border-radius: 3px;
+    background: var(--bg-color);
+    color: var(--darker-color);
+    box-shadow: 0 3px 10px 0 var(--light-color);
+    font-size: 0.6rem;
+    padding: 0.2em 1em;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 0.6em);
+  }
+
+  button.icon:hover:after {
+    opacity: 1;
   }
 
   button.icon.large {
