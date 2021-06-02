@@ -15,6 +15,7 @@
 <style>
   div {
     position: fixed;
+    display: flex;
     z-index: 2000;
     top: 2em;
     right: 2em;

@@ -12,6 +12,8 @@
 	--red-alpha-10: rgba(255, 72, 0, 0.1);
 	--green-alpha-10: rgba(91, 219, 166, 0.1);
 	--green-alpha-20: rgba(91, 219, 166, 0.2);
+	--blue: rgb(0,100,200);
+	--light-blue: rgb(37, 146, 255);
 }
 
 html, body {
@@ -32,7 +34,7 @@ body {
 }
 
 a {
-	color: rgb(0,100,200);
+	color: var(--blue);
 	text-decoration: none;
 }
 

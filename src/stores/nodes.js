@@ -159,13 +159,15 @@ function createNodes() {
 export const nodes = createNodes();
 nodes.subscribe(value => localStorage.nodes = JSON.stringify(value));
 
-export const nodeSequence = derived([nodes, selectedChapter], ([$nodes, $selectedChapter]) => {
+export const nodeSequence = derived([nodes, selectedChapter, chapters], ([$nodes, $selectedChapter, $chapters]) => {
   let nodeSequence = [];
 
   if ($selectedChapter) {
+    const firstNodes = $chapters.map(c => c.firstNode);
     let currentNode = $nodes[$selectedChapter.firstNode];
     nodeSequence = [$selectedChapter.firstNode];
     lastNodeWouldCauseInfiniteLoop.set(false);
+    lastNodeLinksToChapterId.set(false);
   
     while (currentNode && ((currentNode.branchTo && currentNode.branchTo.length) || currentNode.linkTo)) {
       if (currentNode.branchTo) {
@@ -182,6 +184,10 @@ export const nodeSequence = derived([nodes, selectedChapter], ([$nodes, $selecte
         let nextNodeId = currentNode.linkTo;
         if (nodeSequence.indexOf(nextNodeId) !== -1) {
           lastNodeWouldCauseInfiniteLoop.set(true);
+          break;
+        } else if (firstNodes.indexOf(nextNodeId) !== -1) {
+          const chapterToLinkTo = $chapters.filter(c => c.firstNode == nextNodeId)[0];
+          lastNodeLinksToChapterId.set(chapterToLinkTo.id);
           break;
         } else {
           nodeSequence.push(nextNodeId);
@@ -219,6 +225,7 @@ export const characters = derived(nodes, $nodes => {
 
 export const selectLinkFromNode = writable();
 export const lastNodeWouldCauseInfiniteLoop = writable(false);
+export const lastNodeLinksToChapterId = writable();
 
 function getLinkPairs(nodes) {
   let ids = Object.keys(nodes);

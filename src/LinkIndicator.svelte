@@ -1,12 +1,22 @@
 <script>
   import Button from './Button.svelte';
   import { nodes } from './stores/nodes';
-  export let node, loop = false;
-  let image;
+  import { chapters, selectedChapterId } from './stores/chapters';
+  export let node, loop = false, linkToChapterId = null;
+  let image, linkToChapter;
   $: image = loop ? '/warning.svg' : '/info.svg';
+
+  if (linkToChapterId) {
+    linkToChapter = $chapters.filter(c => c.id === linkToChapterId)[0];
+  }
 
   function removeLink() {
     nodes.removeLink(node.id);
+  }
+
+  function handleLinkToChapter() {
+    $selectedChapterId = linkToChapter.id;
+    window.scrollTo(0, 0);
   }
 </script>
 
@@ -15,6 +25,11 @@
   <span>
     {#if loop}
       A link was hidden because it would create an infinite loop.
+    {:else if linkToChapter}
+      This is a link to
+      <span class="link" on:click={handleLinkToChapter}>
+        {linkToChapter.name}
+      </span>
     {:else}
       This is a link. The content below is shared between several nodes.
     {/if}
@@ -39,6 +54,16 @@
 
   span {
     padding: 0.2em 0;
+  }
+
+  span.link {
+    color: var(--blue);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  span.link:hover {
+    color: var(--light-blue);
   }
 
   img {

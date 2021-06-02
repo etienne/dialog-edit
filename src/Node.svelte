@@ -1,5 +1,5 @@
 <script>
-  import { nodes, selectLinkFromNode, lastNodeWouldCauseInfiniteLoop } from './stores/nodes';
+  import { nodes, selectLinkFromNode, lastNodeWouldCauseInfiniteLoop, lastNodeLinksToChapterId } from './stores/nodes';
   import Button from './Button.svelte';
   import BranchTabs from './BranchTabs.svelte';
   import Line from './Line.svelte';
@@ -23,6 +23,8 @@
     {/if}
     {#if last && $lastNodeWouldCauseInfiniteLoop}
       <LinkIndicator node={node} loop/>
+    {:else if last && $lastNodeLinksToChapterId}
+      <LinkIndicator node={node} linkToChapterId={$lastNodeLinksToChapterId}/>
     {:else if node.branchTo && node.branchTo.length}
       <BranchTabs node={node}/>
     {:else if node.linkTo}
