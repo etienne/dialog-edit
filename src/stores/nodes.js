@@ -67,6 +67,13 @@ function createNodes() {
       return {...n, [nodeId]: newNode};
     }),
 
+    insertCommandAfter: (nodeId, index) => update(n => {
+      const updatedLines = [...n[nodeId].lines];
+      updatedLines.splice(index + 1, 0, {newlyCreated: true, type: 'command'});
+      const newNode = {...n[nodeId], lines: updatedLines};
+      return {...n, [nodeId]: newNode};
+    }),
+
     branchFrom: (nodeId, index) => update(n => {
       const newId = getNewId(Object.keys(n));
       const newNode = {id: newId, lines: [{}]};

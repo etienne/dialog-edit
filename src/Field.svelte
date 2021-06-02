@@ -61,6 +61,7 @@
     class:preview
     class:character={type === 'character'}
     class:label={type === 'label'}
+    class:command={type === 'command'}
     placeholder={placeholder}
     disabled={disabled}
   >
@@ -109,5 +110,12 @@
     font-size: 2em;
     line-height: 1.3;
     margin: 0.4em 0;
+  }
+
+  input.command {
+    box-sizing: border-box;
+    background: url('/command.svg') no-repeat 0.7em center var(--yellow-alpha-10);
+    border-radius: 8px;
+    padding: 0.5em 0.8em 0.5em 2.5em;
   }
 </style>

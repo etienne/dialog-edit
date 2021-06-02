@@ -32,6 +32,10 @@
     nodes.insertLineAfter(nodeId, index);
   }
 
+  function insertCommand() {
+    nodes.insertCommandAfter(nodeId, index);
+  }
+
   function linkTo(e) {
     $selectLinkFromNode = nodeId;
     e.stopPropagation();
@@ -101,39 +105,53 @@
 </script>
 
 <div on:click={selectAsTarget} class:selectable>
-  <Field
-    action={characterAction}
-    disabled={disabled}
-    focusOnMount={line.newlyCreated}
-    keyDown={onKeyDownCharacter}
-    placeholder="Character"
-    onFocus={onCharacterFocus}
-    onBlur={onCharacterBlur}
-    preview={preview}
-    registerElement={registerCharacterField}
-    touch={touch}
-    type="character"
-    value={line.character}
-  />
+  {#if line.type === 'command'}
+    <Field
+      action={textAction}
+      disabled={disabled}
+      keyDown={onEnterInsertLine}
+      placeholder="Command"
+      preview={preview}
+      registerElement={registerTextField}
+      type="command"
+      value={line.text}
+    />
+  {:else}
+    <Field
+      action={characterAction}
+      disabled={disabled}
+      focusOnMount={line.newlyCreated}
+      keyDown={onKeyDownCharacter}
+      placeholder="Character"
+      onFocus={onCharacterFocus}
+      onBlur={onCharacterBlur}
+      preview={preview}
+      registerElement={registerCharacterField}
+      touch={touch}
+      type="character"
+      value={line.character}
+    />
 
-  {#if showCharacterList && filteredCharacters.length}
-    <CharacterList characters={filteredCharacters} selectionIndex={selectedCharacter} {onCharacterSelect}/>
+    {#if showCharacterList && filteredCharacters.length}
+      <CharacterList characters={filteredCharacters} selectionIndex={selectedCharacter} {onCharacterSelect}/>
+    {/if}
+
+    <Field
+      action={textAction}
+      disabled={disabled}
+      keyDown={onEnterInsertLine}
+      placeholder="Text"
+      preview={preview}
+      registerElement={registerTextField}
+      type="autoresize"
+      value={line.text}
+    />
   {/if}
-
-  <Field
-    action={textAction}
-    disabled={disabled}
-    keyDown={onEnterInsertLine}
-    placeholder="Text"
-    preview={preview}
-    registerElement={registerTextField}
-    type="autoresize"
-    value={line.text}
-  />
   
   {#if !preview}
     <ul class="actions" class:disabled={disabled}>
       <li><Button action={insertLine} label="Insert Line" icon="plus"/></li>
+      <li><Button action={insertCommand} label="Insert Command" icon="newCommand"/></li>
       {#if index > 0}
         <li><Button action={() => nodes.branchFrom(nodeId, index)} label="Add branch" icon="addBranch"/></li>
       {/if}
