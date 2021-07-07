@@ -75,7 +75,7 @@
     border-radius: 3px;
     background: var(--bg-color);
     color: var(--darker-color);
-    box-shadow: 0 3px 10px 0 var(--light-color);
+    box-shadow: 0 3px 10px 0 var(--medium-alpha-60);
     font-size: 0.6rem;
     padding: 0.2em 1em;
     top: 100%;

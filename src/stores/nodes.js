@@ -147,6 +147,13 @@ function createNodes() {
       return {...n, [nodeId]: newNode};
     }),
 
+    prependCommand: nodeId => update(n => {
+      const newLines = [...n[nodeId].lines];
+      newLines.unshift({type: 'command'});
+      const newNode = {...n[nodeId], lines: newLines};
+      return {...n, [nodeId]: newNode};
+    }),
+
     deleteLine: (nodeId, index) => update(n => {
       const newLines = [...n[nodeId].lines];
       newLines.splice(index, 1);

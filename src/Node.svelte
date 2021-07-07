@@ -12,6 +12,7 @@
     <div class:empty={!(node.lines && node.lines.length)}>
       <ul class="actions" class:disabled={!!$selectLinkFromNode}>
         <li><Button action={() => nodes.prependLine(node.id)} label="Insert Line" icon="plus"/></li>
+        <li><Button action={() => nodes.prependCommand(node.id)} label="Insert Command" icon="newCommand"/></li>
       </ul>
     </div>
     {#if node.lines && node.lines.length}
