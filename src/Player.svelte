@@ -17,12 +17,18 @@
     }
   }
 
+  function handleKeydown({key}) {
+    if (key === 'Escape') {
+      playerHistory.reset();
+    }
+  }
+
   function pickBranch(id) {
     playerHistory.append(id, 0);
   }
 </script>
 
-<svelte:body on:click|capture|self={advance}/>
+<svelte:body on:click|capture|self={advance} on:keydown={handleKeydown}/>
 
 <section>
   <div>
