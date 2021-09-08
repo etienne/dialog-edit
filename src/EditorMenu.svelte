@@ -64,6 +64,20 @@
     element.href = window.URL.createObjectURL(blob);
     element.click();
   }
+
+  function copyData() {
+    const data = {
+      chapters: $chapters,
+      nodes: $nodes,
+    };
+
+    const text = JSON.stringify(data);
+    navigator.clipboard.writeText(text).then(function() {
+      console.log('JSON copied to clipboard');
+    }, function(err) {
+      console.error('Failed to copy to clipboard: ', err);
+    });
+  }
 </script>
 
 <Menu>
@@ -75,6 +89,7 @@
     <li class="import"><Button action={importData} label="Import" large icon="import"/></li>
     {#if $chapters.length}
       <li><Button action={exportData} label="Export" large icon="export"/></li>
+      <li><Button action={copyData} label="Copy JSON" large icon="copy"/></li>
     {/if}
     {#if firstNode}
       <li class="play"><Button action={play} label="Play" large icon="play"/></li>
