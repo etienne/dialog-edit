@@ -83,9 +83,9 @@ function createNodes() {
         const linesToKeep = [...n[nodeId].lines].slice(0, index);
         const linesToBranchOff = [...n[nodeId].lines].slice(index);
         const branchedId = getNewId([...Object.keys(n), newId]);
-        const newBranchTo = [...currentBranchIds, branchedId, newId];
+        const newBranchTo = [branchedId, newId];
         const updatedNode = {...n[nodeId], lines: linesToKeep, branchTo: newBranchTo, selectedBranch: newBranchTo.length - 1};
-        const branchedNode = {id: branchedId, lines: linesToBranchOff};
+        const branchedNode = {id: branchedId, lines: linesToBranchOff, branchTo: currentBranchIds};
         const character = branchedNode.lines[0].character;
         newNode.lines = [{character}];
         return {...n, [nodeId]: updatedNode, [branchedId]: branchedNode, [newId]: newNode};
