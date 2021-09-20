@@ -16,7 +16,10 @@
 	}
 
   function selectChapter(chapter) {
-    return () => $selectedChapterId = chapter.id;
+    return () => {
+      window.scrollTo(0, 0);
+      $selectedChapterId = chapter.id;
+    };
   }
 </script>
 
@@ -35,6 +38,8 @@
 <style>
   ul {
     margin-bottom: 2rem;
+    position: fixed;
+    width: 24%;
   }
 
   ul.chapters li {
