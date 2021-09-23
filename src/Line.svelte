@@ -14,6 +14,14 @@
   $: filteredCharacters = $characters.filter(c => c !== line.character);
 
   function characterAction(newCharacter) {
+    const matchingCharacterIndexes = filteredCharacters.map((c, i) => {
+      return c.toLowerCase().indexOf(newCharacter.toLowerCase()) >= 0 ? i : false
+    }).filter(c => c !== false);
+
+    if (matchingCharacterIndexes.length) {
+      selectedCharacter = matchingCharacterIndexes[0];
+    }
+
     nodes.updateLine(nodeId, index, {...line, character: newCharacter});
   }
 

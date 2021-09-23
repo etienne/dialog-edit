@@ -6,7 +6,7 @@
     selectionIndex = [...e.target.parentElement.children].indexOf(e.target);
   }
 
-  function onMouseLeave(e) {
+  function onMouseLeave() {
     selectionIndex = null;
   }
 
