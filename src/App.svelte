@@ -1,13 +1,14 @@
 <script>
 	import ChapterList from './ChapterList.svelte';
 	import Chapter from './Chapter.svelte';
+	import DetachedNodes from './DetachedNodes.svelte';
 	import EditorMenu from './EditorMenu.svelte';
 	import Player from './Player.svelte';
 	import PlayerMenu from './PlayerMenu.svelte';
 	import SelectLinkNotification from './SelectLinkNotification.svelte';
 	import { playerHistory } from './stores/player';
 	import { selectLinkFromNode } from './stores/nodes';
-	import { selectedChapter } from './stores/chapters';
+	import { selectedChapter, showDetachedNodes } from './stores/chapters';
 </script>
 
 {#if $playerHistory.length}
@@ -21,9 +22,13 @@
 	{/if}
 	<EditorMenu/>
 	<main class="editor">
-		<ChapterList/>
+		<aside>
+			<ChapterList/>
+		</aside>
 		{#if $selectedChapter}
 			<Chapter chapter={$selectedChapter}/>
+		{:else if $showDetachedNodes}
+			<DetachedNodes/>			
 		{/if}
 	</main>
 {/if}

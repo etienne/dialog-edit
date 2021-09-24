@@ -1,0 +1,41 @@
+<script>
+  import { detachedNodes, nodes } from './stores/nodes';
+  import Button from './Button.svelte';
+  import Node from './Node.svelte';
+</script>
+
+<section>
+  <h1>Detached Nodes</h1>
+
+  {#each $detachedNodes as nodeId}
+  <article>
+    <div class="actions">
+      <Button action={() => nodes.delete(nodeId)} label="Delete Node" icon="trash"/>
+    </div>
+    <Node node={$nodes[nodeId]} disabled hideExtras/>
+  </article>
+  {/each}
+</section>
+
+<style>
+  h1 {
+    font-size: 2em;
+    line-height: 1.3;
+    margin: 0.4em 0 2rem;
+    font-weight: normal;
+  }
+
+  article {
+    position: relative;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+  }
+
+  div {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+</style>

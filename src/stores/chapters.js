@@ -62,3 +62,5 @@ selectedChapterId.subscribe(value => localStorage.selectedChapterId = value);
 export const selectedChapter = derived([chapters, selectedChapterId], ([$chapters, $selectedChapterId]) => {
   return $chapters.filter(c => c.id == Number($selectedChapterId))[0];
 });
+
+export const showDetachedNodes = writable(false);

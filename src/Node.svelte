@@ -1,16 +1,16 @@
 <script>
-  import { nodes, selectLinkFromNode, lastNodeWouldCauseInfiniteLoop, lastNodeLinksToChapterId } from './stores/nodes';
+  import { nodes, lastNodeWouldCauseInfiniteLoop, lastNodeLinksToChapterId } from './stores/nodes';
   import Button from './Button.svelte';
   import BranchTabs from './BranchTabs.svelte';
   import Line from './Line.svelte';
   import LinkIndicator from './LinkIndicator.svelte';
-  export let node, last = false;
+  export let node, last = false, disabled = false, hideExtras = false;
 </script>
 
 {#if node}
   <section>
     <div class:empty={!(node.lines && node.lines.length)}>
-      <ul class="actions" class:disabled={!!$selectLinkFromNode}>
+      <ul class="actions" class:disabled>
         <li><Button action={() => nodes.prependLine(node.id)} label="Insert Line" icon="plus"/></li>
         <li><Button action={() => nodes.prependCommand(node.id)} label="Insert Command" icon="newCommand"/></li>
       </ul>
@@ -18,18 +18,20 @@
     {#if node.lines && node.lines.length}
       <ul>
         {#each node.lines as line, index}
-          <li><Line line={line} nodeId={node.id} index={index} disabled={!!$selectLinkFromNode}/></li>
+          <li><Line line={line} nodeId={node.id} index={index} {disabled}/></li>
         {/each}
       </ul>
     {/if}
-    {#if last && $lastNodeWouldCauseInfiniteLoop}
-      <LinkIndicator node={node} loop/>
-    {:else if last && $lastNodeLinksToChapterId}
-      <LinkIndicator node={node} linkToChapterId={$lastNodeLinksToChapterId}/>
-    {:else if node.branchTo && node.branchTo.length}
-      <BranchTabs node={node}/>
-    {:else if node.linkTo}
-      <LinkIndicator node={node}/>
+    {#if !hideExtras}
+      {#if last && $lastNodeWouldCauseInfiniteLoop}
+        <LinkIndicator node={node} loop/>
+      {:else if last && $lastNodeLinksToChapterId}
+        <LinkIndicator node={node} linkToChapterId={$lastNodeLinksToChapterId}/>
+      {:else if node.branchTo && node.branchTo.length}
+        <BranchTabs node={node}/>
+      {:else if node.linkTo}
+        <LinkIndicator node={node}/>
+      {/if}
     {/if}
   </section>
 {/if}

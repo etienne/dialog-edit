@@ -230,6 +230,38 @@ export const characters = derived(nodes, $nodes => {
   return characters;
 });
 
+export const detachedNodes = derived([nodes, chapters], ([$nodes, $chapters]) => {
+  let attachedNodes = $chapters.map(c => c.firstNode);
+  let attachedCount;
+  let safety = 0;
+
+  while (attachedNodes.length !== attachedCount) {
+    attachedCount = attachedNodes.length;
+    attachedNodes.forEach(n => {
+      if ($nodes[n].linkTo) {
+        attachedNodes.push($nodes[n].linkTo)
+      }
+
+      if ($nodes[n].branchTo && $nodes[n].branchTo.length) {
+        attachedNodes = attachedNodes.concat($nodes[n].branchTo);
+      }
+    });
+
+    attachedNodes = [...new Set(attachedNodes)];
+
+    if (safety++ > 10000) {
+      console.error('Broke out of a possible infinite loop while calculating detached nodes');
+      break;
+    }
+  }
+
+  const allNodes = Object.keys($nodes).map(n => Number(n));
+  const attachedNodesSet = new Set(attachedNodes);
+  const detachedNodes = new Set(allNodes.filter(n => !attachedNodesSet.has(n)));
+
+  return [...detachedNodes];
+});
+
 export const selectLinkFromNode = writable();
 export const lastNodeWouldCauseInfiniteLoop = writable(false);
 export const lastNodeLinksToChapterId = writable();

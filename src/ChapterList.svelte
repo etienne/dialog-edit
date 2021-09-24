@@ -1,7 +1,8 @@
 <script>
   import { flip } from 'svelte/animate';
   import { dndzone } from 'svelte-dnd-action'
-  import { chapters, selectedChapterId } from './stores/chapters';
+  import { detachedNodes } from './stores/nodes';
+  import { chapters, selectedChapterId, showDetachedNodes } from './stores/chapters';
   const flipDurationMs = 200;
   const dropTargetStyle = {};
   let items;
@@ -19,13 +20,19 @@
     return () => {
       window.scrollTo(0, 0);
       $selectedChapterId = chapter.id;
+      $showDetachedNodes = false;
     };
+  }
+
+  function selectDetachedNodes() {
+    $showDetachedNodes = true;
+    $selectedChapterId = null;
   }
 </script>
 
-<aside>
+<div>
   {#if items.length}
-    <ul class="chapters" use:dndzone={{items, flipDurationMs, dropTargetStyle}} on:consider={handleDndConsider} on:finalize={handleDndFinalize}>
+    <ul use:dndzone={{items, flipDurationMs, dropTargetStyle}} on:consider={handleDndConsider} on:finalize={handleDndFinalize}>
       {#each items as chapter(chapter.id)}
         <li animate:flip={{duration: flipDurationMs}} on:click={selectChapter(chapter)} class:selected={$selectedChapterId == chapter.id}>
           {chapter.name || 'untitled chapter'}
@@ -33,16 +40,30 @@
       {/each}
     </ul>
   {/if}
-</aside>
+  {#if $detachedNodes.length}
+    <ul class="detached">
+      <li on:click={selectDetachedNodes} class:selected={$showDetachedNodes}>Detached Nodes</li>
+    </ul>
+  {/if}
+</div>
 
 <style>
-  ul {
-    margin-bottom: 2rem;
+  div {
     position: fixed;
-    width: 24%;
+    width: 31%;
+    max-width: 19rem;
   }
 
-  ul.chapters li {
+  ul {
+    margin-bottom: 0.5rem;
+  }
+
+  ul.detached {
+    border-top: 1px solid #eee;
+    padding-top: 0.5rem;
+  }
+
+  ul li {
     box-sizing: border-box;
     width: 100%;
     text-align: left;
@@ -54,11 +75,11 @@
     background-color: transparent;
   }
 
-  ul.chapters li:hover {
+  ul li:hover {
     background-color: var(--lighter-color);
   }
 
-  ul.chapters li.selected {
+  ul li.selected {
     background-color: var(--light-color);
   }
 </style>

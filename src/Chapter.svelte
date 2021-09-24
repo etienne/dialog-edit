@@ -47,7 +47,7 @@
 
   {#if startNode}
     {#each $nodeSequence as nodeId, index}
-      <Node node={$nodes[nodeId]} last={$nodeSequence.length == index + 1}/>
+      <Node node={$nodes[nodeId]} last={$nodeSequence.length == index + 1} disabled={!!$selectLinkFromNode}/>
     {/each}
   {/if}
 </section>
