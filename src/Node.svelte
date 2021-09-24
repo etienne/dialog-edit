@@ -22,24 +22,35 @@
         {/each}
       </ul>
     {/if}
-    {#if !hideExtras}
-      {#if last && $lastNodeWouldCauseInfiniteLoop}
-        <LinkIndicator node={node} loop/>
-      {:else if last && $lastNodeLinksToChapterId}
-        <LinkIndicator node={node} linkToChapterId={$lastNodeLinksToChapterId}/>
-      {:else if node.branchTo && node.branchTo.length}
-        <BranchTabs node={node}/>
-      {:else if node.linkTo}
-        <LinkIndicator node={node}/>
-      {/if}
-    {/if}
   </section>
+  {#if !hideExtras}
+    {#if last && $lastNodeWouldCauseInfiniteLoop}
+      <LinkIndicator node={node} loop/>
+    {:else if last && $lastNodeLinksToChapterId}
+      <LinkIndicator node={node} linkToChapterId={$lastNodeLinksToChapterId}/>
+    {:else if node.branchTo && node.branchTo.length}
+      <BranchTabs node={node}/>
+    {:else if node.linkTo}
+      <LinkIndicator node={node}/>
+    {/if}
+  {/if}
 {/if}
 
 <style>
+  section {
+    border: 1px solid #eee;
+    padding: 0.1rem 1rem;
+    border-radius: 6px;
+    margin: 1rem 0;
+  }
+
   ul.actions {
     display: flex;
     visibility: hidden;
+  }
+
+  ul.actions li {
+    margin-right: 0.5rem;
   }
 
   div:hover ul.actions:not(.disabled), div.empty ul.actions:not(.disabled) {
