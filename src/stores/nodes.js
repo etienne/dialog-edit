@@ -226,12 +226,15 @@ export const detachedNodes = derived([nodes, chapters], ([$nodes, $chapters]) =>
   while (attachedNodes.length !== attachedCount) {
     attachedCount = attachedNodes.length;
     attachedNodes.forEach(n => {
-      if ($nodes[n].linkTo) {
-        attachedNodes.push($nodes[n].linkTo)
-      }
-
-      if ($nodes[n].branchTo && $nodes[n].branchTo.length) {
-        attachedNodes = attachedNodes.concat($nodes[n].branchTo);
+      console.log('n=', n);
+      if ($nodes[n]) {
+        if ($nodes[n].linkTo) {
+          attachedNodes.push($nodes[n].linkTo)
+        }
+  
+        if ($nodes[n].branchTo && $nodes[n].branchTo.length) {
+          attachedNodes = attachedNodes.concat($nodes[n].branchTo);
+        }
       }
     });
 
