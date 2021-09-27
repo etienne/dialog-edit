@@ -50,8 +50,8 @@
 <style>
   div {
     position: fixed;
-    width: 31%;
-    max-width: 19rem;
+    width: 30%;
+    max-width: 18rem;
   }
 
   ul {

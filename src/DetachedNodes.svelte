@@ -21,7 +21,7 @@
   h1 {
     font-size: 2em;
     line-height: 1.3;
-    margin: 0.4em 0 2rem;
+    margin: 0.4em 0 1rem;
     font-weight: normal;
   }
 

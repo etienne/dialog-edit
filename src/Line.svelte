@@ -192,6 +192,7 @@
   ul.actions {
     visibility: hidden;
     display: flex;
+    padding: 1px 0;
   }
 
   ul.actions li {
