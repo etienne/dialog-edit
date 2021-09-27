@@ -3,6 +3,10 @@
   import Button from './Button.svelte';
   export let node = {};
 
+  function merge() {
+    nodes.mergeNodes(node.id, node.branchTo[0]);
+  }
+
   function selectBranch(index) {
     nodes.selectBranch(node.id, index);
   }
@@ -27,8 +31,11 @@
   {/each}
   {#if !$selectLinkFromNode}
     <li class="actions">
-      <Button action={addSibling} label="Add Branch" icon="plus" block/>
+      {#if node.branchTo.length === 1}
+        <Button action={merge} label="Merge Nodes" icon="merge" block/>
+      {/if}
       <Button action={deleteBranch} label="Delete Branch" icon="trash" block/>
+      <Button action={addSibling} label="Add Branch" icon="plus" block/>
     </li>
   {/if}
 </ul>
