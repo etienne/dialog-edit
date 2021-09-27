@@ -36,22 +36,20 @@
 <style>
   ul {
     display: flex;
-    background-color: var(--lighter-color);
-    padding: 0.5em;
     border-radius: 8px;
     font-size: 0.75em;
   }
 
   li.tab {
-    margin-right: 0.2em;
+    margin-right: 0.6em;
   }
 
   li.tab button {
     max-width: 10em;
     overflow: hidden;
-    background-color: transparent;
-    padding: 0.2rem 0.6rem;
-    border: none;
+    background-color: var(--lightest-color);
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--lighter-color);
     border-radius: 5px;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -64,6 +62,8 @@
 
   li.tab.selected button {
     background-color: var(--bg-color);
+    border: 1px solid var(--lighter-color);
+    box-shadow: 0 3px 18px 0 var(--light-color);
   }
 
   li.actions {

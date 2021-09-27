@@ -114,25 +114,13 @@ function createNodes() {
     }),
 
     removeLink: (nodeId) => update(n => {
-      const linkTo = n[nodeId].linkTo;
       const updatedNode = {...n[nodeId], linkTo: null};
-      const linkPairs = getLinkPairs(n);
-      const firstNodes = get(chapters).map(c => c.firstNode);
-      const isLinkToFirstNodeOfChapter = firstNodes.indexOf(linkTo) !== -1;
-      const ids = Object.keys(n);
-      const isLinkToBranch = ids.map(id => n[id].branchTo).flat().filter(id => !!id).indexOf(linkTo) !== -1;
+      return {...n, [nodeId]: updatedNode};
+    }),
 
-      let mergedNode = {};
-      if (linkPairs[linkTo].length === 2 && !isLinkToFirstNodeOfChapter && !isLinkToBranch) {
-        // Only one link pair will exist after deletion. We need to merge the remaining nodes
-        linkPairs[linkTo].forEach(j => {
-          if (j != nodeId) {
-            mergedNode = { [j]: merge(n[j], n[linkTo]) };
-            delete n[linkTo];
-          }
-        });
-      }
-      return {...n, [nodeId]: updatedNode, ...mergedNode};
+    mergeNodes: (nodeId, targetNodeId) => update(n => {
+      const updatedNode = merge(n[nodeId], n[targetNodeId]);
+      return {...n, [nodeId]: updatedNode};
     }),
 
     selectBranch: (nodeId, index) => update(n => {
@@ -177,7 +165,7 @@ export const nodeSequence = derived([nodes, selectedChapter, chapters], ([$nodes
     lastNodeLinksToChapterId.set(false);
   
     while (currentNode && ((currentNode.branchTo && currentNode.branchTo.length) || currentNode.linkTo)) {
-      if (currentNode.branchTo) {
+      if (currentNode.branchTo && currentNode.branchTo.length) {
         let selectedBranchIndex = currentNode.selectedBranch || 0;
         let nextNodeId = currentNode.branchTo[selectedBranchIndex];
         if (nodeSequence.indexOf(nextNodeId) !== -1) {
