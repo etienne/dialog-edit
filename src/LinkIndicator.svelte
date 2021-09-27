@@ -10,6 +10,10 @@
     linkToChapter = $chapters.filter(c => c.id === linkToChapterId)[0];
   }
 
+  function merge() {
+    nodes.mergeNodes(node.id, node.linkTo);
+  }
+
   function removeLink() {
     nodes.removeLink(node.id);
   }
@@ -35,6 +39,9 @@
     {/if}
   </span>
   <div class="actions">
+    {#if !loop && !linkToChapter}
+      <Button action={merge} icon="merge" label="Merge Nodes"/>
+    {/if}
     <Button action={removeLink} icon="breakLink" label="Break Link"/>
   </div>
 </section>
