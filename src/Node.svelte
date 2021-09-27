@@ -38,9 +38,10 @@
 
 <style>
   section {
-    border: 1px solid #eee;
-    padding: 0.1rem 1rem;
+    border: 1px solid var(--lighter-color);
     border-radius: 6px;
+    box-shadow: 0 5px 35px 0 var(--lighter-color);
+    padding: 0.1rem 1.5rem;
     margin: 1rem 0;
   }
 

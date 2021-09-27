@@ -4,7 +4,7 @@
   import { chapters, selectedChapterId } from './stores/chapters';
   export let node, loop = false, linkToChapterId = null;
   let image, linkToChapter;
-  $: image = loop ? '/warning.svg' : '/info.svg';
+  $: image = loop ? '/warning.svg' : '/link.svg';
 
   if (linkToChapterId) {
     linkToChapter = $chapters.filter(c => c.id === linkToChapterId)[0];
@@ -42,7 +42,7 @@
 <style>
   section {
     display: flex;
-    background-color: var(--green-alpha-10);
+    background-color: var(--lightest-color);
     padding: 0.5em;
     border-radius: 8px;
     font-size: 0.75em;

@@ -27,10 +27,6 @@
 
   article {
     position: relative;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    margin-bottom: 1rem;
-    padding: 0 1rem;
   }
 
   div {
