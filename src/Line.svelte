@@ -9,7 +9,6 @@
   let node, textFieldElement, isLastLine, canLink, selectable, showCharacterList, selectedCharacter, filteredCharacters;
   $: node = $nodes[nodeId];
   $: isLastLine = node && (index == node.lines.length - 1);
-  $: canLink = isLastLine && !node.linkTo && !(node.branchTo && node.branchTo.length);
   $: selectable = !!$selectLinkFromNode && !($selectLinkFromNode === nodeId && isLastLine);
   $: filteredCharacters = $characters.filter(c => c !== line.character);
 
@@ -42,6 +41,10 @@
 
   function insertCommand() {
     nodes.insertCommandAfter(nodeId, index);
+  }
+
+  function branchFrom() {
+    nodes.branchFrom(nodeId, index);
   }
 
   function linkTo(e) {
@@ -161,12 +164,9 @@
       <li><Button action={insertLine} label="Insert Line" icon="plus"/></li>
       <li><Button action={insertCommand} label="Insert Command" icon="newCommand"/></li>
       {#if index > 0}
-        <li><Button action={() => nodes.branchFrom(nodeId, index)} label="Add Branch" icon="addBranch"/></li>
+        <li><Button action={branchFrom} label="Convert To Branch" icon="addBranch"/></li>
       {/if}
-      {#if canLink}
-        <li><Button action={linkTo} label="Link to node…" icon="link"/></li>
-      {/if}
-      <li><Button action={play} label="Play from Here" icon="play"/></li>
+      <li><Button action={play} label="Play From Here" icon="play"/></li>
       <li><Button action={() => nodes.deleteLine(nodeId, index)} label="Delete Line" icon="trash"/></li>
     </ul>
   {/if}

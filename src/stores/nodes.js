@@ -37,16 +37,9 @@ function createNodes() {
     deleteBranch: (nodeId, index) => update(n => {
       const parentNode = n[nodeId];
       parentNode.branchTo.splice(index, 1);
-      if (parentNode.branchTo.length === 1) {
-        // Only one branch remains after deletion; merge last branch back into parent node
-        const lastBranchId = parentNode.branchTo[0];
-        const mergedNode = { [nodeId]: merge(parentNode, n[lastBranchId]) };
-        return {...n, ...mergedNode};
-      } else {
-        const newSelectedBranch = index - 1 >= 0 ? index - 1 : 0;
-        const updatedNode = {...parentNode, selectedBranch: newSelectedBranch};
-        return {...n, [nodeId]: updatedNode};
-        }
+      const newSelectedBranch = index - 1 >= 0 ? index - 1 : 0;
+      const updatedNode = {...parentNode, selectedBranch: newSelectedBranch};
+      return {...n, [nodeId]: updatedNode};
     }),
 
     updateLine: (nodeId, index, newLine) => update(n => {
@@ -72,6 +65,13 @@ function createNodes() {
       updatedLines.splice(index + 1, 0, {newlyCreated: true, type: 'command'});
       const newNode = {...n[nodeId], lines: updatedLines};
       return {...n, [nodeId]: newNode};
+    }),
+
+    addBranch: (nodeId) => update(n => {
+      const newId = getNewId(Object.keys(n));
+      const newNode = {id: newId, lines: [{}]};
+      const updatedNode = {...n[nodeId], branchTo: [newId]};
+      return {...n, [nodeId]: updatedNode, [newId]: newNode};
     }),
 
     branchFrom: (nodeId, index) => update(n => {

@@ -1,18 +1,35 @@
 <script>
-  import { nodes, lastNodeWouldCauseInfiniteLoop, lastNodeLinksToChapterId } from './stores/nodes';
+  import { nodes, lastNodeWouldCauseInfiniteLoop, lastNodeLinksToChapterId, selectLinkFromNode } from './stores/nodes';
   import Button from './Button.svelte';
   import BranchTabs from './BranchTabs.svelte';
   import Line from './Line.svelte';
   import LinkIndicator from './LinkIndicator.svelte';
   export let node, last = false, disabled = false, hideExtras = false;
+
+  function insertLine() {
+    nodes.prependLine(node.id);
+  }
+
+  function insertCommand() {
+    nodes.prependCommand(node.id);
+  }
+
+  function addBranch() {
+    nodes.addBranch(node.id);
+  }
+
+  function linkTo(e) {
+    $selectLinkFromNode = node.id;
+    e.stopPropagation();
+  }
 </script>
 
 {#if node}
   <section>
     <div class:empty={!(node.lines && node.lines.length)}>
       <ul class="actions" class:disabled>
-        <li><Button action={() => nodes.prependLine(node.id)} label="Insert Line" icon="plus"/></li>
-        <li><Button action={() => nodes.prependCommand(node.id)} label="Insert Command" icon="newCommand"/></li>
+        <li><Button action={insertLine} label="Insert Line" icon="plus"/></li>
+        <li><Button action={insertCommand} label="Insert Command" icon="newCommand"/></li>
       </ul>
     </div>
     {#if node.lines && node.lines.length}
@@ -24,7 +41,12 @@
     {/if}
   </section>
   {#if !hideExtras}
-    {#if last && $lastNodeWouldCauseInfiniteLoop}
+    {#if !node.linkTo && !(node.branchTo && node.branchTo.length)}
+      <span>
+        <Button action={addBranch} label="Create New Branch" icon="addBranch"/>
+        <Button action={linkTo} label="Link To Node…" icon="link"/>
+      </span>
+    {:else if last && $lastNodeWouldCauseInfiniteLoop}
       <LinkIndicator node={node} loop/>
     {:else if last && $lastNodeLinksToChapterId}
       <LinkIndicator node={node} linkToChapterId={$lastNodeLinksToChapterId}/>
@@ -56,5 +78,9 @@
 
   div:hover ul.actions:not(.disabled), div.empty ul.actions:not(.disabled) {
     visibility: visible;
+  }
+
+  span {
+    display: flex;
   }
 </style>

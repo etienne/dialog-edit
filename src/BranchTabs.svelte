@@ -27,8 +27,8 @@
   {/each}
   {#if !$selectLinkFromNode}
     <li class="actions">
-      <Button action={deleteBranch} label="Delete Branch" icon="trash" block/>
       <Button action={addSibling} label="Add Branch" icon="plus" block/>
+      <Button action={deleteBranch} label="Delete Branch" icon="trash" block/>
     </li>
   {/if}
 </ul>

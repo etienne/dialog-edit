@@ -66,6 +66,7 @@
   }
 
   button.icon:after {
+    z-index: 100;
     transition: all 0.1s ease-in-out 0.1s;
     pointer-events: none;
     opacity: 0;
