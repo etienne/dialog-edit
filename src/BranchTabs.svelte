@@ -2,6 +2,7 @@
   import { flip } from 'svelte/animate';
   import { dndzone } from 'svelte-dnd-action'
   import { nodes, selectLinkFromNode } from './stores/nodes';
+  import { getColorClass } from './stores/helpers';
   import Button from './Button.svelte';
   export let node = {};
   const flipDurationMs = 200;
@@ -45,7 +46,13 @@
   <div use:dndzone={{items, flipDurationMs, dropTargetStyle, type: 'branch'}} on:consider={handleDndConsider} on:finalize={handleDndFinalize}>
     {#each items as item, index (item.id)}
       <button animate:flip={{duration: flipDurationMs}} on:click={() => selectBranch(item.id)} class:selected={(!node.selectedBranch && index == 0) || selectedBranchId == item.id}>
-        {($nodes[item.id] && $nodes[item.id].lines[0] && $nodes[item.id].lines[0].text) || 'empty branch'}
+        {#if $nodes[item.id] && $nodes[item.id].lines[0]}
+          <span class={getColorClass($nodes[item.id].lines[0].character)}>
+            {$nodes[item.id].lines[0].character}</span>
+          {$nodes[item.id].lines[0].text}
+        {:else}
+          empty branch
+        {/if}
       </button>
     {/each}
   </div>
@@ -71,6 +78,7 @@
   }
 
   button {
+    flex: 1;
     margin-right: 0.6em;
     max-width: 10em;
     overflow: hidden;
@@ -96,6 +104,20 @@
   aside {
     display: flex;
     margin-left: auto;
-    /* padding: 0.1rem; */
+  }
+
+  span {
+    position: relative;
+    top: 0.2rem;
+    display: block;
+    font-size: 0.8em;
+    line-height: 1rem;
+    text-transform: uppercase;
+    text-align: left;
+    opacity: 0.4;
+  }
+
+  button.selected span {
+    opacity: 1;
   }
 </style>
