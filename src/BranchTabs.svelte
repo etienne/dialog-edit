@@ -85,6 +85,7 @@
 
   button:hover {
     background-color: var(--light-color);
+    border-color: var(--light-color);
   }
 
   button.selected {
@@ -96,6 +97,5 @@
   aside {
     display: flex;
     margin-left: auto;
-    /* padding: 0.1rem; */
   }
 </style>

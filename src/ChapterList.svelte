@@ -33,7 +33,7 @@
 <div>
   {#if items.length}
     <ul use:dndzone={{items, flipDurationMs, dropTargetStyle}} on:consider={handleDndConsider} on:finalize={handleDndFinalize}>
-      {#each items as chapter(chapter.id)}
+      {#each items as chapter (chapter.id)}
         <li animate:flip={{duration: flipDurationMs}} on:click={selectChapter(chapter)} class:selected={$selectedChapterId == chapter.id}>
           {chapter.name || 'untitled chapter'}
         </li>
