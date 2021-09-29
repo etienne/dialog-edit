@@ -5,12 +5,15 @@
   import Line from './Line.svelte';
   import LinkIndicator from './LinkIndicator.svelte';
   export let node, last = false, disabled = false, hideExtras = false;
-  const usageCount = $attachedNodes
-    .map(n => ($nodes[n].branchTo || [])
-    .concat([$nodes[n].linkTo]))
-    .flat()
-    .filter(n => !!n)
-    .reduce((previous, current) => current == node.id ? previous + 1 : previous, 0);
+  let linkedNodeUsageCount;
+  if (node.linkTo) {
+    linkedNodeUsageCount = $attachedNodes
+      .map(n => ($nodes[n].branchTo || [])
+      .concat([$nodes[n].linkTo]))
+      .flat()
+      .filter(n => !!n)
+      .reduce((previous, current) => current == node.linkTo ? previous + 1 : previous, 0);
+  }
 
   function insertLine() {
     nodes.prependLine(node.id);
@@ -32,9 +35,6 @@
 
 {#if node}
   <section>
-    {#if usageCount > 1}
-      <aside><img src="/info.svg" alt=""/>This node is used {usageCount} times</aside>
-    {/if}
     <div class:empty={!(node.lines && node.lines.length)}>
       <ul class="actions" class:disabled>
         <li><Button action={insertLine} label="Insert Line" icon="plus"/></li>
@@ -62,7 +62,7 @@
     {:else if node.branchTo && node.branchTo.length}
       <BranchTabs node={node}/>
     {:else if node.linkTo}
-      <LinkIndicator node={node}/>
+      <LinkIndicator node={node} count={linkedNodeUsageCount}/>
     {/if}
   {/if}
 {/if}
@@ -75,19 +75,6 @@
     padding: 0.5rem 2rem;
     margin: 1rem 0;
     position: relative;
-  }
-
-  aside {
-    position: absolute;
-    top: 0.4rem;
-    right: 0.8rem;
-    font-size: 0.75em;
-    opacity: 0.4;
-  }
-
-  aside img {
-    float: left;
-    margin-right: 0.4rem;
   }
 
   ul.actions {

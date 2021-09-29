@@ -28,7 +28,6 @@
   function selectBranch(id) {
     const index = node.branchTo.indexOf(id);
     nodes.selectBranch(node.id, index);
-    console.log('clitkckt with index', index, 'node.branchTo', node.branchTo);
   }
 
   function addSibling() {

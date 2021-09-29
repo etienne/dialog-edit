@@ -2,9 +2,9 @@
   import Button from './Button.svelte';
   import { nodes } from './stores/nodes';
   import { chapters, selectedChapterId } from './stores/chapters';
-  export let node, loop = false, linkToChapterId = null;
-  let image, linkToChapter;
-  $: image = loop ? '/warning.svg' : '/link.svg';
+  export let node, loop = false, linkToChapterId = null, count = 0;
+  let image, linkToChapter, otherCount = count - 1;
+  $: image = loop ? '/warning.svg' : '/info.svg';
 
   if (linkToChapterId) {
     linkToChapter = $chapters.filter(c => c.id === linkToChapterId)[0];
@@ -34,8 +34,10 @@
       <span class="link" on:click={handleLinkToChapter}>
         {linkToChapter.name}
       </span>
+    {:else if otherCount === 0}
+      No other nodes link here.
     {:else}
-      This is a link.
+      {otherCount} other {otherCount > 1 ? 'nodes link' : 'node links'} here.
     {/if}
   </span>
   <div class="actions">
