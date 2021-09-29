@@ -1,10 +1,16 @@
 <script>
-  import { nodes, lastNodeWouldCauseInfiniteLoop, lastNodeLinksToChapterId, selectLinkFromNode } from './stores/nodes';
+  import { nodes, lastNodeWouldCauseInfiniteLoop, lastNodeLinksToChapterId, selectLinkFromNode, attachedNodes } from './stores/nodes';
   import Button from './Button.svelte';
   import BranchTabs from './BranchTabs.svelte';
   import Line from './Line.svelte';
   import LinkIndicator from './LinkIndicator.svelte';
   export let node, last = false, disabled = false, hideExtras = false;
+  const usageCount = $attachedNodes
+    .map(n => ($nodes[n].branchTo || [])
+    .concat([$nodes[n].linkTo]))
+    .flat()
+    .filter(n => !!n)
+    .reduce((previous, current) => current == node.id ? previous + 1 : previous, 0);
 
   function insertLine() {
     nodes.prependLine(node.id);
@@ -26,6 +32,9 @@
 
 {#if node}
   <section>
+    {#if usageCount > 1}
+      <aside><img src="/info.svg" alt=""/>This node is used {usageCount} times</aside>
+    {/if}
     <div class:empty={!(node.lines && node.lines.length)}>
       <ul class="actions" class:disabled>
         <li><Button action={insertLine} label="Insert Line" icon="plus"/></li>
@@ -65,6 +74,20 @@
     box-shadow: 0 5px 35px 0 var(--lighter-color);
     padding: 0.5rem 2rem;
     margin: 1rem 0;
+    position: relative;
+  }
+
+  aside {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.8rem;
+    font-size: 0.75em;
+    opacity: 0.4;
+  }
+
+  aside img {
+    float: left;
+    margin-right: 0.4rem;
   }
 
   ul.actions {

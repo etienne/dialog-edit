@@ -35,7 +35,7 @@
         {linkToChapter.name}
       </span>
     {:else}
-      This is a link. The content below is shared between several nodes.
+      This is a link.
     {/if}
   </span>
   <div class="actions">

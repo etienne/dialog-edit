@@ -218,7 +218,7 @@ export const characters = derived(nodes, $nodes => {
   return characters;
 });
 
-export const detachedNodes = derived([nodes, chapters], ([$nodes, $chapters]) => {
+export const attachedNodes = derived([nodes, chapters], ([$nodes, $chapters]) => {
   let attachedNodes = $chapters.map(c => c.firstNode);
   let attachedCount;
   let safety = 0;
@@ -240,14 +240,18 @@ export const detachedNodes = derived([nodes, chapters], ([$nodes, $chapters]) =>
     attachedNodes = [...new Set(attachedNodes)];
 
     if (safety++ > 10000) {
-      console.error('Broke out of a possible infinite loop while calculating detached nodes');
+      console.error('Broke out of a possible infinite loop while calculating attached nodes');
       break;
     }
   }
 
+  return attachedNodes;
+});
+
+export const detachedNodes = derived([attachedNodes, nodes], ([$attachedNodes, $nodes]) => {
   const allNodes = Object.keys($nodes).map(n => Number(n));
-  const attachedNodesSet = new Set(attachedNodes);
-  const detachedNodes = new Set(allNodes.filter(n => !attachedNodesSet.has(n)));
+  const attachedNodes = new Set($attachedNodes);
+  const detachedNodes = new Set(allNodes.filter(n => !attachedNodes.has(n)));
 
   return [...detachedNodes];
 });
