@@ -215,6 +215,7 @@ export const characters = derived(nodes, $nodes => {
       });
     }
   });
+  characters.sort();
   return characters;
 });
 

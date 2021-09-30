@@ -93,19 +93,19 @@ ul {
 	padding: 0;
 }
 
-.color-1:not(:focus)  { color: #FDA987; }
-.color-2:not(:focus)  { color: #EE3E37; }
-.color-3:not(:focus)  { color: #4DE5BC; }
-.color-4:not(:focus)  { color: #B43CFF; }
-.color-5:not(:focus)  { color: #78A495; }
-.color-6:not(:focus)  { color: #C38E1A; }
-.color-7:not(:focus)  { color: #982E16; }
-.color-8:not(:focus)  { color: #25B2C6; }
-.color-9:not(:focus)  { color: #2D3FCF; }
-.color-10:not(:focus) { color: #4C8BFF; }
-.color-11:not(:focus) { color: #FFC33E; }
-.color-12:not(:focus) { color: #F9807B; }
-.color-13:not(:focus) { color: #C08B93; }
-.color-14:not(:focus) { color: #E9CBA9; }
-.color-15:not(:focus) { color: #CAE5E2; }
-.color-16:not(:focus) { color: #B4BFCB; }
+.color-1:not(:focus)  { color: #023ad4; }
+.color-2:not(:focus)  { color: #72011b; }
+.color-3:not(:focus)  { color: #d62411; }
+.color-4:not(:focus)  { color: #fa6e02; }
+.color-5:not(:focus)  { color: #ffbb00; }
+.color-6:not(:focus)  { color: #73b101; }
+.color-7:not(:focus)  { color: #ff80a4; }
+.color-8:not(:focus)  { color: #ff005d; }
+.color-9:not(:focus)  { color: #990161; }
+.color-10:not(:focus) { color: #430067; }
+.color-11:not(:focus) { color: #10427c; }
+.color-12:not(:focus) { color: #3eabe6; }
+.color-13:not(:focus) { color: #967c27; }
+.color-14:not(:focus) { color: #10d275; }
+.color-15:not(:focus) { color: #007899; }
+.color-16:not(:focus) { color: #0b00a7; }

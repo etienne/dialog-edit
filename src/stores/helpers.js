@@ -13,7 +13,7 @@ export function getColorClass(string) {
   let hash = 0, i, chr;
   for (i = 0; i < string.length; i++) {
     chr   = string.charCodeAt(i);
-    hash  = ((hash << 5) - hash) + chr;
+    hash  = ((hash << 4) - hash) + chr;
     hash |= 0;
   }
   const id = (Math.abs(hash) % 16) + 1;
