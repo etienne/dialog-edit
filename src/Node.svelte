@@ -1,11 +1,12 @@
 <script>
-  import { nodes, lastNodeWouldCauseInfiniteLoop, lastNodeLinksToChapterId, selectLinkFromNode, attachedNodes } from './stores/nodes';
+  import { nodes, lastNodeWouldCauseInfiniteLoop, lastNodeLinksToChapterId, selectLinkFromNode, attachedNodes, selectedNode } from './stores/nodes';
   import Button from './Button.svelte';
   import BranchTabs from './BranchTabs.svelte';
   import Line from './Line.svelte';
   import LinkIndicator from './LinkIndicator.svelte';
   export let node, last = false, disabled = false, hideExtras = false;
   let linkedNodeUsageCount;
+
   if (node.linkTo) {
     linkedNodeUsageCount = $attachedNodes
       .map(n => ($nodes[n].branchTo || [])
@@ -31,10 +32,14 @@
     $selectLinkFromNode = node.id;
     e.stopPropagation();
   }
+
+  function selectNode() {
+    $selectedNode = node.id;
+  }
 </script>
 
 {#if node}
-  <section>
+  <section on:click={selectNode} class:selected={$selectedNode == node.id}>
     <div class:empty={!(node.lines && node.lines.length)}>
       <ul class="actions" class:disabled>
         <li><Button action={insertLine} label="Insert Line" icon="plus"/></li>
@@ -71,10 +76,15 @@
   section {
     border: 1px solid var(--lighter-color);
     border-radius: 6px;
-    box-shadow: 0 5px 35px 0 var(--lighter-color);
+    box-shadow: 0 5px 35px 0 var(--lightest-color);
     padding: 0.5rem 2rem;
     margin: 1rem 0;
     position: relative;
+  }
+
+  section.selected {
+    border-color: var(--light-color);
+    box-shadow: 0 5px 35px 0 var(--lighter-color);
   }
 
   ul.actions {

@@ -3,6 +3,7 @@
 	import Chapter from './Chapter.svelte';
 	import DetachedNodes from './DetachedNodes.svelte';
 	import EditorMenu from './EditorMenu.svelte';
+	import Graph from './Graph.svelte';
 	import Player from './Player.svelte';
 	import PlayerMenu from './PlayerMenu.svelte';
 	import SelectLinkNotification from './SelectLinkNotification.svelte';
@@ -21,6 +22,9 @@
 		<SelectLinkNotification/>		
 	{/if}
 	<EditorMenu/>
+	{#if $selectedChapter}
+		<Graph/>
+	{/if}
 	<main class="editor">
 		<aside>
 			<ChapterList/>
@@ -42,7 +46,7 @@
 		display: grid;
 		grid-template-columns: 31% auto;
 		grid-template-areas: "sidebar content";
-		grid-column-gap: 3%;
+		grid-column-gap: 2rem;
 		max-width: 64em;
 	}
 </style>

@@ -1,4 +1,4 @@
-import { get, writable, derived } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
 import { chapters, selectedChapter } from './chapters';
 import { getNewId } from './helpers';
 
@@ -257,9 +257,60 @@ export const detachedNodes = derived([attachedNodes, nodes], ([$attachedNodes, $
   return [...detachedNodes];
 });
 
+export const lastNodeLinksToChapterId = writable();
+export const selectedNode = writable();
+
+export const graphNodes = derived(
+  [nodes, nodeSequence, chapters, selectedChapter, selectedNode],
+  ([$nodes, $nodeSequence, $chapters, $selectedChapter, $selectedNode]) => {
+  let nodeMap = { [$selectedChapter.firstNode]: [] };
+  let nodeCount = 0;
+  let safety = 0;
+
+  while (Object.keys(nodeMap).length !== nodeCount) {
+    const nodeIds = Object.keys(nodeMap);
+    nodeCount = nodeIds.length;
+
+    nodeIds.forEach(id => {
+      if ($selectedChapter.firstNode == id || !$chapters.filter(c => c.firstNode == id).length) {
+        const attachedNodeIds = getAttachedNodeIds($nodes[id]);
+        attachedNodeIds.forEach(attachedId => {
+          if (!$chapters.filter(c => c.firstNode == attachedId).length) {
+            nodeMap[attachedId] = [];
+          }
+        });
+        nodeMap[id] = attachedNodeIds;
+      }
+    });
+
+    if (safety++ > 1000) {
+      console.error('Broke out of a possible infinite loop while calculating graph nodes');
+      break;
+    }
+  }
+  const nodeIds = Object.keys(nodeMap);
+  const nodes = nodeIds.map(id => {
+    let group;
+
+    if ($nodeSequence.includes(Number(id))) {
+      group = id == $selectedNode ? 'selected' : 'active';
+    }
+
+    return { id, title: `${id}: ${$nodes[id].lines[0].text}`, group };
+  });
+  let edges = [];
+  nodeIds.forEach(from => {
+    nodeMap[from].forEach(to => {
+      const color = $nodeSequence.includes(Number(from)) && $nodeSequence.includes(Number(to)) ? '#9CABB3' : '#DFE5E9';
+      edges.push({ from, to: to.toString(), color })
+    });
+  });
+
+  return { nodes, edges };
+});
+
 export const selectLinkFromNode = writable();
 export const lastNodeWouldCauseInfiniteLoop = writable(false);
-export const lastNodeLinksToChapterId = writable();
 
 function getLinkPairs(nodes) {
   let ids = Object.keys(nodes);
@@ -275,6 +326,20 @@ function getLinkPairs(nodes) {
     }
   });
   return linkPairs;
+}
+
+function getAttachedNodeIds(node) {
+  let nodeIds = [];
+
+  if (node.linkTo) {
+    nodeIds.push(node.linkTo)
+  }
+
+  if (node.branchTo && node.branchTo.length) {
+    nodeIds = nodeIds.concat(node.branchTo);
+  }
+
+  return nodeIds;
 }
 
 function split(node, index, newId) {
