@@ -13,8 +13,13 @@
   })
 
   function handleClick(e) {
-    const id = e.target.parentNode.dataset.id;
-    console.log(id);
+    const id = Number(e.target.parentNode.dataset.id);
+    if ($nodeSequence.includes(id)) {
+      const element = document.querySelector(`section[data-id="${id}"]`);
+      element.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      console.log('no');
+    }
   }
 
   function handleMouseEnter(e) {

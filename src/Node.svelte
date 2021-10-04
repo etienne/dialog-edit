@@ -39,7 +39,7 @@
 </script>
 
 {#if node}
-  <section on:click={selectNode} class:selected={$selectedNode == node.id}>
+  <section on:click={selectNode} class:selected={$selectedNode == node.id} data-id={node.id}>
     <div class:empty={!(node.lines && node.lines.length)}>
       <ul class="actions" class:disabled>
         <li><Button action={insertLine} label="Insert Line" icon="plus"/></li>
