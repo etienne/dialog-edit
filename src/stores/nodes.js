@@ -260,9 +260,7 @@ export const detachedNodes = derived([attachedNodes, nodes], ([$attachedNodes, $
 export const lastNodeLinksToChapterId = writable();
 export const selectedNode = writable();
 
-export const graphNodes = derived(
-  [nodes, nodeSequence, chapters, selectedChapter, selectedNode],
-  ([$nodes, $nodeSequence, $chapters, $selectedChapter, $selectedNode]) => {
+export const graphNodes = derived([nodes, chapters, selectedChapter], ([$nodes, $chapters, $selectedChapter]) => {
   let nodeMap = { [$selectedChapter.firstNode]: [] };
   let nodeCount = 0;
   let safety = 0;
@@ -289,24 +287,52 @@ export const graphNodes = derived(
     }
   }
   const nodeIds = Object.keys(nodeMap);
-  const nodes = nodeIds.map(id => {
-    let group;
 
-    if ($nodeSequence.includes(Number(id))) {
-      group = id == $selectedNode ? 'selected' : 'active';
-    }
-
-    return { id, title: `${id}: ${$nodes[id].lines[0].text}`, group };
-  });
   let edges = [];
   nodeIds.forEach(from => {
     nodeMap[from].forEach(to => {
-      const color = $nodeSequence.includes(Number(from)) && $nodeSequence.includes(Number(to)) ? '#9CABB3' : '#DFE5E9';
-      edges.push({ from, to: to.toString(), color })
+      edges.push({ from, to: to.toString() })
     });
   });
 
-  return { nodes, edges };
+  let nodes = {[$selectedChapter.firstNode]: { level: 0 }};
+  let rows = [];
+  safety = 0;
+
+  while (Object.keys(nodes).length != nodeIds.length) {
+    Object.keys(nodes).forEach(id => {
+      edges.forEach(e => {
+        if (e.from == id) {
+          if (nodes[e.from].level >= 0) {
+            if (!nodes[e.to]) {
+              nodes[e.to] = { level: nodes[e.from].level + 1 };
+            }
+          }
+        }
+
+        if (e.to == id) {
+          if (nodes[e.from].level >= nodes[e.to].level) {
+            nodes[e.to] = { level: nodes[e.from].level + 1 };
+          }
+        }
+      });
+    })
+
+    if (safety++ > 1000) {
+      console.error('Broke out of a possible infinite loop while calculating graph nodes');
+      break;
+    }
+  }
+
+  nodeIds.forEach(id => {
+    if (rows[nodes[id].level]) {
+      rows[nodes[id].level].push(id);
+    } else {
+      rows[nodes[id].level] = [id];
+    }
+  });
+
+  return { nodes, edges, rows };
 });
 
 export const selectLinkFromNode = writable();

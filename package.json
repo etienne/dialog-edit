@@ -20,6 +20,5 @@
   "dependencies": {
     "sirv-cli": "1.0.12",
     "svelte-dnd-action": "0.9.8",
-    "vis-network": "9.1.0"
   }
 }
