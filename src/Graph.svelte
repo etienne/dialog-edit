@@ -1,12 +1,8 @@
 <script>
   import { graphNodes, nodeSequence } from './stores/nodes';
+  import MiniNode from './MiniNode.svelte';
 
-  function handleClick(e) {
-    const id = e.target.parentNode.dataset.id;
-    console.log(id);
-  }
-
-  let nodes, edges, rows;
+  let nodes, edges, rows, previewElement, showPreview, selectedNode;
   $: ({ nodes, edges, rows } = $graphNodes);
 
   $: rows.forEach((row, rowIndex) => {
@@ -15,6 +11,24 @@
       nodes[id].y = 50 + 50 * rowIndex;
     })
   })
+
+  function handleClick(e) {
+    const id = e.target.parentNode.dataset.id;
+    console.log(id);
+  }
+
+  function handleMouseEnter(e) {
+    const element = e.target;
+    const bounds = element.getBoundingClientRect();
+    previewElement.style.top = `${bounds.top + bounds.height}px`;
+    previewElement.style.left = `${bounds.left - (bounds.width / 2)}px`;
+    selectedNode = e.target.dataset.id;
+    showPreview = true;
+  }
+
+  function handleMouseLeave(e) {
+    showPreview = false;
+  }
 </script>
 
 <section>
@@ -29,24 +43,28 @@
       />
     {/each}
     {#each Object.keys(nodes) as id}
-      <g data-id={id} on:click={handleClick}>
+      <g data-id={id} on:click={handleClick} on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}>
         <circle
           class="background"
           cx={nodes[id].x}
           cy={nodes[id].y}
-          r="12"
+          r="22"
         />
         <circle
           class="foreground"
           class:active={$nodeSequence.includes(Number(id))}
           cx={nodes[id].x}
           cy={nodes[id].y}
-          r="4"
+          r="3"
         />
       </g>
     {/each}
   </svg>
 </section>
+
+<div bind:this={previewElement} class:visible={showPreview}>
+  <MiniNode id={selectedNode}/>
+</div>
 
 <style>
   section {
@@ -55,6 +73,20 @@
     height: 90vh;
     right: 2em;
     width: calc(100% - 70em);
+    max-width: 16em;
+  }
+
+  div {
+    background-color: var(--bg-color);
+    border-radius: 5px;
+    display: none;
+    position: fixed;
+    border: 1px solid var(--light-color);
+    box-shadow: 0 5px 35px 0 var(--light-color);
+  }
+
+  div.visible {
+    display: block;
   }
 
   svg {
@@ -63,12 +95,12 @@
   }
 
   line {
-    stroke: var(--lighter-color);
+    stroke: var(--medium-alpha-30);
     stroke-width: 1;
   }
 
   line.active {
-    stroke: var(--dark-color);
+    stroke: var(--medium-color);
   }
 
   g {
@@ -80,6 +112,7 @@
   }
 
   circle.foreground {
+    transition: r 0.15s;
     fill: white;
     stroke: var(--medium-color);
   }
@@ -90,6 +123,7 @@
 
   g:hover circle.foreground {
     stroke: var(--dark-color);
+    r: 7;
   }
 
   @media (min-width: 80em) {

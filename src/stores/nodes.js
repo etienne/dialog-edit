@@ -296,7 +296,6 @@ export const graphNodes = derived([nodes, chapters, selectedChapter], ([$nodes, 
   });
 
   let nodes = {[$selectedChapter.firstNode]: { level: 0 }};
-  let rows = [];
   safety = 0;
 
   while (Object.keys(nodes).length != nodeIds.length) {
@@ -319,10 +318,12 @@ export const graphNodes = derived([nodes, chapters, selectedChapter], ([$nodes, 
     })
 
     if (safety++ > 1000) {
-      console.error('Broke out of a possible infinite loop while calculating graph nodes');
+      console.error('Broke out of a possible infinite loop while calculating graph node levels');
       break;
     }
   }
+
+  let rows = [];
 
   nodeIds.forEach(id => {
     if (rows[nodes[id].level]) {
