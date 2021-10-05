@@ -258,7 +258,6 @@ export const detachedNodes = derived([attachedNodes, nodes], ([$attachedNodes, $
 });
 
 export const lastNodeLinksToChapterId = writable();
-export const selectedNode = writable();
 
 export const graphNodes = derived([nodes, chapters, selectedChapter], ([$nodes, $chapters, $selectedChapter]) => {
   let nodeMap = { [$selectedChapter.firstNode]: [] };

@@ -1,7 +1,7 @@
 <script>
   import { flip } from 'svelte/animate';
   import { dndzone } from 'svelte-dnd-action'
-  import { nodes, selectLinkFromNode, selectedNode } from './stores/nodes';
+  import { nodes, selectLinkFromNode } from './stores/nodes';
   import Button from './Button.svelte';
   export let node = {};
   const flipDurationMs = 200;
@@ -28,7 +28,6 @@
   function selectBranch(id) {
     const index = node.branchTo.indexOf(id);
     nodes.selectBranch(node.id, index);
-    $selectedNode = id;
   }
 
   function addSibling() {

@@ -1,5 +1,5 @@
 <script>
-  import { nodes, lastNodeWouldCauseInfiniteLoop, lastNodeLinksToChapterId, selectLinkFromNode, attachedNodes, selectedNode } from './stores/nodes';
+  import { nodes, lastNodeWouldCauseInfiniteLoop, lastNodeLinksToChapterId, selectLinkFromNode, attachedNodes } from './stores/nodes';
   import Button from './Button.svelte';
   import BranchTabs from './BranchTabs.svelte';
   import Line from './Line.svelte';
@@ -32,14 +32,10 @@
     $selectLinkFromNode = node.id;
     e.stopPropagation();
   }
-
-  function selectNode() {
-    $selectedNode = node.id;
-  }
 </script>
 
 {#if node}
-  <section on:click={selectNode} class:selected={$selectedNode == node.id} data-id={node.id}>
+  <section data-id={node.id}>
     <div class:empty={!(node.lines && node.lines.length)}>
       <ul class="actions" class:disabled>
         <li><Button action={insertLine} label="Insert Line" icon="plus"/></li>
