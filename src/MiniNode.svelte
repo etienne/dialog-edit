@@ -32,8 +32,8 @@
     overflow: hidden;
   }
 
-  li {
-    margin-bottom: 0.5rem;
+  li + li {
+    margin-top: 0.5rem;
   }
 
   li.command {

@@ -54,6 +54,6 @@
 
 <style>
   section {
-    padding-bottom: 25vh;
+    padding-bottom: 40vh;
   }
 </style>

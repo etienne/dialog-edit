@@ -1,5 +1,6 @@
 <script>
-  import { graphNodes, nodeSequence } from './stores/nodes';
+  import { tick } from 'svelte';
+  import { nodes as nodesStore, graphNodes, nodeSequence } from './stores/nodes';
   import MiniNode from './MiniNode.svelte';
 
   let nodes, edges, rows, previewElement, showPreview, selectedNode;
@@ -12,14 +13,47 @@
     })
   })
 
-  function handleClick(e) {
+  async function handleClick(e) {
     const id = Number(e.target.parentNode.dataset.id);
-    if ($nodeSequence.includes(id)) {
-      const element = document.querySelector(`section[data-id="${id}"]`);
-      element.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      console.log('no');
+
+    let currentId = id, parentId, index, filteredEdges, safety = 0;
+
+    while (!$nodeSequence.includes(id)) {
+      filteredEdges = edges.filter(e => e.to == currentId);
+
+      if (filteredEdges.length) {
+        parentId = filteredEdges[0].from;
+        if ($nodesStore[parentId].branchTo) {
+          $nodesStore[parentId].branchTo.forEach((b, i) => {
+            if (b == currentId) {
+              index = i;
+            }
+          })
+          if (index !== -1) {
+            nodesStore.selectBranch(parentId, index);
+          }
+        }
+        currentId = parentId;
+        parentId = null;
+        index = null;
+      } else {
+        console.error('Edge not found where `to` =', currentId);
+        console.log(edges);
+        break;
+      }
+
+      if (safety++ > 10000) {
+        console.error('Broke out of a possible infinite loop while finding path to node');
+        break;
+      }
     }
+
+    await tick();
+    const element = document.querySelector(`section[data-id="${id}"]`);
+    const headerOffset = 116;
+    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+    const offsetPosition = elementPosition - headerOffset;
+    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
   }
 
   function handleMouseEnter(e) {
@@ -76,8 +110,8 @@
     display: none;
     position: fixed;
     height: 90vh;
-    right: 2em;
-    width: calc(100% - 70em);
+    right: 0;
+    width: calc(100% - 66em);
     max-width: 16em;
   }
 
@@ -131,7 +165,7 @@
     r: 7;
   }
 
-  @media (min-width: 80em) {
+  @media (min-width: 72em) {
     section {
       display: block;
     }    

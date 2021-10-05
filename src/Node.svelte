@@ -7,7 +7,7 @@
   export let node, last = false, disabled = false, hideExtras = false;
   let linkedNodeUsageCount;
 
-  if (node.linkTo) {
+  if (node && node.linkTo) {
     linkedNodeUsageCount = $attachedNodes
       .map(n => ($nodes[n].branchTo || [])
       .concat([$nodes[n].linkTo]))
