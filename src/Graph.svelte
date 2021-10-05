@@ -70,40 +70,42 @@
   }
 </script>
 
-<section>
-  <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
-    {#each edges as edge}
-      <line
-        class:active={$nodeSequence.includes(Number(edge.from)) && $nodeSequence.includes(Number(edge.to))}
-        x1={nodes[edge.from].x}
-        x2={nodes[edge.to].x}
-        y1={nodes[edge.from].y}
-        y2={nodes[edge.to].y}
-      />
-    {/each}
-    {#each Object.keys(nodes) as id}
-      <g data-id={id} on:click={handleClick} on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}>
-        <circle
-          class="background"
-          cx={nodes[id].x}
-          cy={nodes[id].y}
-          r="22"
+{#if edges.length }
+  <section>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+      {#each edges as edge}
+        <line
+          class:active={$nodeSequence.includes(Number(edge.from)) && $nodeSequence.includes(Number(edge.to))}
+          x1={nodes[edge.from].x}
+          x2={nodes[edge.to].x}
+          y1={nodes[edge.from].y}
+          y2={nodes[edge.to].y}
         />
-        <circle
-          class="foreground"
-          class:active={$nodeSequence.includes(Number(id))}
-          cx={nodes[id].x}
-          cy={nodes[id].y}
-          r="3"
-        />
-      </g>
-    {/each}
-  </svg>
-</section>
+      {/each}
+      {#each Object.keys(nodes) as id}
+        <g data-id={id} on:click={handleClick} on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}>
+          <circle
+            class="background"
+            cx={nodes[id].x}
+            cy={nodes[id].y}
+            r="22"
+          />
+          <circle
+            class="foreground"
+            class:active={$nodeSequence.includes(Number(id))}
+            cx={nodes[id].x}
+            cy={nodes[id].y}
+            r="3"
+          />
+        </g>
+      {/each}
+    </svg>
+  </section>
 
-<div bind:this={previewElement} class:visible={showPreview}>
-  <MiniNode id={selectedNode}/>
-</div>
+  <div bind:this={previewElement} class:visible={showPreview}>
+    <MiniNode id={selectedNode}/>
+  </div>
+{/if}
 
 <style>
   section {
