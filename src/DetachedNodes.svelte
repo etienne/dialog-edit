@@ -9,10 +9,10 @@
 
   {#each $detachedNodes as nodeId}
   <article>
+    <Node node={$nodes[nodeId]} disabled hideExtras/>
     <div class="actions">
       <Button action={() => nodes.delete(nodeId)} label="Delete Node" icon="trash"/>
     </div>
-    <Node node={$nodes[nodeId]} disabled hideExtras/>
   </article>
   {/each}
 </section>

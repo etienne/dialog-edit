@@ -78,11 +78,6 @@
     position: relative;
   }
 
-  section.selected {
-    border-color: var(--light-color);
-    box-shadow: 0 5px 35px 0 var(--lighter-color);
-  }
-
   ul.actions {
     display: flex;
     visibility: hidden;

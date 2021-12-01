@@ -164,7 +164,7 @@
 
   g:hover circle.foreground {
     stroke: var(--dark-color);
-    r: 7;
+    r: 5;
   }
 
   @media (min-width: 72em) {
