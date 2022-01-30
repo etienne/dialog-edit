@@ -1,8 +1,16 @@
 <script>
-  export let action, label, icon = null, block = false, large = false, primary = false, showLabel = false, disabled = false;
+  export let action,
+             block = false,
+             borderless = false,
+             disabled = false,
+             icon = null,
+             label,
+             large = false,
+             primary = false,
+             showLabel = false;
 </script>
 
-<button on:click={action} class:icon class:block class:large class:primary disabled={disabled} data-label={label}>
+<button on:click={action} class:borderless class:icon class:block class:large class:primary disabled={disabled} data-label={label}>
   {#if icon}
     <img src={`/${icon}.svg`} alt={label}>
   {/if}
@@ -31,6 +39,10 @@
 
   button:hover {
     background-color: var(--light-color);
+  }
+
+  button.borderless {
+    background-color: transparent;
   }
 
   button.block {

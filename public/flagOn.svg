@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="19px" height="19px" viewBox="0 0 19 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>flagOn</title>
+    <g id="flagOn" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Line-9" fill-opacity="0.4" fill="#000000" fill-rule="nonzero" points="5 2.93333333 5 16.0666667 4 16.0666667 4 2.93333333"></polygon>
+        <polygon id="Path" fill="#FF1500" fill-rule="nonzero" opacity="0.600000024" points="15.7071068 3 6 3 6 10 15.7071068 10 12.207 6.5"></polygon>
+    </g>
+</svg>

@@ -160,6 +160,9 @@
   {/if}
   
   {#if !preview}
+    <span class="startPoint">
+      <Button action={() => {}} label="Start playback here" icon="flagOff" borderless/>
+    </span>
     <ul class="actions" class:disabled={disabled}>
       <li><Button action={insertLine} label="Insert Line" icon="plus"/></li>
       <li><Button action={insertCommand} label="Insert Command" icon="newCommand"/></li>
@@ -173,9 +176,13 @@
 </div>
 
 <style>
+  div {
+    padding: 0 2em;
+    position: relative;
+  }
+
   div.selectable {
     cursor: pointer;
-    position: relative;
   }
 
   div.selectable:hover:after {
@@ -187,6 +194,23 @@
     left: -1em;
     right: -1em;
     bottom: 1em;
+  }
+
+  span.startPoint {
+    display: none;
+    position: absolute;
+    left: 0.1em;
+    top: 0;
+    opacity: 0.3;
+    transition: opacity 0.1s;
+  }
+
+  span.startPoint:hover {
+    opacity: 1;
+  }
+
+  div:hover span.startPoint {
+    display: block;
   }
 
   ul.actions {
