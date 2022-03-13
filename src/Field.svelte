@@ -4,7 +4,6 @@
 
   let domElement = false;
   export let value = '',
-             action,
              disabled = false,
              type = '',
              placeholder,
@@ -12,7 +11,9 @@
              focusOnMount = false,
              touch = () => {},
              keyDown = () => {},
+             onChange = () => {},
              onFocus = () => {},
+             onInput = () => {},
              onBlur = () => {},
              registerElement = () => {};
 
@@ -25,8 +26,12 @@
     registerElement(domElement);
   });
 
-  function onInput() {
-    return action(value)
+  function onChangeWithValue() {
+    return onChange(value)
+  };
+
+  function onInputWithValue() {
+    return onInput(value)
   };
 
   let colorClass;
@@ -42,7 +47,7 @@
     bind:this={domElement}
     class:preview
     class:disabled
-    on:input={onInput}
+    on:input={onChangeWithValue}
     on:focus={onFocus}
     on:blur={onBlur}
     on:keydown={keyDown}
@@ -53,7 +58,8 @@
   <input
     bind:value={value}
     bind:this={domElement}
-    on:input={onInput}
+    on:change={onChangeWithValue}
+    on:input={onInputWithValue}
     on:focus={onFocus}
     on:blur={onBlur}
     on:keydown={keyDown}
@@ -72,7 +78,7 @@
     width: 100%;
     display: block;
     border: 1px solid var(--bg-color);
-    padding: 0;
+    padding: 0 1px;
   }
 
   input:disabled {

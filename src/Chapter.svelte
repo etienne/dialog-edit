@@ -35,7 +35,7 @@
 
 <section>
   <Field
-    action={updateChapter}
+    onInput={updateChapter}
     focusOnMount={chapter.newlyCreated}
     keyDown={onKeyDown}
     placeholder="untitled chapter"

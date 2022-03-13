@@ -26,7 +26,7 @@
 <style>
   ul {
     position: absolute;
-    width: 42em;
+    width: 37.5em;
     z-index: 1000;
     background-color: var(--bg-color);
     box-shadow: 0 5px 35px 0 var(--light-color);

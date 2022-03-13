@@ -6,23 +6,10 @@
   import CharacterList from './CharacterList.svelte';
   import Field from './Field.svelte';
   export let line = {}, nodeId, index, preview = false, disabled = false;
-  let node, textFieldElement, isLastLine, canLink, selectable, showCharacterList, selectedCharacter, filteredCharacters;
+  let node, textFieldElement, isLastLine, selectable, showCharacterList, selectedCharacter;
   $: node = $nodes[nodeId];
   $: isLastLine = node && (index == node.lines.length - 1);
   $: selectable = !!$selectLinkFromNode && !($selectLinkFromNode === nodeId && isLastLine);
-  $: filteredCharacters = $characters.filter(c => c !== line.character);
-
-  function characterAction(newCharacter) {
-    const matchingCharacterIndexes = filteredCharacters.map((c, i) => {
-      return c.toLowerCase().indexOf(newCharacter.toLowerCase()) >= 0 ? i : false
-    }).filter(c => c !== false);
-
-    if (matchingCharacterIndexes.length) {
-      selectedCharacter = matchingCharacterIndexes[0];
-    }
-
-    nodes.updateLine(nodeId, index, {...line, character: newCharacter});
-  }
 
   function selectAsTarget() {
     if ($selectLinkFromNode && selectable) {
@@ -31,8 +18,29 @@
     }
   }
 
-  function textAction(newText) {
+  function onTextChange(newText) {
     nodes.updateLine(nodeId, index, {...line, text: newText});
+  }
+
+  function onCharacterInput(newCharacter) {
+    const matchingCharacterIndexes = $characters.map((c, i) => {
+      return c.toLowerCase().indexOf(newCharacter.toLowerCase()) >= 0 ? i : false
+    }).filter(c => c !== false);
+
+    if (matchingCharacterIndexes.length) {
+      selectedCharacter = matchingCharacterIndexes[0];
+    } else {
+      selectedCharacter = undefined;
+    }
+  }
+
+  function onCharacterChange(newCharacter) {
+    let character = newCharacter;
+    if (selectedCharacter >= 0) {
+      character = $characters[selectedCharacter];
+      selectedCharacter = undefined;
+    }
+    nodes.updateLine(nodeId, index, {...line, character});
   }
 
   function insertLine() {
@@ -47,11 +55,6 @@
     nodes.branchFrom(nodeId, index);
   }
 
-  function linkTo(e) {
-    $selectLinkFromNode = nodeId;
-    e.stopPropagation();
-  }
-
   function play() {
     playerHistory.append(nodeId, index);
   }
@@ -64,12 +67,8 @@
   }
 
   function onKeyDownCharacter(e) {
-    const max = filteredCharacters.length - 1;
+    const max = $characters.length - 1;
     if (e.key === 'Enter') {
-      if (selectedCharacter >= 0) {
-        characterAction(filteredCharacters[selectedCharacter]);
-        selectedCharacter = undefined;
-      }
       if (textFieldElement) {
         textFieldElement.focus();
       }
@@ -87,7 +86,7 @@
   }
 
   function onCharacterSelect(index) {
-    characterAction(filteredCharacters[index]);
+    onCharacterChange($characters[index]);
     showCharacterList = false;
     selectedCharacter = undefined;
   }
@@ -118,9 +117,9 @@
 <div on:click={selectAsTarget} class:selectable>
   {#if line.type === 'command'}
     <Field
-      action={textAction}
       disabled={disabled}
       keyDown={onEnterInsertLine}
+      onChange={onTextChange}
       placeholder="Command"
       preview={preview}
       registerElement={registerTextField}
@@ -129,13 +128,14 @@
     />
   {:else}
     <Field
-      action={characterAction}
       disabled={disabled}
       focusOnMount={line.newlyCreated}
       keyDown={onKeyDownCharacter}
-      placeholder="Character"
-      onFocus={onCharacterFocus}
       onBlur={onCharacterBlur}
+      onFocus={onCharacterFocus}
+      onInput={onCharacterInput}
+      onChange={onCharacterChange}
+      placeholder="Character"
       preview={preview}
       registerElement={registerCharacterField}
       touch={touch}
@@ -143,14 +143,14 @@
       value={line.character}
     />
 
-    {#if showCharacterList && filteredCharacters.length}
-      <CharacterList characters={filteredCharacters} selectionIndex={selectedCharacter} {onCharacterSelect}/>
+    {#if showCharacterList && $characters.length}
+      <CharacterList characters={$characters} selectionIndex={selectedCharacter} {onCharacterSelect}/>
     {/if}
 
     <Field
-      action={textAction}
       disabled={disabled}
       keyDown={onEnterInsertLine}
+      onChange={onTextChange}
       placeholder="Text"
       preview={preview}
       registerElement={registerTextField}
