@@ -84,7 +84,7 @@ function createNodes() {
         const linesToBranchOff = [...n[nodeId].lines].slice(index);
         const branchedId = getNewId([...Object.keys(n), newId]);
         const newBranchTo = [branchedId, newId];
-        const updatedNode = {...n[nodeId], lines: linesToKeep, branchTo: newBranchTo, selectedBranch: newBranchTo.length - 1};
+        const updatedNode = {...n[nodeId], lines: linesToKeep, branchTo: newBranchTo, selectedBranch: 1};
         const branchedNode = {id: branchedId, lines: linesToBranchOff, branchTo: currentBranchIds};
         const character = branchedNode.lines[0].character;
         newNode.lines = [{character}];
@@ -264,20 +264,18 @@ export const graphNodes = derived([nodes, chapters, selectedChapter], ([$nodes, 
     return {};
   }
 
-  let nodeMap = { [$selectedChapter.firstNode]: [] };
-  let nodeCount = 0;
+  // Calculate nodes
+  let nodeMap = { [$selectedChapter.firstNode]: undefined };
   let safety = 0;
 
-  while (Object.keys(nodeMap).length !== nodeCount) {
-    const nodeIds = Object.keys(nodeMap);
-    nodeCount = nodeIds.length;
-
-    nodeIds.forEach(id => {
+  while (Object.values(nodeMap).flat().indexOf(undefined) >= 0) {
+    Object.keys(nodeMap).forEach(id => {
       if ($selectedChapter.firstNode == id || !$chapters.filter(c => c.firstNode == id).length) {
-        const attachedNodeIds = getAttachedNodeIds($nodes[id]);
+        let attachedNodeIds = getAttachedNodeIds($nodes[id]);
+        attachedNodeIds = attachedNodeIds.filter(attachedId => !$chapters.filter(c => c.firstNode == attachedId).length);
         attachedNodeIds.forEach(attachedId => {
-          if (!$chapters.filter(c => c.firstNode == attachedId).length) {
-            nodeMap[attachedId] = [];
+          if (!nodeMap[attachedId]) {
+            nodeMap[attachedId] = undefined;
           }
         });
         nodeMap[id] = attachedNodeIds;
@@ -291,6 +289,7 @@ export const graphNodes = derived([nodes, chapters, selectedChapter], ([$nodes, 
   }
   const nodeIds = Object.keys(nodeMap);
 
+  // Calculate edges
   let edges = [];
   nodeIds.forEach(from => {
     nodeMap[from].forEach(to => {
@@ -298,6 +297,7 @@ export const graphNodes = derived([nodes, chapters, selectedChapter], ([$nodes, 
     });
   });
 
+  // Calculate levels
   let nodes = {[$selectedChapter.firstNode]: { level: 0 }};
   safety = 0;
 
