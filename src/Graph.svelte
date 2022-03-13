@@ -1,6 +1,7 @@
 <script>
   import { tick } from 'svelte';
   import { nodes as nodesStore, graphNodes, nodeSequence } from './stores/nodes';
+  import { currentlyEditedNodeId } from './stores/ui';
   import MiniNode from './MiniNode.svelte';
 
   let nodes, edges, rows, previewElement, showPreview, selectedNode;
@@ -93,6 +94,7 @@
           <circle
             class="foreground"
             class:active={$nodeSequence.includes(Number(id))}
+            class:current={$currentlyEditedNodeId == Number(id)}
             cx={nodes[id].x}
             cy={nodes[id].y}
             r="3"
@@ -160,6 +162,10 @@
 
   circle.active {
     stroke: var(--dark-color);
+  }
+
+  circle.current {
+    fill: var(--medium-color);
   }
 
   g:hover circle.foreground {

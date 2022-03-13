@@ -1,7 +1,7 @@
 <script>
   import { characters, nodes, selectLinkFromNode } from './stores/nodes';
   import { playerHistory } from './stores/player';
-  import { firstCharacterFieldElements } from './stores/ui';
+  import { firstCharacterFieldElements, currentlyEditedNodeId } from './stores/ui';
   import Button from './Button.svelte';
   import CharacterList from './CharacterList.svelte';
   import Field from './Field.svelte';
@@ -92,11 +92,16 @@
   }
 
   function onCharacterFocus() {
+    $currentlyEditedNodeId = nodeId;
     showCharacterList = true;
   }
 
   function onCharacterBlur() {
     showCharacterList = false;
+  }
+
+  function onTextFocus() {
+    $currentlyEditedNodeId = nodeId;
   }
 
   function touch() {
@@ -151,6 +156,7 @@
       disabled={disabled}
       keyDown={onEnterInsertLine}
       onChange={onTextChange}
+      onFocus={onTextFocus}
       placeholder="Text"
       preview={preview}
       registerElement={registerTextField}
