@@ -115,7 +115,7 @@
   input.label {
     font-size: 2em;
     line-height: 1.3;
-    margin: 0.4em 0;
+    margin: 0 0 0.4em 0;
   }
 
   input.command {

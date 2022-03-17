@@ -13,8 +13,6 @@
     left: 0;
     right: 0;
     top: 0;
-    background-color: var(--bg-color);
-    border-bottom: 1px solid var(--lighter-color);
     padding: 0.8em 1em 0.7em;
   }
 </style>
