@@ -1,5 +1,5 @@
 <script>
-  import { nodes, lastNodeWouldCauseInfiniteLoop, lastNodeLinksToChapterId, selectLinkFromNode, attachedNodes } from './stores/nodes';
+  import { nodes, lastNodeWouldCauseInfiniteLoop, lastNodeLinksToChapterId, selectLinkFromNode, attachedNodes, flaggedNodes } from './stores/nodes';
   import Button from './Button.svelte';
   import BranchTabs from './BranchTabs.svelte';
   import Line from './Line.svelte';
@@ -35,7 +35,7 @@
 </script>
 
 {#if node}
-  <section data-id={node.id}>
+  <section data-id={node.id} class:flagged={$flaggedNodes.includes(node.id)}>
     <div class:empty={!(node.lines && node.lines.length)}>
       <ul class="actions" class:disabled>
         <li><Button action={insertLine} label="Insert Line" icon="plus"/></li>
@@ -76,6 +76,11 @@
     padding: 0.5rem 2rem;
     margin: 1rem 0;
     position: relative;
+  }
+
+  section.flagged {
+    border: 1px solid var(--red-alpha-40);
+    box-shadow: 0 5px 35px 0 var(--red-alpha-10);
   }
 
   ul.actions {

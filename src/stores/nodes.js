@@ -339,6 +339,10 @@ export const graphNodes = derived([nodes, chapters, selectedChapter], ([$nodes, 
   return { nodes, edges, rows };
 });
 
+export const flaggedNodes = derived(nodes, $nodes => {
+  return Object.keys($nodes).map(id => Number(id)).filter(n => $nodes[n].lines.map(l => l.text).join().indexOf('TODO') >= 0);
+});
+
 export const selectLinkFromNode = writable();
 export const lastNodeWouldCauseInfiniteLoop = writable(false);
 

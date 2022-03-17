@@ -1,6 +1,6 @@
 <script>
   import { tick } from 'svelte';
-  import { nodes as nodesStore, graphNodes, nodeSequence } from './stores/nodes';
+  import { nodes as nodesStore, graphNodes, nodeSequence, flaggedNodes } from './stores/nodes';
   import { currentlyEditedNodeId } from './stores/ui';
   import MiniNode from './MiniNode.svelte';
 
@@ -17,7 +17,11 @@
   async function handleClick(e) {
     const id = Number(e.target.parentNode.dataset.id);
 
-    let currentId = id, parentId, index, filteredEdges, safety = 0;
+    let currentId = id;
+    let parentId, index, filteredEdges;
+    let safety = 0;
+
+    $currentlyEditedNodeId = currentId;
 
     while (!$nodeSequence.includes(id)) {
       filteredEdges = edges.filter(e => e.to == currentId);
@@ -94,7 +98,8 @@
           <circle
             class="foreground"
             class:active={$nodeSequence.includes(Number(id))}
-            class:current={$currentlyEditedNodeId == Number(id)}
+            class:editing={$currentlyEditedNodeId == Number(id)}
+            class:flagged={$flaggedNodes.includes(Number(id))}
             cx={nodes[id].x}
             cy={nodes[id].y}
             r="3"
@@ -164,8 +169,12 @@
     stroke: var(--dark-color);
   }
 
-  circle.current {
+  circle.editing {
     fill: var(--medium-color);
+  }
+
+  circle.flagged, g:hover circle.foreground.flagged {
+    stroke: var(--red-alpha-60);
   }
 
   g:hover circle.foreground {
