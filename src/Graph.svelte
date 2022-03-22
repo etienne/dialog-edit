@@ -169,12 +169,16 @@
     stroke: var(--dark-color);
   }
 
+  circle.active.flagged {
+    stroke: var(--red-alpha-60);
+  }
+
   circle.editing {
     fill: var(--medium-color);
   }
 
   circle.flagged, g:hover circle.foreground.flagged {
-    stroke: var(--red-alpha-60);
+    stroke: var(--red-alpha-30);
   }
 
   g:hover circle.foreground {

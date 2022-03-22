@@ -16,6 +16,8 @@
              onInput = () => {},
              onBlur = () => {},
              registerElement = () => {};
+  
+  let flagged = value.includes('TODO');
 
   afterUpdate(() => {
     if (focusOnMount) {
@@ -45,6 +47,7 @@
     contenteditable="true"
     bind:textContent={value}
     bind:this={domElement}
+    class:flagged
     class:preview
     class:disabled
     on:input={onChangeWithValue}
@@ -64,6 +67,7 @@
     on:blur={onBlur}
     on:keydown={keyDown}
     class={colorClass}
+    class:flagged
     class:preview
     class:character={type === 'character'}
     class:label={type === 'label'}
@@ -75,10 +79,22 @@
 
 <style>
   input, div {
+    position: relative;
     width: 100%;
     display: block;
     border: 1px solid var(--bg-color);
     padding: 0 1px;
+  }
+
+  .flagged {
+    color: var(--red);
+  }
+
+  .flagged::before {
+    content: '•';
+    font-size: 1.5em;
+    position: absolute;
+    left: -0.9em;
   }
 
   input:disabled {
