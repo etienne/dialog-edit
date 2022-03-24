@@ -7,12 +7,24 @@
   let nodes, edges, rows, previewElement, showPreview, selectedNode;
   $: ({ nodes, edges, rows } = $graphNodes);
 
+  let nodeWidth = 14, verticalMargin = 35, currentY;
+
   $: rows.forEach((row, rowIndex) => {
+    if (rowIndex == 0) {
+      currentY = 30;
+    }
+    let rowHeight = row.reduce((acc, id) => Math.max(getNodeHeight(id), acc), 0);
     row.forEach((id, itemIndex) => {
       nodes[id].x = ((itemIndex + 1) / (row.length + 1) * 100) + '%';
-      nodes[id].y = 50 + 50 * rowIndex;
+      nodes[id].yIn = currentY;
+      nodes[id].yOut = currentY + getNodeHeight(id);
     })
+    currentY = currentY + rowHeight + verticalMargin;
   })
+
+  function getNodeHeight(id) {
+    return Math.max(2 + ($nodesStore[id].lines.length * 2) + 1, 9);
+  }
 
   async function handleClick(e) {
     const id = Number(e.target.parentNode.dataset.id);
@@ -64,7 +76,7 @@
   function handleMouseEnter(e) {
     const element = e.target;
     const bounds = element.getBoundingClientRect();
-    previewElement.style.top = `${bounds.top + bounds.height}px`;
+    previewElement.style.top = `${bounds.top + bounds.height + 10}px`;
     previewElement.style.left = `${bounds.left - (bounds.width / 2)}px`;
     selectedNode = e.target.dataset.id;
     showPreview = true;
@@ -82,28 +94,38 @@
         <line
           class:active={$nodeSequence.includes(Number(edge.from)) && $nodeSequence.includes(Number(edge.to))}
           x1={nodes[edge.from].x}
+          y1={nodes[edge.from].yOut}
           x2={nodes[edge.to].x}
-          y1={nodes[edge.from].y}
-          y2={nodes[edge.to].y}
+          y2={nodes[edge.to].yIn}
         />
       {/each}
       {#each Object.keys(nodes) as id}
         <g data-id={id} on:click={handleClick} on:mouseenter={handleMouseEnter} on:mouseleave={handleMouseLeave}>
-          <circle
-            class="background"
-            cx={nodes[id].x}
-            cy={nodes[id].y}
-            r="22"
-          />
-          <circle
-            class="foreground"
+          <rect
+            class="node"
             class:active={$nodeSequence.includes(Number(id))}
             class:editing={$currentlyEditedNodeId == Number(id)}
             class:flagged={$flaggedNodes.includes(Number(id))}
-            cx={nodes[id].x}
-            cy={nodes[id].y}
-            r="3"
+            x={nodes[id].x}
+            y={nodes[id].yIn}
+            rx=2
+            ry=2
+            width={nodeWidth}
+            height={nodes[id].yOut - nodes[id].yIn}
+            transform="translate(-{nodeWidth/2} 0)"
           />
+          {#each $nodesStore[id].lines as l, index}
+            <rect
+              class="line"
+              class:active={$nodeSequence.includes(Number(id))}
+              class:command={l.type == 'command'}
+              x={nodes[id].x}
+              y={nodes[id].yIn + index * 2 + 2}
+              width={nodeWidth - 4}
+              height=1
+              transform="translate(-{(nodeWidth - 4)/2} 0)"
+            />
+          {/each}
         </g>
       {/each}
     </svg>
@@ -155,35 +177,45 @@
     cursor: pointer;
   }
 
-  circle.background {
-    fill: transparent;
-  }
-
-  circle.foreground {
-    transition: r 0.15s;
+  rect.node {
     fill: white;
     stroke: var(--medium-color);
   }
 
-  circle.active {
+  rect.node.active {
     stroke: var(--dark-color);
   }
 
-  circle.active.flagged {
+  rect.node.active.flagged {
     stroke: var(--red-alpha-60);
   }
 
-  circle.editing {
-    fill: var(--medium-color);
+  rect.node.editing {
+    fill: var(--lighter-color);
   }
 
-  circle.flagged, g:hover circle.foreground.flagged {
+  rect.node.flagged, g:hover rect.node.flagged {
     stroke: var(--red-alpha-30);
   }
 
-  g:hover circle.foreground {
+  g:hover rect.node {
     stroke: var(--dark-color);
-    r: 5;
+  }
+
+  rect.line {
+    fill: var(--dark-alpha-30);
+  }
+
+  rect.line.active {
+    fill: var(--dark-alpha-40);
+  }
+
+  rect.line.command {
+    fill: var(--yellow-alpha-40);
+  }
+
+  rect.line.command.active {
+    fill: var(--yellow-alpha-60);
   }
 
   @media (min-width: 72em) {

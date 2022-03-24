@@ -8,8 +8,13 @@
   --medium-color: #D0D9DE;
   --dark-color: #9CABB3;
 	--darker-color: #50585c;
+	--dark-alpha-60: rgba(156, 171, 179, 0.6);
+	--dark-alpha-40: rgba(156, 171, 179, 0.4);
+	--dark-alpha-30: rgba(156, 171, 179, 0.3);
 	--medium-alpha-60: rgba(208, 217, 222, 0.6);
 	--medium-alpha-30: rgba(208, 217, 222, 0.3);
+	--yellow-alpha-60: rgba(255, 187, 0, 0.6);
+	--yellow-alpha-40: rgba(255, 187, 0, 0.4);
 	--yellow-alpha-20: rgba(255, 187, 0, 0.2);
 	--yellow-alpha-10: rgba(255, 187, 0, 0.1);
 	--red: rgb(255, 72, 0);
